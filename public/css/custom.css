@@ -1,0 +1,300 @@
+/* loundry booking shortcode */
+.booking-slot .header {
+    text-align: center;
+    padding: 50px 200px;
+    background-color: white;
+}
+
+.booking-slot .header h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.booking-slot .header p {
+    font-size: 16px;
+    color: #555;
+}
+
+.booking-slot .booking {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.booking-slot .booking h3 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.booking-slot .options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.booking-slot .option {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 450px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.booking-slot .option .icon {
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.booking-slot .option h4 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.booking-slot .option h4 {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.booking-slot button {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.booking-slot button:hover {
+    background-color: #444;
+}
+
+/* booksolt delivery */
+/* Basic Container Styling */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Tabs Styling */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.tab.selected {
+    border-bottom: 2px solid green;
+    font-weight: bold;
+}
+
+/* Delivery Address Section Styling */
+.bookslot-delivery {
+    width: 65%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.delevery-section {
+    margin-top: 20px;
+}
+.bookslot-delivery .delivery-address {
+    padding: 20px;
+    text-align: center;
+}
+
+.bookslot-delivery .header {
+    display: flex;
+    justify-content: center;
+}
+
+
+.bookslot-delivery .title h3{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 !important;
+}
+
+.bookslot-delivery .icon {
+    color: #5C8018;
+    margin-right: 10px;
+}
+.bookslot-delivery .icon i {
+    font-size: 30px;
+}
+
+.bookslot-delivery .address {
+    margin-top: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    
+}
+
+.bookslot-delivery .change-address {
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.bookslot-delivery .change-address i{
+    font-size: 20px;
+}
+
+
+/* Address Options Styling */
+.bookslot-delivery .address-options {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.bookslot-delivery .address-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    flex: 1;
+    max-width: 180px;
+    text-align: left;
+    cursor: pointer;
+    height: 100px;
+}
+
+.bookslot-delivery .address-card.selected {
+    border: 2px solid green;
+}
+
+.bookslot-delivery .add-address {
+    border: 1px dashed #ddd;
+}
+
+.nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #fff;
+    border-color: transparent transparent #000 !important;
+}
+.nav-tabs .nav-link {
+    border: none;
+}
+
+/* Click & Collect Section */
+.collect-section {
+    margin-top: 20px;
+}
+
+.accordion-button {
+    z-index: 3;
+    border-color: transparent !important;
+    outline: none;
+    box-shadow: none transparent !important;
+    color: #000;
+}
+.accordion-button:focus {
+    z-index: 3;
+    border-color: transparent !important;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem transparent !important;
+}
+.accordion-button:not(.collapsed) {
+    color: #000 !important;
+    background-color: #5c5c5c;
+    box-shadow: inset 0 -1px 0 transparent !important;
+}
+
+/* hour-section & saver-section */
+
+.hour-section,
+.saver-section {
+    margin-top: 20px !important;
+}
+
+.nav-tabs button i {
+    margin-right: 5px;
+    font-size: 15px;
+}
+
+.row>* {
+    padding-right: calc(var(--bs-gutter-x) / 3) !important;
+    padding-left: calc(var(--bs-gutter-x) / 3) !important;
+}
+
+.hour-section .booking-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 5px 5px !important;  
+    border: 1px solid #ccc !important;  
+}
+.hour-section .booking-time-list {
+    display: flex;
+    /* align-items: left; */
+    justify-content: right;
+    margin-bottom: 10px;
+    padding: 6px 5px !important;  
+    /* border: 1px solid #ccc !important;   */
+    font-weight: 600;
+}
+.hour-section .fully-booked,
+.saver-section .fully-booked {
+    background-color: #f5f5f5;
+    color: #999;
+}
+.hour-section .available,
+.saver-section .available {
+    background-color: #fff;
+    border: 2px solid #000;
+    color: #000;
+    cursor: pointer;
+}
+.hour-section .schedule-header,
+.saver-section .schedule-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+}
+/* view calendar date picker */
+.ui-datepicker {
+    top: 637.859px !important;
+    left: 853.859px !important;
+}
+
+.saver-section .booking-slot {
+    display: flex;
+    height: 120px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 5px 5px !important;  
+    border: 1px solid #ccc !important;  
+}
+.saver-section .booking-time-list {
+    display: flex;
+    height: 120px;
+    justify-content: right;
+    margin-bottom: 10px;
+    padding: 50px 5px !important;  
+    /* border: 1px solid #ccc !important;   */
+    font-weight: 600;
+}

@@ -8,17 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://https://github.com/coderjahidul/
+ * @link              https://github.com/coderjahidul/
  * @since             1.0.0
  * @package           Laundry_Booking_System
  *
  * @wordpress-plugin
- * Plugin Name:       Laundry booking System
- * Plugin URI:        https://https://github.com/coderjahidul/laundry-booking-system
+ * Plugin Name:       Laundry Booking System
+ * Plugin URI:        https://github.com/coderjahidul/laundry-booking-system
  * Description:       Laundry booking System WordPress plugin
  * Version:           1.0.0
- * Author:            Jahidul islam Sabuz
- * Author URI:        https://https://github.com/coderjahidul//
+ * Author:            Jahidul Islam Sabuz
+ * Author URI:        https://github.com/coderjahidul/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       laundry-booking-system
@@ -58,11 +58,98 @@ function deactivate_laundry_booking_system() {
 register_activation_hook( __FILE__, 'activate_laundry_booking_system' );
 register_deactivation_hook( __FILE__, 'deactivate_laundry_booking_system' );
 
+// Enqueue Font Awesome
+function enqueue_font_awesome() {
+    wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css', array(), '5.15.3', 'all' );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_font_awesome' );
+
+// Enqueue custom CSS
+function enqueue_custom_css() {
+	wp_enqueue_style( 'custom-css', plugin_dir_url( __FILE__ ) . 'public/css/custom.css', array(), '1.0.0', 'all' );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_custom_css' );
+
+// Function to include Bootstrap CSS and JS
+function enqueue_bootstrap_assets() {
+    // Enqueue Bootstrap CSS
+    wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css', array(), '5.0.1', 'all' );
+    
+    // Enqueue Bootstrap JS (including Popper.js for Bootstrap's JavaScript components)
+    wp_enqueue_script( 'bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.0.1', true );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_bootstrap_assets' );
+
+
+
+// Function to include Bootstrap and custom JS conditionally
+function enqueue_bootstrap_assets_conditionally() {
+    // Check if we're on a specific page or single post
+    if ( is_page( 'contact' ) || is_single() ) {
+        // Deregister the default WordPress jQuery
+        wp_deregister_script( 'jquery' );
+        
+        // Register jQuery from the Google CDN
+        wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js', false, '3.5.1', true );
+
+        // Enqueue jQuery
+        wp_enqueue_script( 'jquery' );
+
+        // Enqueue Bootstrap CSS
+        wp_enqueue_style( 'bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css', array(), '5.0.1', 'all' );
+
+        // Enqueue Bootstrap JS
+        wp_enqueue_script( 'bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.0.1', true );
+
+        // Enqueue custom JS file
+        wp_enqueue_script( 'custom-js', plugin_dir_url( __FILE__ ) . 'public/js/custom.js', array('jquery'), '1.0.0', true );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_bootstrap_assets_conditionally' );
+
+function my_enqueue_scripts() {
+    // Enqueue jQuery UI Datepicker
+    wp_enqueue_script('jquery-ui-datepicker');
+    wp_enqueue_style('jquery-ui-datepicker-style', 'https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css');
+    
+    // Add custom JavaScript to initialize the datepicker
+    wp_add_inline_script('jquery-ui-datepicker', '
+        jQuery(document).ready(function($) {
+            $("#saver_datepicker").datepicker();
+            $("#open-saver_datepicker").click(function() {
+                $("#saver_datepicker").datepicker("show");
+            });
+        });
+        jQuery(document).ready(function($) {
+            $("#hour_datepicker").datepicker();
+            $("#open-hour_datepicker").click(function() {
+                $("#hour_datepicker").datepicker("show");
+            });
+        });
+    ');
+}
+add_action('wp_enqueue_scripts', 'my_enqueue_scripts');
+
+
+
+
+
+
+
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-laundry-booking-system.php';
+
+// Register shortcode function file
+require plugin_dir_path(__FILE__) . 'public/loundry-booking-slot-shortcode.php';
+
+require plugin_dir_path(__FILE__) . 'templates/bookslot-delivery.php';
+
+// includes custom functions
+require plugin_dir_path(__FILE__) . 'public/lbs-custom-function.php';
+
 
 /**
  * Begins execution of the plugin.
