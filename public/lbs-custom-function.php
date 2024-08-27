@@ -2,37 +2,37 @@
 // lbs-delevery function
 function lbs_delevery() {
 ?>
-    <!-- Delivery Section -->
-    <div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
-        <div class="delivery-address">
-            <div class="header">
-                <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
-                <div class="title">
-                    <h3>Your delivery address</h3>
-                </div>
+<!-- Delivery Section -->
+<div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+    <div class="delivery-address">
+        <div class="header">
+            <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
+            <div class="title">
+                <h3>Your delivery address</h3>
             </div>
-            <div class="address">Aberdeen, EH21 6UU</div>
-            <a href="#" class="change-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
         </div>
+        <div class="address">Aberdeen, EH21 6UU</div>
+        <a href="#" class="change-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+    </div>
 
-        <!-- Address Options -->
-        <div class="address-options" style="display: none;">
-            <div class="address-card selected">
-                <span>Aberdeen</span>
-                <br>
-                <span>EH21 6UU</span>
-            </div>
-            <div class="address-card">
-                <span>94 Newman Street</span>
-                <span>London</span>
-                <br>
-                <span>W1T 3EZ</span>
-            </div>
-            <div class="address-card add-address">
-                <span>+ Add an address</span>
-            </div>
+    <!-- Address Options -->
+    <div class="address-options" style="display: none;">
+        <div class="address-card selected">
+            <span>Aberdeen</span>
+            <br>
+            <span>EH21 6UU</span>
+        </div>
+        <div class="address-card">
+            <span>94 Newman Street</span>
+            <span>London</span>
+            <br>
+            <span>W1T 3EZ</span>
+        </div>
+        <div class="address-card add-address">
+            <span>+ Add an address</span>
         </div>
     </div>
+</div>
 <?php
 }
 
@@ -154,25 +154,27 @@ function lbs_collection() {
 // Choose your slot
 function lbs_choose_your_slot() {
     ?>
-<div class="choose-your-slot">
-    <h2 class="text-center">Choose your slot</h2>
+    <div class="choose-your-slot">
+        <h2 class="text-center">Choose your slot</h2>
 
-    <ul class="nav nav-tabs justify-content-center border-0" id="ChooseYourSlot" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="hour-tab" data-bs-toggle="tab" data-bs-target="#hour" type="button"
-                role="tab" aria-controls="hour" aria-selected="true"><i class="fa fa-clock"></i> 1 Hour</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="saver-tab" data-bs-toggle="tab" data-bs-target="#saver" type="button"
-                role="tab" aria-controls="saver" aria-selected="false"><i class="fa fa-dollar"></i> Saver</button>
-        </li>
-    </ul>
+        <ul class="nav nav-tabs justify-content-center border-0" id="ChooseYourSlot" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="hour-tab" data-bs-toggle="tab" data-bs-target="#hour" type="button"
+                    role="tab" aria-controls="hour" aria-selected="true"><i class="fa fa-clock"></i> 1 Hour</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="saver-tab" data-bs-toggle="tab" data-bs-target="#saver" type="button"
+                    role="tab" aria-controls="saver" aria-selected="false"><i class="fa fa-dollar"></i> Saver</button>
+            </li>
+        </ul>
 
-    <div class="tab-content" id="ChooseYourSlotContent">
-        <!-- Hour Section -->
-        <?php hour_function(); ?>
-        <!-- Saver Section -->
-        <?php saver_function();?>
+        <div class="tab-content" id="ChooseYourSlotContent">
+            <!-- Hour Section -->
+            <?php hour_function(); ?>
+            <!-- Saver Section -->
+            <?php saver_function();?>
+        </div>
+
     </div>
 
     <script>
@@ -359,6 +361,38 @@ function saver_function(){
                     <!-- Additional slots with prices can be added here -->
                 </div>
             </div>
+        </div>
+    </div>
+    <?php
+}
+
+// reserved slot function
+function lbs_reserved_slot(){
+    ?>
+    <div class="container mt-5">
+        <div class="reserved-slot">
+            <div class="icon mb-3">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+            </div>
+            <h5>Slot reserved until 2:40pm</h5>
+            <p>Check out before 2:40pm to confirm your slot booking. Minimum order spend £40. Delivery £4</p>
+
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <strong>Date and time</strong>
+                        <p>Sunday 1 September 12pm - 1pm</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <strong>Delivery address</strong>
+                        <p>Aberdeen, EH21 6UU</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-outline-secondary mt-3 continue-btn">Continue</button>
         </div>
     </div>
     <?php

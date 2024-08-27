@@ -27,7 +27,7 @@ function lbs_loundry_booking_slot_shortcode() {
                     <div class="icon"><i class="fas fa-map-marker"></i></div>
                     <h4>Drop off & Collect</h4>
                     <h4>Drop off your laundry at a drop off center and collect it from there when ready.</h4>
-                    <button>Choose Click & Collect</button>
+                    <button onclick="window.location.href=<?php site_url(); ?>'bookslot-delivery/';">Choose Click & Collect</button>
                 </div>
             </div>
         </section>

@@ -300,3 +300,35 @@
     /* border: 1px solid #ccc !important;   */
     font-weight: 600;
 }
+
+/* reserved slot */
+.reserved-slot {
+    background-color: #f8f9fa;
+    padding: 40px;
+    text-align: center !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+.reserved-slot h5 {
+    font-size: 18px;
+    font-weight: 600;
+}
+.reserved-slot .icon {
+    font-size: 2rem;
+    color: green;
+}
+.reserved-slot .info-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    /* border-radius: 8px; */
+    background-color: #ffffff;
+}
+.reserved-slot .justify-content-center {
+    margin-bottom: 10px;
+}
+.reserved-slot .continue-btn {
+    border: 1px solid #ddd;
+    padding: 10px 50px !important;
+    background-color: #ffffff;
+}
