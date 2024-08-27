@@ -27,7 +27,8 @@ function lbs_bookslot_delivery_function() {
             <?php lbs_collection(); ?>
         </div>
     </div>
-
+    <!-- add address from -->
+    <?php add_address_from();?>
     <!-- Choose your slot -->
     <?php lbs_choose_your_slot(); ?>
 
