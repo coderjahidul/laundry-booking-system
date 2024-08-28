@@ -101,11 +101,24 @@ function enqueue_bootstrap_assets_conditionally() {
         // Enqueue Bootstrap JS
         wp_enqueue_script( 'bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.0.1', true );
 
-        // Enqueue custom JS file
-        wp_enqueue_script( 'custom-js', plugin_dir_url( __FILE__ ) . 'public/js/custom.js', array('jquery'), '1.0.0', true );
+        // // Enqueue custom JS file
+        // wp_enqueue_script( 'custom-js', plugin_dir_url( __FILE__ ) . 'public/js/custom.js', array('jquery'), '1.0.0', true );
     }
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_bootstrap_assets_conditionally' );
+
+function my_plugin_enqueue_scripts() {
+    // Enqueue the custom JS file
+    wp_enqueue_script(
+        'custom-js',
+        plugin_dir_url( __FILE__ ) . 'public/js/custom.js',
+        array('jquery'), // Dependencies
+        '1.0.0',         // Version
+        true             // Load in footer
+    );
+}
+add_action('wp_enqueue_scripts', 'my_plugin_enqueue_scripts');
+
 
 function my_enqueue_scripts() {
     // Enqueue jQuery UI Datepicker
