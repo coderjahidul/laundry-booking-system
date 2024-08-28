@@ -26,8 +26,9 @@ function lbs_delevery() {
             foreach($get_shipping_city as $index => $city){
                 $city = $city;
                 $postcode = isset($get_shipping_postcode[$index]) ? $get_shipping_postcode[$index] : '';
+                $post_id = 125;
                 ?>
-                    <div class="address-card">
+                    <div class="address-card" data-post-id="<?= $post_id; ?>">
                         <span><?= $city; ?></span>
                         <br>
                         <span><?= $postcode; ?></span>
@@ -601,3 +602,23 @@ function handle_uk_address_form_submission(){
     }
 }
 add_action('init', 'handle_uk_address_form_submission');
+
+function update_selected_address() {
+    if (isset($_POST['post_id']) && isset($_POST['selected_value'])) {
+        $post_id = intval($_POST['post_id']);
+        $selected_value = sanitize_text_field($_POST['selected_value']);
+        
+        // Update the selected_address post meta value
+        update_post_meta($post_id, 'selected_address', $selected_value);
+
+        // Return success response
+        wp_send_json_success(array('message' => 'Address updated successfully.'));
+    } else {
+        // Return error response
+        wp_send_json_error(array('message' => 'Error updating address.'));
+    }
+
+    wp_die();
+}
+add_action('wp_ajax_update_selected_address', 'update_selected_address');
+add_action('wp_ajax_nopriv_update_selected_address', 'update_selected_address');
