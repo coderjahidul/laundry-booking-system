@@ -107,6 +107,12 @@ function enqueue_bootstrap_assets_conditionally() {
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_bootstrap_assets_conditionally' );
 
+// add css laundry-booking-system-admin.css
+function enqueue_custom_admin_css() {
+    wp_enqueue_style( 'custom-admin-css', plugin_dir_url( __FILE__ ) . 'admin/css/laundry-booking-system-admin.css', array(), '1.0.0', 'all' );
+}
+
+
 function my_plugin_enqueue_scripts() {
     // Enqueue the custom JS file
     wp_enqueue_script(
@@ -147,16 +153,24 @@ function my_enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'my_enqueue_scripts');
 
 
-
-
-
-
-
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-laundry-booking-system.php';
+
+/**
+ * Custom Post Type
+ * */
+
+require plugin_dir_path(__FILE__) . 'admin/custom-post-type.php';
+
+
+/**
+ * Booking Management Page in Admin Dashboard
+ * */
+
+require plugin_dir_path(__FILE__) . 'admin/booking-management-page.php';
 
 // Register shortcode function file
 require plugin_dir_path(__FILE__) . 'public/loundry-booking-slot-shortcode.php';

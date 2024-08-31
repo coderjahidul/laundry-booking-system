@@ -2,3 +2,87 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ .booking-form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.booking-form label {
+    font-weight: bold;
+    color: #333;
+    align-self: center;
+}
+
+.booking-form input[type="date"],
+.booking-form input[type="text"],
+.booking-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.booking-form input[type="date"]:focus,
+.booking-form input[type="text"]:focus,
+.booking-form select:focus {
+    border-color: #0073aa; /* WordPress default blue color */
+    outline: none;
+}
+
+.booking-form input[type="submit"] {
+    grid-column: span 2;
+    padding: 10px 15px;
+    background-color: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.booking-form input[type="submit"]:hover {
+    background-color: #005177;
+}
+
+/* Booking Management admin page */
+
+.tablenav .tablenav-pages {
+    margin: 20px 0;
+    font-size: 13px;
+}
+.tablenav-pages .pagination-links {
+    display: inline-block;
+}
+.tablenav-pages a.page-numbers {
+    padding: 6px 12px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    color: #0073aa;
+    text-decoration: none;
+    margin: 0 2px;
+    border-radius: 3px;
+}
+.tablenav-pages a.page-numbers:hover {
+    background-color: #0073aa;
+    color: #fff;
+}
+.tablenav-pages span.current {
+    padding: 6px 12px;
+    background-color: #0073aa;
+    border: 1px solid #0073aa;
+    color: #fff;
+    font-weight: bold;
+    margin: 0 2px;
+    border-radius: 3px;
+}
