@@ -8,13 +8,14 @@ jQuery(document).ready(function($){
 
         let postId = $(this).data('post-id');
 
+        console.log('Selected Post ID:', postId); // Debugging line
+
         $.ajax({
-            url: ajax_object.ajaxurl, // Use the localized variable
             type: 'POST',
+            url: ajax_object.ajaxurl,
             data: {
                 action: 'update_selected_address',
                 post_id: postId,
-                selected_value: 'selected'
             },
             success: function (response) {
                 if (response.success) {
@@ -26,7 +27,6 @@ jQuery(document).ready(function($){
             error: function () {
                 console.log('There was an error.');
             }
-
         });
     });
 });

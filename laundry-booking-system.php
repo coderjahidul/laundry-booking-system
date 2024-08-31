@@ -116,6 +116,9 @@ function my_plugin_enqueue_scripts() {
         '1.0.0',         // Version
         true             // Load in footer
     );
+
+    // Localize the script with AJAX URL
+    wp_localize_script( 'custom-js', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 }
 add_action('wp_enqueue_scripts', 'my_plugin_enqueue_scripts');
 

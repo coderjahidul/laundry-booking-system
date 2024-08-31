@@ -11,29 +11,54 @@ function lbs_delevery() {
                 <h3>Your delivery address</h3>
             </div>
         </div>
-        <div class="address">Aberdeen, EH21 6UU</div>
+        <!-- Selected Address Section -->
+        <div class="address">
+            <?php 
+            $user_id = get_current_user_id();
+            $get_selected_address = get_user_meta($user_id, 'selected_address', true);
+            // get shipping city in sql query
+            $get_shipping_city = get_user_meta($user_id, 'shipping_city');
+
+            // get shipping postcode in sql query
+            $get_shipping_postcode = get_user_meta($user_id, 'shipping_postcode');
+
+            foreach($get_shipping_city as $index => $city){
+                $pos_index = $index;
+                $index = $index + 1;
+                $shipping_postcode = isset($get_shipping_postcode[$pos_index]) ? $get_shipping_postcode[$pos_index] : '';
+                if($get_selected_address == $index ){
+                    echo $city . ' - ' . $shipping_postcode;
+                }
+            }
+            ?>
+        </div>
         <a href="#" class="change-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
     </div>
 
     <!-- Address Options -->
     <div class="address-options" style="display: none;">
-        <?php 
-            $user_id = get_current_user_id();
-            $get_shipping_city = get_user_meta($user_id, 'shipping_city');
-            $get_shipping_postcode = get_user_meta($user_id, 'shipping_postcode');
-        ?>
         <?php if(!empty($get_shipping_city) && !empty($get_shipping_postcode)){
             foreach($get_shipping_city as $index => $city){
                 $city = $city;
                 $postcode = isset($get_shipping_postcode[$index]) ? $get_shipping_postcode[$index] : '';
-                $post_id = 125;
-                ?>
-                    <div class="address-card" data-post-id="<?= $post_id; ?>">
-                        <span><?= $city; ?></span>
-                        <br>
-                        <span><?= $postcode; ?></span>
-                    </div>
-                <?php
+                $post_id = $index + 1;
+                if($get_selected_address == $post_id ){
+                    ?>
+                        <div class="address-card selected" data-post-id="<?= $post_id; ?>">
+                            <span><?= $city; ?></span>
+                            <br>
+                            <span><?= $postcode; ?></span>
+                        </div>
+                    <?php
+                }else {
+                    ?>
+                        <div class="address-card" data-post-id="<?= $post_id; ?>">
+                            <span><?= $city; ?></span>
+                            <br>
+                            <span><?= $postcode; ?></span>
+                        </div>
+                    <?php
+                }
             }
         }?>
         <div class="address-card add-address" data-bs-toggle="modal" data-bs-target="#myModal">
@@ -275,7 +300,7 @@ function hour_function(){
             <div class="col slot-with-price">
                 <?php 
                         for($i = 0; $i < 12; $i++) {
-                            echo '<div class="booking-slot available">Fully booked</div>';
+                            echo '<div class="booking-slot available">$4</div>';
                         }
                     ?>
                 <!-- Additional fully booked slots can be added here -->
@@ -291,7 +316,11 @@ function hour_function(){
             <div class="col slot-with-price">
                 <?php 
                         for($i = 0; $i < 12; $i++) {
-                            echo '<div class="booking-slot available">Fully booked</div>';
+                            if($i < 8){
+                                echo '<div class="booking-slot available">$4</div>';
+                            }else{
+                                echo '<div class="booking-slot fully-booked">Fully booked</div>';
+                            }
                         }
                     ?>
                 <!-- Additional slots with prices can be added here -->
@@ -604,12 +633,15 @@ function handle_uk_address_form_submission(){
 add_action('init', 'handle_uk_address_form_submission');
 
 function update_selected_address() {
-    if (isset($_POST['post_id']) && isset($_POST['selected_value'])) {
+    error_log('update_selected_address function called'); // For debugging
+    if (isset($_POST['post_id']) && !empty($_POST['post_id'] )) {
         $post_id = intval($_POST['post_id']);
-        $selected_value = sanitize_text_field($_POST['selected_value']);
+        // Get the current user ID
+        $user_id = get_current_user_id();
+
         
         // Update the selected_address post meta value
-        update_post_meta($post_id, 'selected_address', $selected_value);
+        update_user_meta($user_id, 'selected_address', $post_id);
 
         // Return success response
         wp_send_json_success(array('message' => 'Address updated successfully.'));
@@ -620,5 +652,6 @@ function update_selected_address() {
 
     wp_die();
 }
+
 add_action('wp_ajax_update_selected_address', 'update_selected_address');
 add_action('wp_ajax_nopriv_update_selected_address', 'update_selected_address');
