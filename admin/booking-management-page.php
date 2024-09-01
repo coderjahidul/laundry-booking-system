@@ -22,13 +22,13 @@ function booking_admin_page() {
         <form method="post" class="search-form wp-clearfix">
             <p class="search-box">
                 <label class="screen-reader-text" for="filter_date">Filter by Date:</label>
-                <input type="date" name="filter_date" id="filter_date" class="input-date">
+                <input type="date" name="filter_date" id="filter_date" class="input-date" value="<?php echo isset($_POST['filter_date']) ? esc_attr($_POST['filter_date']) : ''; ?>">
                 <label class="screen-reader-text" for="filter_status">Filter by Status:</label>
                 <select name="filter_status" id="filter_status">
                     <option value="">All</option>
-                    <option value="available">Available</option>
-                    <option value="fully_booked">Fully Booked</option>
-                    <option value="unavailable">Unavailable</option>
+                    <option value="available" <?php selected(isset($_POST['filter_status']) ? $_POST['filter_status'] : '', 'available'); ?>>Available</option>
+                    <option value="fully_booked" <?php selected(isset($_POST['filter_status']) ? $_POST['filter_status'] : '', 'fully_booked'); ?>>Fully Booked</option>
+                    <option value="unavailable" <?php selected(isset($_POST['filter_status']) ? $_POST['filter_status'] : '', 'unavailable'); ?>>Unavailable</option>
                 </select>
                 <input type="submit" class="button" value="Filter">
             </p>
@@ -39,11 +39,33 @@ function booking_admin_page() {
         $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
         $args = array(
             'post_type' => 'booking',
-            'posts_per_page' => 10, // Adjust as needed
+            'posts_per_page' => 20, // Adjust as needed
             'paged' => $paged,
         );
 
-        // Add meta_query conditions here if required...
+        // Check if filter values are set and add to meta_query
+        $meta_query = array();
+        
+        if (!empty($_POST['filter_date'])) {
+            $meta_query[] = array(
+                'key' => '_booking_date',
+                'value' => sanitize_text_field($_POST['filter_date']),
+                'compare' => '=',
+            );
+        }
+
+        if (!empty($_POST['filter_status'])) {
+            $meta_query[] = array(
+                'key' => '_booking_status',
+                'value' => sanitize_text_field($_POST['filter_status']),
+                'compare' => '=',
+            );
+        }
+
+        // Add meta_query if it's not empty
+        if (!empty($meta_query)) {
+            $args['meta_query'] = $meta_query;
+        }
 
         $bookings = new WP_Query($args);
 
@@ -72,7 +94,7 @@ function booking_admin_page() {
                 echo '<td>' . esc_html($time_slot) . '</td>';
                 echo '<td>' . esc_html($status) . '</td>';
                 echo '<td>£' . esc_html($price) . '</td>';
-                echo '<td><a href="' . get_edit_post_link() . '" class="button">Edit</a> <a href="' . get_delete_post_link() . '" class="button button-danger">Delete</a></td>';
+                echo '<td><a href="' . esc_url(get_edit_post_link()) . '" class="button">Edit</a> <a href="' . esc_url(get_delete_post_link()) . '" class="button button-danger">Delete</a></td>';
                 echo '</tr>';
             }
 

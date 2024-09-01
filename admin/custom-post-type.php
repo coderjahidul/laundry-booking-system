@@ -59,6 +59,7 @@ function display_booking_meta_box($post){
         <option value="6pm - 7pm" <?php selected($time_slot, '6pm - 7pm'); ?>>6pm - 7pm</option>
         <option value="7pm - 8pm" <?php selected($time_slot, '7pm - 8pm'); ?>>7pm - 8pm</option>
         <option value="8pm - 9pm" <?php selected($time_slot, '8pm - 9pm'); ?>>8pm - 9pm</option>
+        <option value="9pm - 10pm" <?php selected($time_slot, '9pm - 10pm'); ?>>9pm - 10pm</option>
     </select>
 
     <!-- Status Field -->
