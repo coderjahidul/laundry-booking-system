@@ -1,89 +1,128 @@
 <?php
 // lbs-delevery function
 function lbs_delevery() {
-?>
-<!-- Delivery Section -->
-<div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
-    <div class="delivery-address">
-        <div class="header">
-            <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
-            <div class="title">
-                <h3>Your delivery address</h3>
+    $user_id = get_current_user_id();
+    $get_shipping_city = get_user_meta($user_id, 'shipping_city');
+    $get_shipping_postcode = get_user_meta($user_id, 'shipping_postcode');
+    if($get_shipping_city && $get_shipping_postcode){
+        ?>
+        <!-- Delivery Section -->
+        <div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+            <div class="delivery-address">
+                <div class="header">
+                    <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
+                    <div class="title">
+                        <h3>Your delivery address</h3>
+                    </div>
+                </div>
+                <!-- Selected Address Section -->
+                <div class="address">
+                    <?php 
+                    $user_id = get_current_user_id();
+                    $get_selected_address = get_user_meta($user_id, 'selected_address', true);
+                    // get shipping city in sql query
+                    $get_shipping_city = get_user_meta($user_id, 'shipping_city');
+
+                    // get shipping postcode in sql query
+                    $get_shipping_postcode = get_user_meta($user_id, 'shipping_postcode');
+
+                    foreach($get_shipping_city as $index => $city){
+                        $pos_index = $index;
+                        $index = $index + 1;
+                        $shipping_postcode = isset($get_shipping_postcode[$pos_index]) ? $get_shipping_postcode[$pos_index] : '';
+                        if($get_selected_address == $index ){
+                            echo $city . ' - ' . $shipping_postcode;
+                        }
+                    }
+                    ?>
+                </div>
+                <a href="#" class="change-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
             </div>
-        </div>
-        <!-- Selected Address Section -->
-        <div class="address">
-            <?php 
-            $user_id = get_current_user_id();
-            $get_selected_address = get_user_meta($user_id, 'selected_address', true);
-            // get shipping city in sql query
-            $get_shipping_city = get_user_meta($user_id, 'shipping_city');
 
-            // get shipping postcode in sql query
-            $get_shipping_postcode = get_user_meta($user_id, 'shipping_postcode');
+            <!-- Address Options -->
+            <div class="address-options" style="display: none;">
+                <?php if(!empty($get_shipping_city) && !empty($get_shipping_postcode)){
+                    foreach($get_shipping_city as $index => $city){
+                        $city = $city;
+                        $postcode = isset($get_shipping_postcode[$index]) ? $get_shipping_postcode[$index] : '';
+                        $post_id = $index + 1;
+                        if($get_selected_address == $post_id ){
+                            ?>
+                <div class="address-card selected" data-post-id="<?= $post_id; ?>">
+                    <span><?= $city; ?></span>
+                    <br>
+                    <span><?= $postcode; ?></span>
+                </div>
+                <?php
+                        }else {
+                            ?>
+                <div class="address-card" data-post-id="<?= $post_id; ?>">
+                    <span><?= $city; ?></span>
+                    <br>
+                    <span><?= $postcode; ?></span>
+                </div>
+                <?php
+                        }
+                    }
+                }?>
+                <div class="address-card add-address" data-bs-toggle="modal" data-bs-target="#myModal">
+                    <!-- <span onclick="showAddressForm()">+ Add an address</span> -->
+                    <span>+ Add an address</span>
+                </div>
+                <div class="modal fade address-form-modal" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <?php echo add_address_from();?>
+                            </div>
 
-            foreach($get_shipping_city as $index => $city){
-                $pos_index = $index;
-                $index = $index + 1;
-                $shipping_postcode = isset($get_shipping_postcode[$pos_index]) ? $get_shipping_postcode[$pos_index] : '';
-                if($get_selected_address == $index ){
-                    echo $city . ' - ' . $shipping_postcode;
-                }
-            }
-            ?>
-        </div>
-        <a href="#" class="change-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-    </div>
-
-    <!-- Address Options -->
-    <div class="address-options" style="display: none;">
-        <?php if(!empty($get_shipping_city) && !empty($get_shipping_postcode)){
-            foreach($get_shipping_city as $index => $city){
-                $city = $city;
-                $postcode = isset($get_shipping_postcode[$index]) ? $get_shipping_postcode[$index] : '';
-                $post_id = $index + 1;
-                if($get_selected_address == $post_id ){
-                    ?>
-                        <div class="address-card selected" data-post-id="<?= $post_id; ?>">
-                            <span><?= $city; ?></span>
-                            <br>
-                            <span><?= $postcode; ?></span>
                         </div>
-                    <?php
-                }else {
-                    ?>
-                        <div class="address-card" data-post-id="<?= $post_id; ?>">
-                            <span><?= $city; ?></span>
-                            <br>
-                            <span><?= $postcode; ?></span>
-                        </div>
-                    <?php
-                }
-            }
-        }?>
-        <div class="address-card add-address" data-bs-toggle="modal" data-bs-target="#myModal">
-            <!-- <span onclick="showAddressForm()">+ Add an address</span> -->
-            <span>+ Add an address</span>
-        </div>
-        <div class="modal fade address-form-modal" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel"></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <?php echo add_address_from();?>
-                    </div>
-
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<?php
+    <?php
+    }else{
+        ?>
+        <!-- Delivery Section -->
+        <div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+            <div class="delivery-address">
+                <div class="header">
+                    <!-- <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div> -->
+                    <div class="title">
+                        <h3>Enter your delivery postcode</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="address-cards add-address" data-bs-toggle="modal" data-bs-target="#myModal">
+                <!-- <span onclick="showAddressForm()">+ Add an address</span> -->
+                <span>+ Add an address</span>
+            </div>
+            <div class="modal fade address-form-modal" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <?php echo add_address_from();?>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <?php
+    }
 }
 
 // Collection function
@@ -474,19 +513,22 @@ function add_address_from(){
         <!-- First Name -->
         <div class="mb-3">
             <label for="firstName" class="form-label">First name</label>
-            <input type="text" class="form-control" name="shipping_first_name" id="firstName" placeholder="First name" required>
+            <input type="text" class="form-control" name="shipping_first_name" id="firstName" placeholder="First name"
+                required>
         </div>
 
         <!-- Last Name -->
         <div class="mb-3">
             <label for="lastName" class="form-label">Last name</label>
-            <input type="text" class="form-control" name="shipping_last_name" id="lastName" placeholder="Last name" required>
+            <input type="text" class="form-control" name="shipping_last_name" id="lastName" placeholder="Last name"
+                required>
         </div>
 
         <!-- Contact Number -->
         <div class="mb-3">
             <label for="contactNumber" class="form-label">Contact number</label>
-            <input type="text" class="form-control" name="shipping_phone" id="contactNumber" placeholder="Contact number" required>
+            <input type="text" class="form-control" name="shipping_phone" id="contactNumber"
+                placeholder="Contact number" required>
             <small class="form-text text-muted">We use this if we need to contact you about your
                 order</small>
         </div>
@@ -505,7 +547,8 @@ function add_address_from(){
         <!-- Address Finder -->
         <div class="mb-3" id="addressFinderDiv">
             <label for="addressFinder" class="form-label">Address finder</label>
-            <input type="text" class="form-control" name="shipping_address_or_postcode" id="addressFinder" placeholder="Start typing an address or postcode" required>
+            <input type="text" class="form-control" name="shipping_address_or_postcode" id="addressFinder"
+                placeholder="Start typing an address or postcode" required>
             <small class="form-text text-muted">Start typing an address or postcode</small>
         </div>
 
@@ -555,7 +598,8 @@ function add_address_from(){
             <!-- Postcode -->
             <div class="mb-3">
                 <label for="postcode" class="form-label">Postcode</label>
-                <input type="text" class="form-control" name="shipping_postcode" id="postcode" placeholder="Postcode" required>
+                <input type="text" class="form-control" name="shipping_postcode" id="postcode" placeholder="Postcode"
+                    required>
             </div>
         </div>
 
