@@ -257,6 +257,8 @@
     /* border: 1px solid #ccc !important;   */
     font-weight: 600;
 }
+.hour-section .unavailable,
+.saver-section .unavailable,
 .hour-section .fully-booked,
 .saver-section .fully-booked {
     background-color: #f5f5f5;

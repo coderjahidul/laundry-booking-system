@@ -302,76 +302,136 @@ function hour_function(){
 
         <div class="row text-center">
             <div class="col schedule-header"></div>
-            <div class="col schedule-header">Tue 27 Aug</div>
-            <div class="col schedule-header">Wed 28 Aug</div>
-            <div class="col schedule-header">Thu 29 Aug</div>
-            <div class="col schedule-header">Fri 30 Aug</div>
-            <div class="col schedule-header">Sat 31 Aug</div>
+            <!-- <div class="col schedule-header">Tue 27 Aug</div> -->
+            <?php
+                $args = array(
+                    'post_type' => 'booking',
+                    'posts_per_page' => -1, // Adjust as needed,
+                    'meta_key' => '_booking_date',
+                    'orderby' => 'meta_value',
+                    'order' => 'ASC',
+                );
+                
+                $bookings_date = new WP_Query($args);
+                
+                $delivery_dates = array(); // Array to keep track of printed dates
+                $unique_dates_count = 0;  // Counter to limit to 5 unique dates
+                
+                if ($bookings_date->have_posts()) {
+                    while ($bookings_date->have_posts()) {
+                        $bookings_date->the_post();
+                
+                        $slot_date = get_post_meta(get_the_ID(), '_booking_date', true);
+                        // $slot_date = date("D, j M", strtotime($get_date));
+                
+                        // Check if the formatted date is already in the array
+                        if (!in_array($slot_date, $delivery_dates)) {
+                            echo "<div class='col schedule-header'> " . date("D, j M", strtotime($slot_date) ) . "</div>";
+                
+                            // Add the date to the array and increment the counter
+                            $delivery_dates[] = $slot_date;
+                            $unique_dates_count++;
+                
+                            // Break the loop if 5 unique dates have been printed
+                            if ($unique_dates_count >= 5) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Reset post data to avoid conflicts
+                wp_reset_postdata();                
+            ?>
         </div>
 
         <div class="row">
             <div class="col">
-                <!-- <div class="booking-time-list align-items-center">8 - 9am</div>
-                    <div class="booking-time-list align-items-center">9 - 10am</div> -->
-                <?php 
-                        for($i = 8; $i < 12; $i++) {
-                            ?>
-                <div class="booking-time-list"><?php echo $i . "-" . $i + 1 . "am"; ?></div>
-                <?php
+            <?php 
+                $args = array(
+                    'post_type' => 'booking',
+                    'posts_per_page' => -1, // Fetch all posts
+                    'meta_key' => '_booking_time_slot',
+                    'orderby' => 'meta_value',
+                    'order' => 'ASC', // Ascending order for natural time order
+                );
+
+                $bookings_time = new WP_Query($args);
+
+                $printed_slots = array(); // Array to keep track of printed slots
+                $unique_time_slot_count = 0;  // Counter to limit to 14 unique time slots
+
+                $time_slots = array(); // Array to collect time slots
+
+                if ($bookings_time->have_posts()) {
+                    while ($bookings_time->have_posts()) {
+                        $bookings_time->the_post();
+                        // Get the time slot
+                        $time_slot = get_post_meta(get_the_ID(), '_booking_time_slot', true);
+                        
+                        // Collect time slots in an array
+                        $time_slots[] = $time_slot;
+                    }
+
+                    // Sort the time slots
+                    $time_slots = sortTimeRanges($time_slots);
+
+                    // Print the sorted and unique time slots
+                    foreach ($time_slots as $time_slot) {
+                        // Check if the time slot is already in the printed array
+                        if (!in_array($time_slot, $printed_slots)) {
+                            echo "<div class='booking-time-list'>$time_slot</div>";
+                            // Add the time slot to the array and increment the counter
+                            $printed_slots[] = $time_slot;
+                            $unique_time_slot_count++;
+
+                            // Break the loop if 14 unique time slots have been printed
+                            if ($unique_time_slot_count >= 14) {
+                                break;
+                            }
                         }
-                        for($i = 1; $i < 9; $i++) {
-                            ?>
-                <div class="booking-time-list"><?php echo $i . "-" . $i + 1 . "am"; ?></div>
-                <?php
-                        }
-                    ?>
+                    }
+                }
+                ?>
+
+                
 
                 <!-- Additional fully booked slots can be added here -->
             </div>
+            <?php foreach($delivery_dates as $delivery_date){?>
             <div class="col slot-with-price">
                 <?php 
-                        for($i = 0; $i < 12; $i++) {
-                            echo '<div class="booking-slot fully-booked">Fully booked</div>';
-                        }
-                    ?>
-                <!-- Additional fully booked slots can be added here -->
-            </div>
-            <div class="col slot-with-price">
-                <?php 
-                        for($i = 0; $i < 12; $i++) {
-                            echo '<div class="booking-slot available">$4</div>';
-                        }
-                    ?>
-                <!-- Additional fully booked slots can be added here -->
-            </div>
-            <div class="col slot-with-price">
-                <?php 
-                        for($i = 0; $i < 12; $i++) {
-                            echo '<div class="booking-slot fully-booked">Fully booked</div>';
-                        }
-                    ?>
-                <!-- Additional slots with prices can be added here -->
-            </div>
-            <div class="col slot-with-price">
-                <?php 
-                        for($i = 0; $i < 12; $i++) {
-                            if($i < 8){
-                                echo '<div class="booking-slot available">$4</div>';
-                            }else{
-                                echo '<div class="booking-slot fully-booked">Fully booked</div>';
+                    $args = array(
+                        'post_type' => 'booking',
+                        'posts_per_page' => -1, // Adjust as needed
+                        'order' => 'ASC',
+                    );
+
+                    $bookings = new WP_Query($args);
+                    if($bookings->have_posts()){
+                        while($bookings->have_posts()){ 
+                            $bookings->the_post();
+                            $bookings_slot_date = get_post_meta(get_the_ID(), '_booking_date', true);
+                            $slot_status = get_post_meta(get_the_ID(), '_booking_status', true);
+                            $slot_price = get_post_meta(get_the_ID(), '_booking_price', true);
+                            $slot_time = get_post_meta(get_the_ID(), '_booking_time_slot', true);
+                            if($delivery_date == $bookings_slot_date){
+                                if($slot_price == 0){
+                                    echo '<div class="booking-slot available">'. "Free" . '</div>';
+                                }elseif($slot_status == 'available'){
+                                    echo '<div class="booking-slot available">'. '£' . $slot_price . '</div>';
+                                }elseif($slot_status == 'unavailable'){
+                                    echo '<div class="booking-slot unavailable">'. "Unavailable" . '</div>';
+                                }else{
+                                    echo '<div class="booking-slot fully-booked">'. "Fully Booked" . '</div>';
+                                }
                             }
                         }
-                    ?>
-                <!-- Additional slots with prices can be added here -->
+                    }
+                ?>
+                <!-- Additional fully booked slots can be added here -->
             </div>
-            <div class="col slot-with-price">
-                <?php 
-                        for($i = 0; $i < 12; $i++) {
-                            echo '<div class="booking-slot fully-booked">Fully booked</div>';
-                        }
-                    ?>
-                <!-- Additional slots with prices can be added here -->
-            </div>
+            <?php }?>
         </div>
     </div>
 </div>
@@ -699,3 +759,17 @@ function update_selected_address() {
 
 add_action('wp_ajax_update_selected_address', 'update_selected_address');
 add_action('wp_ajax_nopriv_update_selected_address', 'update_selected_address');
+
+// Time sorting function
+function sortTimeRanges($timeRanges) {
+    usort($timeRanges, function($a, $b) {
+        // Convert the start times to 24-hour format for comparison
+        $startA = strtotime(explode(' - ', $a)[0]);
+        $startB = strtotime(explode(' - ', $b)[0]);
+        
+        // Compare the converted start times
+        return $startA - $startB;
+    });
+
+    return $timeRanges;
+}
