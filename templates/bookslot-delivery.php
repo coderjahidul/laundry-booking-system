@@ -38,12 +38,3 @@ function lbs_bookslot_delivery_function() {
 }
 
 ?>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".change-address").click(function (e) {
-            e.preventDefault(); // Prevent the default anchor behavior
-            $(".address-options").slideToggle(); // Toggle the address options
-        });
-    });
-</script>

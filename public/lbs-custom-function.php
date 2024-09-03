@@ -2,8 +2,8 @@
 // lbs-delevery function
 function lbs_delevery() {
     $user_id = get_current_user_id();
-    $get_shipping_city = get_user_meta($user_id, 'shipping_city');
-    $get_shipping_postcode = get_user_meta($user_id, 'shipping_postcode');
+    $get_shipping_city = get_user_meta($user_id, 'customar_shipping_city');
+    $get_shipping_postcode = get_user_meta($user_id, 'customar_shipping_postcode');
     if($get_shipping_city && $get_shipping_postcode){
         ?>
         <!-- Delivery Section -->
@@ -16,15 +16,15 @@ function lbs_delevery() {
                     </div>
                 </div>
                 <!-- Selected Address Section -->
-                <div class="address">
+                <div class="address" id="show-selected-address">
                     <?php 
                     $user_id = get_current_user_id();
                     $get_selected_address = get_user_meta($user_id, 'selected_address', true);
                     // get shipping city in sql query
-                    $get_shipping_city = get_user_meta($user_id, 'shipping_city');
+                    $get_shipping_city = get_user_meta($user_id, 'customar_shipping_city');
 
                     // get shipping postcode in sql query
-                    $get_shipping_postcode = get_user_meta($user_id, 'shipping_postcode');
+                    $get_shipping_postcode = get_user_meta($user_id, 'customar_shipping_postcode');
 
                     foreach($get_shipping_city as $index => $city){
                         $pos_index = $index;
@@ -48,20 +48,20 @@ function lbs_delevery() {
                         $post_id = $index + 1;
                         if($get_selected_address == $post_id ){
                             ?>
-                <div class="address-card selected" data-post-id="<?= $post_id; ?>">
-                    <span><?= $city; ?></span>
-                    <br>
-                    <span><?= $postcode; ?></span>
-                </div>
-                <?php
+                            <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                <span><?= $city; ?></span>
+                                <br>
+                                <span><?= $postcode; ?></span>
+                            </div>
+                            <?php
                         }else {
                             ?>
-                <div class="address-card" data-post-id="<?= $post_id; ?>">
-                    <span><?= $city; ?></span>
-                    <br>
-                    <span><?= $postcode; ?></span>
-                </div>
-                <?php
+                            <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                <span><?= $city; ?></span>
+                                <br>
+                                <span><?= $postcode; ?></span>
+                            </div>
+                            <?php
                         }
                     }
                 }?>
@@ -560,7 +560,7 @@ function add_address_from(){
         <!-- Title -->
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <select class="form-select" name="shipping_title" id="title" aria-label="Title select">
+            <select class="form-select" name="customar_shipping_title" id="title" aria-label="Title select">
                 <option selected>Please select...</option>
                 <option value="Mr">Mr</option>
                 <option value="Mrs">Mrs</option>
@@ -573,21 +573,21 @@ function add_address_from(){
         <!-- First Name -->
         <div class="mb-3">
             <label for="firstName" class="form-label">First name</label>
-            <input type="text" class="form-control" name="shipping_first_name" id="firstName" placeholder="First name"
+            <input type="text" class="form-control" name="customar_shipping_first_name" id="firstName" placeholder="First name"
                 required>
         </div>
 
         <!-- Last Name -->
         <div class="mb-3">
             <label for="lastName" class="form-label">Last name</label>
-            <input type="text" class="form-control" name="shipping_last_name" id="lastName" placeholder="Last name"
+            <input type="text" class="form-control" name="customar_shipping_last_name" id="lastName" placeholder="Last name"
                 required>
         </div>
 
         <!-- Contact Number -->
         <div class="mb-3">
             <label for="contactNumber" class="form-label">Contact number</label>
-            <input type="text" class="form-control" name="shipping_phone" id="contactNumber"
+            <input type="text" class="form-control" name="customar_shipping_phone" id="contactNumber"
                 placeholder="Contact number" required>
             <small class="form-text text-muted">We use this if we need to contact you about your
                 order</small>
@@ -596,7 +596,7 @@ function add_address_from(){
         <!-- Country -->
         <div class="mb-3">
             <label for="country" class="form-label">Country</label>
-            <select class="form-select" name="shipping_country" id="country" aria-label="Country select">
+            <select class="form-select" name="customar_shipping_country" id="country" aria-label="Country select">
                 <option value="united-kingdom" selected disabled>United Kingdom</option>
                 <option value="bangladesh">Bangladesh</option>
                 <option value="india">India</option>
@@ -607,7 +607,7 @@ function add_address_from(){
         <!-- Address Finder -->
         <div class="mb-3" id="addressFinderDiv">
             <label for="addressFinder" class="form-label">Address finder</label>
-            <input type="text" class="form-control" name="shipping_address_or_postcode" id="addressFinder"
+            <input type="text" class="form-control" name="customar_shipping_address_or_postcode" id="addressFinder"
                 placeholder="Start typing an address or postcode" required>
             <small class="form-text text-muted">Start typing an address or postcode</small>
         </div>
@@ -623,7 +623,7 @@ function add_address_from(){
             <!-- Address line 1 -->
             <div class="mb-3">
                 <label for="addressLine1" class="form-label">Address line 1</label>
-                <input type="text" class="form-control" name="shipping_address_1" id="addressLine1"
+                <input type="text" class="form-control" name="customar_shipping_address_1" id="addressLine1"
                     placeholder="Address line 1">
             </div>
 
@@ -631,7 +631,7 @@ function add_address_from(){
             <div class="mb-3">
                 <label for="addressLine2" class="form-label">Address line 2
                     <span>(optional)</span></label>
-                <input type="text" class="form-control" name="shipping_address_2" id="addressLine2"
+                <input type="text" class="form-control" name="customar_shipping_address_2" id="addressLine2"
                     placeholder="Address line 2">
             </div>
 
@@ -639,26 +639,26 @@ function add_address_from(){
             <div class="mb-3">
                 <label for="addressLine3" class="form-label">Address line 3
                     <span>(optional)</span></label>
-                <input type="text" class="form-control" name="shipping_address_3" id="addressLine3"
+                <input type="text" class="form-control" name="customar_shipping_address_3" id="addressLine3"
                     placeholder="Address line 3">
             </div>
 
             <!-- Town -->
             <div class="mb-3">
                 <label for="town" class="form-label">Town <span>(optional)</span></label>
-                <input type="text" class="form-control" name="shipping_city" id="town" placeholder="Town">
+                <input type="text" class="form-control" name="customar_shipping_city" id="town" placeholder="Town">
             </div>
 
             <!-- County -->
             <div class="mb-3">
                 <label for="county" class="form-label">County <span>(optional)</span></label>
-                <input type="text" class="form-control" name="shipping_state" id="county" placeholder="County">
+                <input type="text" class="form-control" name="customar_shipping_state" id="county" placeholder="County">
             </div>
 
             <!-- Postcode -->
             <div class="mb-3">
                 <label for="postcode" class="form-label">Postcode</label>
-                <input type="text" class="form-control" name="shipping_postcode" id="postcode" placeholder="Postcode"
+                <input type="text" class="form-control" name="customar_shipping_postcode" id="postcode" placeholder="Postcode"
                     required>
             </div>
         </div>
@@ -681,50 +681,44 @@ return ob_get_clean();
 
 function handle_uk_address_form_submission(){
     // Check if the form has been submitted
-    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['shipping_first_name'])){
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customar_shipping_first_name'])){
 
         // Get the user ID
         $user_id = get_current_user_id();
 
         if($user_id > 0){
-            if(!empty($_POST['shipping_title'])) {
-                add_user_meta($user_id, 'shipping_title', sanitize_text_field($_POST['shipping_title']));
+            if(!empty($_POST['customar_shipping_title'])) {
+                add_user_meta($user_id, 'customar_shipping_title', sanitize_text_field($_POST['customar_shipping_title']));
             }
-            if(!empty($_POST['shipping_first_name'])) {
-                add_user_meta($user_id, 'shipping_first_name', sanitize_text_field($_POST['shipping_first_name']));
+            if(!empty($_POST['customar_shipping_first_name'])) {
+                add_user_meta($user_id, 'customar_shipping_first_name', sanitize_text_field($_POST['customar_shipping_first_name']));
             }
-            if(!empty($_POST['shipping_last_name'])) {
-                add_user_meta($user_id, 'shipping_last_name', sanitize_text_field($_POST['shipping_last_name']));
+            if(!empty($_POST['customar_shipping_last_name'])) {
+                add_user_meta($user_id, 'customar_shipping_last_name', sanitize_text_field($_POST['customar_shipping_last_name']));
             }
-            if(!empty($_POST['shipping_phone'])) {
-                add_user_meta($user_id, 'shipping_phone', sanitize_text_field($_POST['shipping_phone']));
+            if(!empty($_POST['customar_shipping_phone'])) {
+                add_user_meta($user_id, 'customar_shipping_phone', sanitize_text_field($_POST['customar_shipping_phone']));
             }
-            if(!empty($_POST['shipping_country'])) {
-                add_user_meta($user_id, 'shipping_country', sanitize_text_field($_POST['shipping_country']));
+            if(!empty($_POST['customar_shipping_country'])) {
+                add_user_meta($user_id, 'customar_shipping_country', sanitize_text_field($_POST['customar_shipping_country']));
             }
-            if(!empty($_POST['shipping_company'])) {
-                add_user_meta($user_id, 'shipping_company', sanitize_text_field($_POST['shipping_company']));
+            if(!empty($_POST['customar_shipping_address_or_postcode'])) {
+                add_user_meta($user_id, 'customar_shipping_address_or_postcode', sanitize_text_field($_POST['customar_shipping_address_or_postcode']));
             }
-            if(!empty($_POST['shipping_address_or_postcode'])) {
-                add_user_meta($user_id, 'shipping_address_or_postcode', sanitize_text_field($_POST['shipping_address_or_postcode']));
+            if(!empty($_POST['customar_shipping_address_1'])) {
+                add_user_meta($user_id, 'customar_shipping_address_1', sanitize_text_field($_POST['customar_shipping_address_1']));
             }
-            if(!empty($_POST['shipping_address_1'])) {
-                add_user_meta($user_id, 'shipping_address_1', sanitize_text_field($_POST['shipping_address_1']));
+            if(!empty($_POST['customar_shipping_address_2'])) {
+                add_user_meta($user_id, 'customar_shipping_address_2', sanitize_text_field($_POST['customar_shipping_address_2']));
             }
-            if(!empty($_POST['shipping_address_2'])) {
-                add_user_meta($user_id, 'shipping_address_2', sanitize_text_field($_POST['shipping_address_2']));
+            if(!empty($_POST['customar_shipping_address_3'])) {
+                add_user_meta($user_id, 'customar_shipping_address_3', sanitize_text_field($_POST['customar_shipping_address_3']));
             }
-            if(!empty($_POST['shipping_address_3'])) {
-                add_user_meta($user_id, 'shipping_address_3', sanitize_text_field($_POST['shipping_address_3']));
+            if(!empty($_POST['customar_shipping_city'])) {
+                add_user_meta($user_id, 'customar_shipping_city', sanitize_text_field($_POST['customar_shipping_city']));
             }
-            if(!empty($_POST['shipping_city'])) {
-                add_user_meta($user_id, 'shipping_city', sanitize_text_field($_POST['shipping_city']));
-            }
-            if(!empty($_POST['shipping_state'])) {
-                add_user_meta($user_id, 'shipping_state', sanitize_text_field($_POST['shipping_state']));
-            }
-            if(!empty($_POST['shipping_postcode'])) {
-                add_user_meta($user_id, 'shipping_postcode', sanitize_text_field($_POST['shipping_postcode']));
+            if(!empty($_POST['customar_shipping_postcode'])) {
+                add_user_meta($user_id, 'customar_shipping_postcode', sanitize_text_field($_POST['customar_shipping_postcode']));
             }
 
             // Redirect to bookslot delivery page
@@ -738,19 +732,30 @@ add_action('init', 'handle_uk_address_form_submission');
 
 function update_selected_address() {
     error_log('update_selected_address function called'); // For debugging
-    if (isset($_POST['post_id']) && !empty($_POST['post_id'] )) {
+    if (isset($_POST['post_id']) && !empty($_POST['post_id'])) {
         $post_id = intval($_POST['post_id']);
-        // Get the current user ID
         $user_id = get_current_user_id();
 
-        
         // Update the selected_address post meta value
         update_user_meta($user_id, 'selected_address', $post_id);
 
-        // Return success response
-        wp_send_json_success(array('message' => 'Address updated successfully.'));
+        // Retrieve user meta for city and postcode
+        $shipping_cities = get_user_meta($user_id, 'customar_shipping_city');
+        $shipping_postcodes = get_user_meta($user_id, 'customar_shipping_postcode');
+
+        // Check if they are arrays
+        if (is_array($shipping_cities) && is_array($shipping_postcodes)) {
+            foreach ($shipping_cities as $index => $city) {
+                $postcode = isset($shipping_postcodes[$index]) ? $shipping_postcodes[$index] : '';
+                if ($post_id == $index + 1) { // Adjusted comparison
+                    wp_send_json_success(array('city' => $city, 'postcode' => $postcode));
+                }
+            }
+        }
+
+        // Fallback if no match found
+        wp_send_json_error(array('message' => 'No matching address found.'));
     } else {
-        // Return error response
         wp_send_json_error(array('message' => 'Error updating address.'));
     }
 
@@ -759,6 +764,7 @@ function update_selected_address() {
 
 add_action('wp_ajax_update_selected_address', 'update_selected_address');
 add_action('wp_ajax_nopriv_update_selected_address', 'update_selected_address');
+
 
 // Time sorting function
 function sortTimeRanges($timeRanges) {
@@ -773,3 +779,4 @@ function sortTimeRanges($timeRanges) {
 
     return $timeRanges;
 }
+

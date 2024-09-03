@@ -1,7 +1,15 @@
+
 jQuery(document).ready(function($){
-    $('.address-card').on('click', function () {
+    // Toggle the address options
+    $(".change-address").click(function(e) {
+        e.preventDefault(); // Prevent the default anchor behavior
+        $(".address-options").slideToggle(); // Toggle the address options
+    });
+
+    // Select an address
+    $('.select-address').on('click', function () {
         // Remove 'selected' class from all address cards
-        $('.address-card').removeClass('selected');
+        $('.select-address').removeClass('selected');
 
         // Add 'selected' class to the clicked address card
         $(this).addClass('selected');
@@ -17,9 +25,11 @@ jQuery(document).ready(function($){
                 action: 'update_selected_address',
                 post_id: postId,
             },
-            success: function (response) {
+            success: function(response) {
                 if (response.success) {
-                    console.log('Address selected successfully.');
+                    let city = response.data.city;
+                    let postcode = response.data.postcode;
+                    $('#show-selected-address').html('<span>' + city + ' - ' + postcode + '</span>');
                 } else {
                     console.log('Failed to select the address.');
                 }
