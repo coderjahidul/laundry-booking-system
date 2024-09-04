@@ -770,4 +770,45 @@ function selected_address(){
     }
 }
 
+// update shipping address
+// function update_billing_address($user_id) {
+//     // get selected address
+//     $selected_address_id = get_user_meta($user_id, 'selected_address', true);
+//     // get selected address from database
+//     $table_name = $wpdb->prefix . 'lbs_customar_address';
+//     $sql = "SELECT * FROM $table_name WHERE user_id = $user_id AND id = $selected_address_id";
+//     $get_selected_address = $wpdb->get_results($sql);
+//     foreach($get_selected_address as $address) {
+//         $order_id = wc_get_order_id_by_order_key($_POST['order_key']);
+        
+//         // Extracting address details
+//         $title = $address->title;
+//         $first_name = $address->first_name;
+//         $last_name = $address->last_name;
+//         $phone = $address->phone;
+//         $country = $address->country;
+//         $address_or_postcode = $address->address_or_postcode;
+//         $address_1 = $address->address_1;
+//         $address_2 = $address->address_2;
+//         $address_3 = $address->address_3;
+//         $city = $address->city;
+//         $postcode = $address->postcode;
+    
+//         // Updating billing address fields
+//         update_post_meta($order_id, 'shipping_title', sanitize_text_field($title));
+//         update_post_meta($order_id, 'shipping_first_name', sanitize_text_field($first_name));
+//         update_post_meta($order_id, 'shipping_last_name', sanitize_text_field($last_name));
+//         update_post_meta($order_id, 'shipping_phone', sanitize_text_field($phone));
+//         update_post_meta($order_id, 'shipping_country', sanitize_text_field($country));
+//         update_post_meta($order_id, 'shipping_address_or_postcode', sanitize_text_field($address_or_postcode)); // Assuming this is a custom field
+//         update_post_meta($order_id, 'shipping_address_1', sanitize_text_field($address_1));
+//         update_post_meta($order_id, 'shipping_address_2', sanitize_text_field($address_2));
+//         update_post_meta($order_id, 'shipping_address_3', sanitize_text_field($address_3)); // Assuming this is a custom field
+//         update_post_meta($order_id, 'shipping_city', sanitize_text_field($city));
+//         update_post_meta($order_id, 'shipping_postcode', sanitize_text_field($postcode));
 
+//         echo 'Address updated successfully.';
+//         exit;
+//     }
+    
+// }

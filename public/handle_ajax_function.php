@@ -12,18 +12,18 @@ function update_selected_address() {
         // Update the selected_address post meta value
         update_user_meta($user_id, 'selected_address', $post_id);
 
-        // Retrieve user meta for city and postcode
-        $shipping_cities = get_user_meta($user_id, 'customar_shipping_city');
-        $shipping_postcodes = get_user_meta($user_id, 'customar_shipping_postcode');
-
-        // Check if they are arrays
-        if (is_array($shipping_cities) && is_array($shipping_postcodes)) {
-            foreach ($shipping_cities as $index => $city) {
-                $postcode = isset($shipping_postcodes[$index]) ? $shipping_postcodes[$index] : '';
-                if ($post_id == $index + 1) { // Adjusted comparison
-                    wp_send_json_success(array('city' => $city, 'postcode' => $postcode));
-                }
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'lbs_customar_address';
+        $sql = "SELECT id, city, postcode FROM $table_name WHERE user_id = $user_id";
+        $get_selected_address = $wpdb->get_results($sql);
+        $selected_address_id = get_user_meta($user_id, 'selected_address', true);
+        foreach($get_selected_address as $address){
+            $city = $address->city;
+            $postcode = $address->postcode;
+            if($address->id == $selected_address_id){
+                wp_send_json_success(array('city' => $city, 'postcode' => $postcode));
             }
+
         }
 
         // Fallback if no match found
@@ -66,6 +66,9 @@ function update_booking_slot() {
         $time_format = get_option('time_format');
         $bookings_slot_current_time = date_i18n($time_format);
 
+        // Update customar shipping address
+        // update_billing_address($user_id);
+
         // Update booking slot current time
         update_user_meta($user_id, 'booking_slot_current_time', $bookings_slot_current_time);
 
@@ -79,6 +82,7 @@ function update_booking_slot() {
 add_action('wp_ajax_update_booking_slot', 'update_booking_slot');
 add_action('wp_ajax_nopriv_update_booking_slot', 'update_booking_slot');
 
+// Add delivery cost in checkout 
 add_action( 'woocommerce_cart_calculate_fees', 'add_delivery_cost' );
 
 function add_delivery_cost( $cart ) {
