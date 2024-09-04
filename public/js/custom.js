@@ -45,13 +45,13 @@ jQuery(document).ready(function($){
     $('.booking-slot-hour').on('click', function () {
         // remove class from the previously selected booking slot
         $('.booking-slot-hour').removeClass('selected');
-        // add class to the clicked booking slot
-        // $(this).addClass('selected');
+        $('.reserved-slot').removeClass('d-none');
         // Store the clicked element for later use
         let clickedElement = $(this);
 
         let loaderWrapper = $( this ).find( '.loader-wrapper');
         let slotPrice = $( this ).find( '.slot-price');
+;
         // add loader class to the loader wrapper
         loaderWrapper.addClass('loader');
         slotPrice.addClass('d-none');
@@ -83,14 +83,20 @@ jQuery(document).ready(function($){
                     let bookings_slot_time = response.data.bookings_slot_time;
                     let bookings_slot_current_time = response.data.bookings_slot_current_time;
                     // alert("Slot Price: " + bookings_slot_price + "Slot Date: " + bookings_slot_date + "Slot Time: " + bookings_slot_time);
+                    // show booking slot date in reserved slot Delevery section
                     $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    // show booking slot price in reserved slot discription
                     $("#show-selected-delivery-price").html("£" + bookings_slot_price);
+                    // show current time in reserved slot header
                     $("#show-selected-delivery-current-time").html(bookings_slot_current_time);
+                    // show current time in reserved slot discription
                     $("#show-selected-delivery-current-time-one").html(bookings_slot_current_time);
                     // alert("Booking Slot Current Time: " + bookings_slot_current_time);
-                    // Remove class
+                    // Remove class to the success loader
                     loaderWrapper.removeClass('loader');
+                    // Remove class to the success booking slot
                     slotPrice.removeClass('d-none');
+                    // add class to the success booking slot
                     clickedElement.addClass('selected');
                     
 
@@ -100,9 +106,11 @@ jQuery(document).ready(function($){
             },
             error: function(){
                 console.log('There was an error.');
-                // Remove class
+                // Remove class to the error loader
                 loaderWrapper.removeClass('loader');
+                // Remove class to the error booking slot
                 slotPrice.removeClass('d-none');
+                // add class to the error booking slot
                 clickedElement.addClass('selected');
             }
         });

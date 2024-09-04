@@ -29,11 +29,24 @@ function lbs_bookslot_delivery_function() {
     </div>
     <!-- add address from -->
     <?php add_address_from();?>
-    <!-- Choose your slot -->
-    <?php lbs_choose_your_slot(); ?>
+    <div class="slot-section" x-data="{ open: false }">
+        <div class="choose-your-slot-section">
+            <?php lbs_choose_your_slot(); ?>
+        </div>
 
-    <!-- Reserved Slot -->
-     <?php lbs_reserved_slot();?>
+        <!-- Reserved Slot -->
+        <div class="reserved-delivery-slot-section" x-show="open">
+            <?php 
+                $user_id = get_current_user_id();
+                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                    lbs_reserved_slot($user_id);
+                }
+            ?>
+        </div>
+    </div>
+    <!-- Choose your slot -->
+    
+     
 <?php
 }
 

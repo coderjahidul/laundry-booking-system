@@ -398,7 +398,7 @@ function hour_function(){
                                         <?php
                                     }else{
                                         ?>
-                                        <div class="booking-slot booking-slot-hour available" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-hour available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
                                     <?php
                                     }
                                     
@@ -409,7 +409,7 @@ function hour_function(){
                                         <?php
                                     }else{
                                         ?>
-                                        <div class="booking-slot booking-slot-hour available" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-hour available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
                                     <?php
                                     }
                                     
@@ -531,46 +531,45 @@ function saver_function(){
 }
 
 // reserved slot function
-function lbs_reserved_slot(){
-    $user_id = get_current_user_id();
+function lbs_reserved_slot($user_id){
     $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
     $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
     $booking_slot_current_time = get_user_meta($user_id, 'booking_slot_current_time', true);
     ?>
-<div class="container mt-5">
-    <div class="reserved-slot">
-        <div class="icon mb-3">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
-        </div>
-        <h5>Slot reserved until <span id="show-selected-delivery-current-time"><?php echo $booking_slot_current_time; ?></span></h5>
-        <p>Check out before <span id="show-selected-delivery-current-time-one"><?php echo $booking_slot_current_time; ?></span> to confirm your slot booking. Minimum order spend £40. Delivery <span id="show-selected-delivery-price">
-            <?php
-                // user booking slot price
-                echo "£" . $booking_slot_price;
-            ?>
-        </span></p>
-
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="info-box">
-                    <strong>Date and time</strong>
-                    <p id="show-selected-delivery-time-date">Sunday 1 September 12pm - 1pm</p>
+        <div class="container mt-5">
+            <div class="reserved-slot">
+                <div class="icon mb-3">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info-box">
-                    <strong>Delivery address</strong>
-                    <p id="show-selected-delivery">
-                        <?php selected_address(); ?>
-                    </p>
+                <h5>Slot reserved until <span id="show-selected-delivery-current-time"><?php echo $booking_slot_current_time; ?></span></h5>
+                <p>Check out before <span id="show-selected-delivery-current-time-one"><?php echo $booking_slot_current_time; ?></span> to confirm your slot booking. Minimum order spend £40. Delivery <span id="show-selected-delivery-price">
+                    <?php
+                        // user booking slot price
+                        echo "£" . $booking_slot_price;
+                    ?>
+                </span></p>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <strong>Date and time</strong>
+                            <p id="show-selected-delivery-time-date">Sunday 1 September 12pm - 1pm</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <strong>Delivery address</strong>
+                            <p id="show-selected-delivery">
+                                <?php selected_address(); ?>
+                            </p>
+                        </div>
+                    </div>
                 </div>
+
+                <button class="btn btn-outline-secondary mt-3 continue-btn">Continue</button>
             </div>
         </div>
-
-        <button class="btn btn-outline-secondary mt-3 continue-btn">Continue</button>
-    </div>
-</div>
-<?php
+    <?php
 }
 
 function add_address_from(){
