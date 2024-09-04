@@ -79,50 +79,68 @@ function update_booking_slot() {
 add_action('wp_ajax_update_booking_slot', 'update_booking_slot');
 add_action('wp_ajax_nopriv_update_booking_slot', 'update_booking_slot');
 
+add_action( 'woocommerce_cart_calculate_fees', 'add_delivery_cost' );
 
-
-
-
-
-
-
-
-
-// Update Woocommerce flat rate shipping cost
-add_action('woocommerce_before_calculate_totals', 'custom_update_flat_rate_shipping_cost');
-
-function custom_update_flat_rate_shipping_cost() {
-    if (is_admin() && !defined('DOING_AJAX')) {
+function add_delivery_cost( $cart ) {
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
         return;
     }
 
-    // Check if a booking slot price is set in POST data
-    if (isset($_POST['bookings_slot_price'])) {
-        // Get the custom shipping cost from POST data
-        $flat_rate_shipping_cost = intval($_POST['bookings_slot_price']);
+    $user_id = get_current_user_id();
+    $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+    $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
+    // Define the delivery cost and set it to 0 initially
+    $delivery_cost = isset($booking_slot_price) ? $booking_slot_price : 0;
 
-        // Set it in the session to make it persistent
-        WC()->session->set('custom_flat_rate_shipping_cost', $flat_rate_shipping_cost);
-    }
+    // Add the delivery cost to the cart
+    $cart->add_fee( __( 'Delivery', 'woocommerce' ), $delivery_cost );
 }
 
-add_filter('woocommerce_package_rates', 'modify_flat_rate_shipping_cost', 10, 2);
 
-function modify_flat_rate_shipping_cost($rates, $package) {
-    // Retrieve the custom flat rate shipping cost from the session
-    $flat_rate_shipping_cost = WC()->session->get('custom_flat_rate_shipping_cost');
 
-    // Loop through available shipping rates
-    foreach ($rates as $rate_key => $rate) {
-        // Check if the rate is a flat rate
-        if ('flat_rate' === $rate->method_id) {
-            // Update the cost of the flat rate
-            $rates[$rate_key]->cost = $flat_rate_shipping_cost;
-        }
-    }
 
-    return $rates;
-}
+
+
+
+
+
+
+
+// // Update Woocommerce flat rate shipping cost
+// add_action('woocommerce_before_calculate_totals', 'custom_update_flat_rate_shipping_cost');
+
+// function custom_update_flat_rate_shipping_cost() {
+//     if (is_admin() && !defined('DOING_AJAX')) {
+//         return;
+//     }
+
+//     // Check if a booking slot price is set in POST data
+//     if (isset($_POST['bookings_slot_price'])) {
+//         // Get the custom shipping cost from POST data
+//         $flat_rate_shipping_cost = intval($_POST['bookings_slot_price']);
+
+//         // Set it in the session to make it persistent
+//         WC()->session->set('custom_flat_rate_shipping_cost', $flat_rate_shipping_cost);
+//     }
+// }
+
+// add_filter('woocommerce_package_rates', 'modify_flat_rate_shipping_cost', 10, 2);
+
+// function modify_flat_rate_shipping_cost($rates, $package) {
+//     // Retrieve the custom flat rate shipping cost from the session
+//     $flat_rate_shipping_cost = WC()->session->get('custom_flat_rate_shipping_cost');
+
+//     // Loop through available shipping rates
+//     foreach ($rates as $rate_key => $rate) {
+//         // Check if the rate is a flat rate
+//         if ('flat_rate' === $rate->method_id) {
+//             // Update the cost of the flat rate
+//             $rates[$rate_key]->cost = $flat_rate_shipping_cost;
+//         }
+//     }
+
+//     return $rates;
+// }
 
 
 

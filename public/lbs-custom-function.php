@@ -770,9 +770,4 @@ function selected_address(){
     }
 }
 
-// update billing address
-function update_billing_address() {
-    // get selected address
-    $user_id = get_current_user_id();
-    $get_selected_address = get_user_meta($user_id, 'selected_address', true);
-}
+
