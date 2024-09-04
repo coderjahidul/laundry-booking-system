@@ -43,6 +43,15 @@ function update_booking_slot() {
     if(isset($_POST['bookings_slot_id']) && !empty($_POST['bookings_slot_id'])) {
         $bookings_slot_id = intval($_POST['bookings_slot_id']);
         $user_id = get_current_user_id();
+        // Update previous booking slot status to available 
+        $get_previous_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+
+        // if previous booking slot id is not empty then update previous booking slot status to available
+        if (!empty($get_previous_bookings_slot_id)) {
+            update_post_meta($get_previous_bookings_slot_id, '_booking_status', 'available');
+        }
+
+        // Update the new selected_booking_slot_id post meta value
         update_user_meta($user_id, 'selected_booking_slot', $bookings_slot_id);
 
         $bookings_slot_price = intval($_POST['bookings_slot_price']);
@@ -52,7 +61,6 @@ function update_booking_slot() {
 
         // Update booking slot status
         update_post_meta($bookings_slot_id, '_booking_status', 'fully_booked');
-
         // Slot Booking Current Time
         // Getting the time format set in WordPress settings
         $time_format = get_option('time_format');
