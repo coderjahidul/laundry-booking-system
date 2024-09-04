@@ -61,8 +61,8 @@ function update_booking_slot() {
 
         // Update booking slot status
         update_post_meta($bookings_slot_id, '_booking_status', 'fully_booked');
+
         // Slot Booking Current Time
-        // Getting the time format set in WordPress settings
         $time_format = get_option('time_format');
         $bookings_slot_current_time = date_i18n($time_format);
 

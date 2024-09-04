@@ -2,8 +2,16 @@
 // lbs-delevery function
 function lbs_delevery() {
     $user_id = get_current_user_id();
-    $get_shipping_city = get_user_meta($user_id, 'customar_shipping_city');
-    $get_shipping_postcode = get_user_meta($user_id, 'customar_shipping_postcode');
+    // get customar all address city and postcode from table lbs_customar_address
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'lbs_customar_address';
+    $user_id = get_current_user_id();
+    $sql = "SELECT id, city, postcode FROM $table_name WHERE user_id = $user_id";
+    $get_shipping_address = $wpdb->get_results($sql);
+    // check if city and postcode not empty
+    $get_shipping_city = isset($get_shipping_address[0]->city) ? $get_shipping_address[0]->city : '';
+    $get_shipping_postcode = isset($get_shipping_address[0]->postcode) ? $get_shipping_address[0]->postcode : '';
+    
     if($get_shipping_city && $get_shipping_postcode){
         ?>
         <!-- Delivery Section -->
@@ -26,31 +34,32 @@ function lbs_delevery() {
 
             <!-- Address Options -->
             <div class="address-options" style="display: none;">
-                <?php if(!empty($get_shipping_city) && !empty($get_shipping_postcode)){
-                    foreach($get_shipping_city as $index => $city){
-                        $city = $city;
-                        $postcode = isset($get_shipping_postcode[$index]) ? $get_shipping_postcode[$index] : '';
-                        $post_id = $index + 1;
-                        $get_selected_address = get_user_meta($user_id, 'selected_address', true);
-                        if($get_selected_address == $post_id ){
+                <?php 
+                   $selected_address_id = get_user_meta($user_id, 'selected_address', true);
+                   foreach ($get_shipping_address as $shipping_address) {
+                        $city = $shipping_address->city;
+                        $postcode = $shipping_address->postcode;
+                        $post_id = $shipping_address->id;
+                        if($selected_address_id == $post_id ){
                             ?>
-                            <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
-                                <span><?= $city; ?></span>
-                                <br>
-                                <span><?= $postcode; ?></span>
-                            </div>
+                                <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                    <span><?= $city; ?></span>
+                                    <br>
+                                    <span><?= $postcode; ?></span>
+                                </div>
                             <?php
-                        }else {
+                        }else{
                             ?>
-                            <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
-                                <span><?= $city; ?></span>
-                                <br>
-                                <span><?= $postcode; ?></span>
-                            </div>
+                                <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                    <span><?= $city; ?></span>
+                                    <br>
+                                    <span><?= $postcode; ?></span>
+                                </div>
                             <?php
                         }
-                    }
-                }?>
+                   }
+                ?>
+                
                 <div class="address-card add-address" data-bs-toggle="modal" data-bs-target="#myModal">
                     <!-- <span onclick="showAddressForm()">+ Add an address</span> -->
                     <span>+ Add an address</span>
@@ -690,56 +699,44 @@ function add_address_from(){
 return ob_get_clean();
 }
 
-function handle_uk_address_form_submission(){
+function handle_uk_address_form_submission() {
     // Check if the form has been submitted
-    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customar_shipping_first_name'])){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customar_shipping_first_name'])) {
 
         // Get the user ID
         $user_id = get_current_user_id();
 
-        if($user_id > 0){
-            if(!empty($_POST['customar_shipping_title'])) {
-                add_user_meta($user_id, 'customar_shipping_title', sanitize_text_field($_POST['customar_shipping_title']));
-            }
-            if(!empty($_POST['customar_shipping_first_name'])) {
-                add_user_meta($user_id, 'customar_shipping_first_name', sanitize_text_field($_POST['customar_shipping_first_name']));
-            }
-            if(!empty($_POST['customar_shipping_last_name'])) {
-                add_user_meta($user_id, 'customar_shipping_last_name', sanitize_text_field($_POST['customar_shipping_last_name']));
-            }
-            if(!empty($_POST['customar_shipping_phone'])) {
-                add_user_meta($user_id, 'customar_shipping_phone', sanitize_text_field($_POST['customar_shipping_phone']));
-            }
-            if(!empty($_POST['customar_shipping_country'])) {
-                add_user_meta($user_id, 'customar_shipping_country', sanitize_text_field($_POST['customar_shipping_country']));
-            }
-            if(!empty($_POST['customar_shipping_address_or_postcode'])) {
-                add_user_meta($user_id, 'customar_shipping_address_or_postcode', sanitize_text_field($_POST['customar_shipping_address_or_postcode']));
-            }
-            if(!empty($_POST['customar_shipping_address_1'])) {
-                add_user_meta($user_id, 'customar_shipping_address_1', sanitize_text_field($_POST['customar_shipping_address_1']));
-            }
-            if(!empty($_POST['customar_shipping_address_2'])) {
-                add_user_meta($user_id, 'customar_shipping_address_2', sanitize_text_field($_POST['customar_shipping_address_2']));
-            }
-            if(!empty($_POST['customar_shipping_address_3'])) {
-                add_user_meta($user_id, 'customar_shipping_address_3', sanitize_text_field($_POST['customar_shipping_address_3']));
-            }
-            if(!empty($_POST['customar_shipping_city'])) {
-                add_user_meta($user_id, 'customar_shipping_city', sanitize_text_field($_POST['customar_shipping_city']));
-            }
-            if(!empty($_POST['customar_shipping_postcode'])) {
-                add_user_meta($user_id, 'customar_shipping_postcode', sanitize_text_field($_POST['customar_shipping_postcode']));
-            }
+        if ($user_id > 0) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'lbs_customar_address';
+
+            // Prepare the data for insertion
+            $data = [
+                'user_id' => $user_id,
+                'title' => !empty($_POST['customar_shipping_title']) ? sanitize_text_field($_POST['customar_shipping_title']) : '',
+                'first_name' => !empty($_POST['customar_shipping_first_name']) ? sanitize_text_field($_POST['customar_shipping_first_name']) : '',
+                'last_name' => !empty($_POST['customar_shipping_last_name']) ? sanitize_text_field($_POST['customar_shipping_last_name']) : '',
+                'phone' => !empty($_POST['customar_shipping_phone']) ? sanitize_text_field($_POST['customar_shipping_phone']) : '',
+                'country' => !empty($_POST['customar_shipping_country']) ? sanitize_text_field($_POST['customar_shipping_country']) : '',
+                'address_or_postcode' => !empty($_POST['customar_shipping_address_or_postcode']) ? sanitize_text_field($_POST['customar_shipping_address_or_postcode']) : '',
+                'address_1' => !empty($_POST['customar_shipping_address_1']) ? sanitize_text_field($_POST['customar_shipping_address_1']) : '',
+                'address_2' => !empty($_POST['customar_shipping_address_2']) ? sanitize_text_field($_POST['customar_shipping_address_2']) : '',
+                'address_3' => !empty($_POST['customar_shipping_address_3']) ? sanitize_text_field($_POST['customar_shipping_address_3']) : '',
+                'city' => !empty($_POST['customar_shipping_city']) ? sanitize_text_field($_POST['customar_shipping_city']) : '',
+                'postcode' => !empty($_POST['customar_shipping_postcode']) ? sanitize_text_field($_POST['customar_shipping_postcode']) : '',
+            ];
+
+            // Insert the data into the lbs_customar_address table
+            $wpdb->insert($table_name, $data);
 
             // Redirect to bookslot delivery page
             wp_redirect(home_url('bookslot-delivery'));
             exit;
         }
-
     }
 }
 add_action('init', 'handle_uk_address_form_submission');
+
 
 
 // Time sorting function
@@ -757,19 +754,25 @@ function sortTimeRanges($timeRanges) {
 }
 
 function selected_address(){
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'lbs_customar_address';
     $user_id = get_current_user_id();
-    $get_selected_address = get_user_meta($user_id, 'selected_address', true);
-
-    $get_shipping_city = get_user_meta($user_id, 'customar_shipping_city');
-    $get_shipping_postcode = get_user_meta($user_id, 'customar_shipping_postcode');
-
-    foreach($get_shipping_city as $index => $city){
-        $pos_index = $index;
-        $index = $index + 1;
-        $shipping_postcode = isset($get_shipping_postcode[$pos_index]) ? $get_shipping_postcode[$pos_index] : '';
-        if($get_selected_address == $index ){
-            echo $city . ' - ' . $shipping_postcode;
+    $sql = "SELECT id, city, postcode FROM $table_name WHERE user_id = $user_id";
+    $get_selected_address = $wpdb->get_results($sql);
+    $selected_address_id = get_user_meta($user_id, 'selected_address', true);
+    foreach($get_selected_address as $address){
+        $city = $address->city;
+        $postcode = $address->postcode;
+        if($address->id == $selected_address_id){
+            echo $city . ' - ' . $postcode;
         }
+
     }
 }
 
+// update billing address
+function update_billing_address() {
+    // get selected address
+    $user_id = get_current_user_id();
+    $get_selected_address = get_user_meta($user_id, 'selected_address', true);
+}
