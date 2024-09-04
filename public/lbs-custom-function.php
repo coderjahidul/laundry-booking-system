@@ -18,22 +18,7 @@ function lbs_delevery() {
                 <!-- Selected Address Section -->
                 <div class="address" id="show-selected-address">
                     <?php 
-                    $user_id = get_current_user_id();
-                    $get_selected_address = get_user_meta($user_id, 'selected_address', true);
-                    // get shipping city in sql query
-                    $get_shipping_city = get_user_meta($user_id, 'customar_shipping_city');
-
-                    // get shipping postcode in sql query
-                    $get_shipping_postcode = get_user_meta($user_id, 'customar_shipping_postcode');
-
-                    foreach($get_shipping_city as $index => $city){
-                        $pos_index = $index;
-                        $index = $index + 1;
-                        $shipping_postcode = isset($get_shipping_postcode[$pos_index]) ? $get_shipping_postcode[$pos_index] : '';
-                        if($get_selected_address == $index ){
-                            echo $city . ' - ' . $shipping_postcode;
-                        }
-                    }
+                        selected_address();
                     ?>
                 </div>
                 <a href="#" class="change-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
@@ -46,6 +31,7 @@ function lbs_delevery() {
                         $city = $city;
                         $postcode = isset($get_shipping_postcode[$index]) ? $get_shipping_postcode[$index] : '';
                         $post_id = $index + 1;
+                        $get_selected_address = get_user_meta($user_id, 'selected_address', true);
                         if($get_selected_address == $post_id ){
                             ?>
                             <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
@@ -265,20 +251,6 @@ function lbs_choose_your_slot() {
     </div>
 
 </div>
-
-<script>
-    // $(document).ready(function () {
-    //     $('#myModal').on('shown.bs.modal', function () {
-    //         // This event is triggered when the modal is fully shown
-    //         console.log('Modal is now shown');
-    //     });
-
-    //     $('#myModal').on('hidden.bs.modal', function () {
-    //         // This event is triggered when the modal is hidden
-    //         console.log('Modal is now hidden');
-    //     });
-    // });
-</script>
 <?php
 }
 
@@ -411,19 +383,58 @@ function hour_function(){
                     if($bookings->have_posts()){
                         while($bookings->have_posts()){ 
                             $bookings->the_post();
+                            $bookings_slot_id = get_the_ID();
+                            $user_id = get_current_user_id();
                             $bookings_slot_date = get_post_meta(get_the_ID(), '_booking_date', true);
-                            $slot_status = get_post_meta(get_the_ID(), '_booking_status', true);
-                            $slot_price = get_post_meta(get_the_ID(), '_booking_price', true);
-                            $slot_time = get_post_meta(get_the_ID(), '_booking_time_slot', true);
+                            $bookings_slot_status = get_post_meta(get_the_ID(), '_booking_status', true);
+                            $bookings_slot_price = get_post_meta(get_the_ID(), '_booking_price', true);
+                            $bookings_slot_time = get_post_meta(get_the_ID(), '_booking_time_slot', true);
+                            $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
                             if($delivery_date == $bookings_slot_date){
-                                if($slot_price == 0){
-                                    echo '<div class="booking-slot available">'. "Free" . '</div>';
-                                }elseif($slot_status == 'available'){
-                                    echo '<div class="booking-slot available">'. '£' . $slot_price . '</div>';
-                                }elseif($slot_status == 'unavailable'){
-                                    echo '<div class="booking-slot unavailable">'. "Unavailable" . '</div>';
+                                if($bookings_slot_price == 0){
+                                    if($user_bookings_slot_id == $bookings_slot_id){
+                                        ?>
+                                        <div class="booking-slot booking-slot-hour available selected" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <div class="booking-slot booking-slot-hour available" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                    }
+                                    
+                                }elseif($bookings_slot_status == 'available'){
+                                    if($user_bookings_slot_id == $bookings_slot_id){
+                                        ?>
+                                        <div class="booking-slot booking-slot-hour available selected" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <div class="booking-slot booking-slot-hour available" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                    }
+                                    
+                                }elseif($bookings_slot_status == 'unavailable'){
+                                    if($user_bookings_slot_id == $bookings_slot_id){
+                                        ?>
+                                        <div class="booking-slot booking-slot-hour unavailable selected" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>">Unavailable</div>
+                                    <?php
+                                    }else{
+                                        ?>
+                                        <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>">Unavailable</div>
+                                        <?php
+                                    }
+                                    
                                 }else{
-                                    echo '<div class="booking-slot fully-booked">'. "Fully Booked" . '</div>';
+                                    if($user_bookings_slot_id == $bookings_slot_id){
+                                        ?>
+                                        <div class="booking-slot booking-slot-hour fully-booked selected" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>">Fully Booked</div>
+                                    <?php
+                                    }else{
+                                        ?>
+                                        <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>">Fully Booked</div>
+                                    <?php
+                                    }
+                                    
                                 }
                             }
                         }
@@ -521,26 +532,37 @@ function saver_function(){
 
 // reserved slot function
 function lbs_reserved_slot(){
+    $user_id = get_current_user_id();
+    $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+    $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
+    $booking_slot_current_time = get_user_meta($user_id, 'booking_slot_current_time', true);
     ?>
 <div class="container mt-5">
     <div class="reserved-slot">
         <div class="icon mb-3">
             <i class="fa fa-check-circle" aria-hidden="true"></i>
         </div>
-        <h5>Slot reserved until 2:40pm</h5>
-        <p>Check out before 2:40pm to confirm your slot booking. Minimum order spend £40. Delivery £4</p>
+        <h5>Slot reserved until <span id="show-selected-delivery-current-time"><?php echo $booking_slot_current_time; ?></span></h5>
+        <p>Check out before <span id="show-selected-delivery-current-time-one"><?php echo $booking_slot_current_time; ?></span> to confirm your slot booking. Minimum order spend £40. Delivery <span id="show-selected-delivery-price">
+            <?php
+                // user booking slot price
+                echo "£" . $booking_slot_price;
+            ?>
+        </span></p>
 
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="info-box">
                     <strong>Date and time</strong>
-                    <p>Sunday 1 September 12pm - 1pm</p>
+                    <p id="show-selected-delivery-time-date">Sunday 1 September 12pm - 1pm</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="info-box">
                     <strong>Delivery address</strong>
-                    <p>Aberdeen, EH21 6UU</p>
+                    <p id="show-selected-delivery">
+                        <?php selected_address(); ?>
+                    </p>
                 </div>
             </div>
         </div>
@@ -730,41 +752,6 @@ function handle_uk_address_form_submission(){
 }
 add_action('init', 'handle_uk_address_form_submission');
 
-function update_selected_address() {
-    error_log('update_selected_address function called'); // For debugging
-    if (isset($_POST['post_id']) && !empty($_POST['post_id'])) {
-        $post_id = intval($_POST['post_id']);
-        $user_id = get_current_user_id();
-
-        // Update the selected_address post meta value
-        update_user_meta($user_id, 'selected_address', $post_id);
-
-        // Retrieve user meta for city and postcode
-        $shipping_cities = get_user_meta($user_id, 'customar_shipping_city');
-        $shipping_postcodes = get_user_meta($user_id, 'customar_shipping_postcode');
-
-        // Check if they are arrays
-        if (is_array($shipping_cities) && is_array($shipping_postcodes)) {
-            foreach ($shipping_cities as $index => $city) {
-                $postcode = isset($shipping_postcodes[$index]) ? $shipping_postcodes[$index] : '';
-                if ($post_id == $index + 1) { // Adjusted comparison
-                    wp_send_json_success(array('city' => $city, 'postcode' => $postcode));
-                }
-            }
-        }
-
-        // Fallback if no match found
-        wp_send_json_error(array('message' => 'No matching address found.'));
-    } else {
-        wp_send_json_error(array('message' => 'Error updating address.'));
-    }
-
-    wp_die();
-}
-
-add_action('wp_ajax_update_selected_address', 'update_selected_address');
-add_action('wp_ajax_nopriv_update_selected_address', 'update_selected_address');
-
 
 // Time sorting function
 function sortTimeRanges($timeRanges) {
@@ -778,5 +765,22 @@ function sortTimeRanges($timeRanges) {
     });
 
     return $timeRanges;
+}
+
+function selected_address(){
+    $user_id = get_current_user_id();
+    $get_selected_address = get_user_meta($user_id, 'selected_address', true);
+
+    $get_shipping_city = get_user_meta($user_id, 'customar_shipping_city');
+    $get_shipping_postcode = get_user_meta($user_id, 'customar_shipping_postcode');
+
+    foreach($get_shipping_city as $index => $city){
+        $pos_index = $index;
+        $index = $index + 1;
+        $shipping_postcode = isset($get_shipping_postcode[$pos_index]) ? $get_shipping_postcode[$pos_index] : '';
+        if($get_selected_address == $index ){
+            echo $city . ' - ' . $shipping_postcode;
+        }
+    }
 }
 

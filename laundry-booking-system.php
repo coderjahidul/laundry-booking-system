@@ -180,6 +180,9 @@ require plugin_dir_path(__FILE__) . 'templates/bookslot-delivery.php';
 // includes custom functions
 require plugin_dir_path(__FILE__) . 'public/lbs-custom-function.php';
 
+// includes handle ajax function
+require plugin_dir_path(__FILE__) . 'public/handle_ajax_function.php';
+
 
 /**
  * Begins execution of the plugin.
