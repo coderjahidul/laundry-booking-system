@@ -566,7 +566,7 @@ function lbs_reserved_slot($user_id){
                     </div>
                 </div>
 
-                <button class="btn btn-outline-secondary mt-3 continue-btn">Continue</button>
+                <a href="#" class="btn btn-outline-secondary mt-3 continue-btn">Continue</a>
             </div>
         </div>
     <?php

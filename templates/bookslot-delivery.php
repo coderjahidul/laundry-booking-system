@@ -35,11 +35,21 @@ function lbs_bookslot_delivery_function() {
         </div>
 
         <!-- Reserved Slot -->
-        <div class="reserved-delivery-slot-section" x-show="open">
+        <div class="reserved-delivery-slot-section">
             <?php 
                 $user_id = get_current_user_id();
                 if(get_user_meta($user_id, 'selected_booking_slot', true)){
-                    lbs_reserved_slot($user_id);
+                    ?>
+                    <div class="delivery-details">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
+                }else{
+                    ?>
+                    <div class="delivery-details" x-show="open">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
                 }
             ?>
         </div>
