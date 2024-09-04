@@ -556,7 +556,7 @@ function lbs_reserved_slot($user_id){
                     </div>
                 </div>
 
-                <a href="#" class="btn btn-outline-secondary mt-3 continue-btn">Continue</a>
+                <a href="<?php echo get_site_url(); ?>/laundry-service" class="btn btn-outline-secondary mt-3 continue-btn">Continue</a>
             </div>
         </div>
     <?php
