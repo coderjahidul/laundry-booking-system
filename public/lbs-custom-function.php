@@ -515,6 +515,8 @@ function lbs_reserved_slot($user_id){
     $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
     $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
     $booking_slot_current_time = get_user_meta($user_id, 'booking_slot_current_time', true);
+    $booking_slot_date = get_post_meta($user_bookings_slot_id, '_booking_date', true);
+    $booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_time_slot', true);
     ?>
         <div class="container mt-5">
             <div class="reserved-slot">
@@ -533,7 +535,15 @@ function lbs_reserved_slot($user_id){
                     <div class="col-md-4">
                         <div class="info-box">
                             <strong>Date and time</strong>
-                            <p id="show-selected-delivery-time-date">Sunday 1 September 12pm - 1pm</p>
+                            <p id="show-selected-delivery-time-date">
+                                <?php
+                                    // Booking slot date and time
+                                    if(isset($booking_slot_date) && isset($booking_slot_time)){
+                                        $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
+                                        echo $booking_slot_date . " " . $booking_slot_time;
+                                    }
+                                ?>
+                            </p>
                         </div>
                     </div>
                     <div class="col-md-4">
