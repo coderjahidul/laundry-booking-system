@@ -402,11 +402,11 @@ function hour_function(){
                             if($delivery_date == $bookings_slot_date){
                                 if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
                                     ?>
-                                        <div class="booking-slot booking-slot-hour available selected" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
                                     <?php
                                 }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
                                     ?>
-                                        <div class="booking-slot booking-slot-hour available selected" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
                                     <?php
                                 }elseif($bookings_slot_status == 'fully_booked'){
                                     ?>
@@ -431,6 +431,29 @@ function hour_function(){
                 ?>
                 <!-- Additional fully booked slots can be added here -->
             </div>
+            <!-- Modal -->
+                <div class="modal slot-modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cancelModalLabel">Cancel reserved slot</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                    <?php
+                                    // Booking slot date and time
+                                    booking_slot_date_time($user_bookings_slot_id);
+                                    ?>
+                                </strong>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary btn-keep" data-bs-dismiss="modal">Keep slot</button>
+                                <button type="button" data-bookings-slot-id = "<?= $bookings_slot_id;?>" class="btn btn-cancel cancel-booking-slot">Cancel slot</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php }?>
         </div>
     </div>
@@ -547,10 +570,7 @@ function lbs_reserved_slot($user_id){
                             <p id="show-selected-delivery-time-date">
                                 <?php
                                     // Booking slot date and time
-                                    if(isset($booking_slot_date) && isset($booking_slot_time)){
-                                        $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
-                                        echo $booking_slot_date . " " . $booking_slot_time;
-                                    }
+                                    booking_slot_date_time($user_bookings_slot_id);
                                 ?>
                             </p>
                         </div>
@@ -769,6 +789,18 @@ function selected_address(){
 
     }
 }
+
+// Booking slot date and time function
+function booking_slot_date_time($user_bookings_slot_id) {
+    $booking_slot_date = get_post_meta($user_bookings_slot_id, '_booking_date', true);
+    $booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_time_slot', true);
+
+    if(isset($booking_slot_date) && isset($booking_slot_time)){
+        $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
+        echo $booking_slot_date . " " . $booking_slot_time;
+    }
+}
+
 
 // update shipping address
 // function update_billing_address($user_id) {

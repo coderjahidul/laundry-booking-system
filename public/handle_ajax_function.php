@@ -82,6 +82,26 @@ function update_booking_slot() {
 add_action('wp_ajax_update_booking_slot', 'update_booking_slot');
 add_action('wp_ajax_nopriv_update_booking_slot', 'update_booking_slot');
 
+// cancel booking slot
+function cancel_booking_slot() {
+    if(isset($_POST['bookings_slot_id']) && !empty($_POST['bookings_slot_id'])) {
+        $bookings_slot_id = intval($_POST['bookings_slot_id']);
+        $user_id = get_current_user_id();
+        // Update booking slot status to available
+        update_post_meta($bookings_slot_id, '_booking_status', 'available');
+
+        // cancle booking slot select to update selected booking slot to empty
+        update_user_meta($user_id, 'selected_booking_slot', '');
+
+        wp_send_json_success("Booking slot canceled successfully.");
+    }else {
+        wp_send_json_error(array('message' => 'Error updating booking slot.'));
+    }
+}
+
+add_action('wp_ajax_cancel_booking_slot', 'cancel_booking_slot');
+add_action('wp_ajax_nopriv_cancel_booking_slot', 'cancel_booking_slot');
+
 // Add delivery cost in checkout 
 add_action( 'woocommerce_cart_calculate_fees', 'add_delivery_cost' );
 
@@ -99,6 +119,8 @@ function add_delivery_cost( $cart ) {
     // Add the delivery cost to the cart
     $cart->add_fee( __( 'Delivery', 'woocommerce' ), $delivery_cost );
 }
+
+
 
 
 

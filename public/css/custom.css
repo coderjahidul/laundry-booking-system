@@ -433,3 +433,29 @@
         transform: rotate(360deg);
     }
 } 
+/* Cancel Reserved Slot */
+.slot-modal .modal-header {
+    border-bottom: none;
+}
+.slot-modal .modal-footer {
+    border-top: none;
+}
+.slot-modal .btn-keep, .btn-cancel {
+    width: 150px;
+    padding: 10px;
+}
+.slot-modal .btn-cancel {
+    background-color: #333;
+    color: white;
+    border: none;
+}
+.slot-modal .btn-cancel:hover {
+    background-color: #ccc;
+    color: #000;
+}
+.slot-modal .modal-footer {
+    justify-content: space-between !important;
+}
+.slot-modal .btn-close {
+    padding: 0 10px !important;
+}

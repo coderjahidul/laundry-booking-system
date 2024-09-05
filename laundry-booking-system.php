@@ -149,7 +149,14 @@ function my_enqueue_scripts() {
             });
         });
     ');
-    wp_enqueue_script( 'alpine-js', 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js',[], true );
+    // Enqueue Alpine.js
+    wp_enqueue_script(
+        'alpine-js', 
+        'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js', 
+        [], 
+        null, // Set the version to null to avoid appending a version query string
+        true // Load script in the footer
+    );
 }
 add_action('wp_enqueue_scripts', 'my_enqueue_scripts');
 
