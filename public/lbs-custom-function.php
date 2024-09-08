@@ -271,63 +271,90 @@ function hour_function(){
         driver is close.</p>
     <div class="container my-4">
         <div class="d-flex justify-content-between">
-            <!-- Previous button -->
-            <a href="#" class="btn btn-link">&lt; Previous</a>
-            <!-- calendar -->
-            <input type="text" id="hour_datepicker" style="display:none;">
-            <button class="btn btn-outline-secondary" id="open-hour_datepicker">View calendar</button>
+            <?php 
+                // Get current page, default is 1
+                $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+                $per_page = 5; // Number of unique dates per page
 
-            <!-- Next button -->
-            <a href="#" class="btn btn-link">Next &gt;</a>
-        </div>
-
-        <div class="row text-center">
-            <div class="col schedule-header"></div>
-            <!-- <div class="col schedule-header">Tue 27 Aug</div> -->
-            <?php
                 $args = array(
                     'post_type' => 'booking',
-                    'posts_per_page' => -1, // Adjust as needed,
+                    'posts_per_page' => -1, // Get all bookings
                     'meta_key' => '_booking_date',
                     'orderby' => 'meta_value',
                     'order' => 'ASC',
                 );
-                
+
                 $bookings_date = new WP_Query($args);
-                
-                $delivery_dates = array(); // Array to keep track of printed dates
-                $unique_dates_count = 0;  // Counter to limit to 5 unique dates
-                
+                $delivery_dates = array(); // Array to store unique booking dates
+
                 if ($bookings_date->have_posts()) {
                     while ($bookings_date->have_posts()) {
                         $bookings_date->the_post();
-                
+
                         $slot_date = get_post_meta(get_the_ID(), '_booking_date', true);
-                        // $slot_date = date("D, j M", strtotime($get_date));
-                
-                        // Check if the formatted date is already in the array
+
+                        // Add the date if it is unique
                         if (!in_array($slot_date, $delivery_dates)) {
-                            echo "<div class='col schedule-header'> " . date("D, j M", strtotime($slot_date) ) . "</div>";
-                
-                            // Add the date to the array and increment the counter
                             $delivery_dates[] = $slot_date;
-                            $unique_dates_count++;
-                
-                            // Break the loop if 5 unique dates have been printed
-                            if ($unique_dates_count >= 5) {
-                                break;
-                            }
                         }
                     }
+                } else {
+                    echo "<p>No bookings found.</p>";
                 }
-                
-                // Reset post data to avoid conflicts
-                wp_reset_postdata();                
+
+                // Reset post data
+                wp_reset_postdata();
+
+                // Pagination logic for the $delivery_dates array
+                $total_dates = count($delivery_dates); // Total number of unique dates
+                $total_pages = ceil($total_dates / $per_page); // Calculate total number of pages
+
+                // Ensure current page is not beyond total pages
+                if ($paged > $total_pages) {
+                    $paged = $total_pages;
+                }
+
+                // Calculate the start index of the slice based on the current page
+                $start_index = ($paged - 1) * $per_page;
+
+                // Slice the array to get the dates for the current page
+                $paged_dates = array_slice($delivery_dates, $start_index, $per_page);
+                if ($total_pages > 1) {
+                    // Previous Button
+                    if ($paged > 1) {
+                        $prev_page = $paged - 1;
+                        echo '<a href="' . esc_url(add_query_arg('paged', $prev_page)) . '" class="btn btn-link">&lt; Previous</a>';
+                    } else {
+                        echo '<span class="btn btn-link disabled">&lt; Previous</span>';
+                    }
+                    ?>
+                    <input type="text" id="hour_datepicker" style="display:none;">
+                    <button class="btn btn-outline-secondary" id="open-hour_datepicker">View calendar</button>
+                    <?php
+                    // Next Button
+                    if ($paged < $total_pages) {
+                        $next_page = $paged + 1;
+                        echo '<a href="' . esc_url(add_query_arg('paged', $next_page)) . '" class="btn btn-link">Next &gt;</a>';
+                    } else {
+                        echo '<span class="btn btn-link disabled">Next &gt;</span>';
+                    }
+                }
             ?>
         </div>
 
+        <div class="row text-center">
+            <div class="col-2 schedule-header"></div>
+            <?php
+                // Display the paginated dates
+                foreach ($paged_dates as $date) {
+                    echo "<div class='col-2 schedule-header'>" . date("D, j M", strtotime($date)) . "</div>";
+                }
+            ?>
+
+        </div>
+
         <div class="row">
-            <div class="col">
+            <div class="col-2">
             <?php 
                 $args = array(
                     'post_type' => 'booking',
@@ -379,8 +406,8 @@ function hour_function(){
 
                 <!-- Additional fully booked slots can be added here -->
             </div>
-            <?php foreach($delivery_dates as $delivery_date){?>
-            <div class="col slot-with-price">
+            <?php foreach($paged_dates as $delivery_date){?>
+            <div class="col-2 slot-with-price">
                 <?php 
                     $args = array(
                         'post_type' => 'booking',
