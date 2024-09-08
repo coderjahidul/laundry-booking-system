@@ -31,7 +31,15 @@ function lbs_bookslot_delivery_function() {
     <?php add_address_from();?>
     <div class="slot-section" x-data="{ open: false }">
         <div class="choose-your-slot-section">
-            <?php lbs_choose_your_slot(); ?>
+            <?php 
+                // If user logged in
+                if(is_user_logged_in()){
+                    lbs_choose_your_slot();
+                }else{
+                    // If user not logged in
+                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                }
+            ?>
         </div>
 
         <!-- Reserved Slot -->
