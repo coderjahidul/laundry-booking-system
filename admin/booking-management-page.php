@@ -54,7 +54,7 @@ function booking_admin_page() {
         $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
         $args = array(
             'post_type' => 'booking',
-            'posts_per_page' => 2, // Adjust as needed
+            'posts_per_page' => 20, // Adjust as needed
             'paged' => $paged,
         );
 
@@ -172,7 +172,7 @@ function saver_booking_admin_page() {
         $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1;
         $args = array(
             'post_type' => 'saver-booking',
-            'posts_per_page' => 2, // Adjust as needed
+            'posts_per_page' => 20, // Adjust as needed
             'paged' => $paged,
         );
 
