@@ -114,12 +114,21 @@ function add_delivery_cost( $cart ) {
 
     $user_id = get_current_user_id();
     $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
-    $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
+    if(get_post_meta($user_bookings_slot_id, '_booking_price', true)){
+        $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
+        $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_time_slot', true);
+        $delivery_type = "Hour";
+    }elseif(get_post_meta($user_bookings_slot_id, '_saver_booking_price', true)){
+        $booking_slot_price = get_post_meta($user_bookings_slot_id, '_saver_booking_price', true);
+        $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true);
+        $delivery_type = "Saver";
+    }
+    
     // Define the delivery cost and set it to 0 initially
     $delivery_cost = isset($booking_slot_price) ? $booking_slot_price : 0;
 
     // Add the delivery cost to the cart
-    $cart->add_fee( __( 'Delivery', 'woocommerce' ), $delivery_cost );
+    $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
 }
 
 
