@@ -181,12 +181,14 @@
     height: 100px;
 }
 
-.hour-section .slot-with-price .selected {
+.hour-section .slot-with-price .selected,
+.saver-section .slot-with-price .selected {
     border: 1px solid green !important;
     position: relative; /* Ensure the pseudo-element is positioned relative to this */
 }
 
-.hour-section .slot-with-price .selected:hover {
+.hour-section .slot-with-price .selected:hover,
+.saver-section .slot-with-price .selected:hover {
     border-color: red !important;
 }
 
@@ -203,8 +205,22 @@
     display: inline-block;
     transition: content 0.13s ease; /* Smooth transition for icon change */
 }
+.saver-section .slot-with-price .selected::before {
+    content: "\f058"; /* Unicode for Font Awesome check-circle */
+    font-family: 'Font Awesome 5 Free'; /* Ensure you use the correct font family */
+    font-weight: 900; /* Bold style for Font Awesome */
+    color: green; /* Icon color */
+    font-size: 16px; /* Adjust size as needed */
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 10%; 
+    transform: translateY(-50%); /* Center vertically in the middle */
+    display: inline-block;
+    transition: content 0.13s ease; /* Smooth transition for icon change */
+}
 
-.hour-section .slot-with-price .selected:hover::before {
+.hour-section .slot-with-price .selected:hover::before,
+.saver-section .slot-with-price .selected:hover::before {
     content: "\f057"; /* Unicode for Font Awesome times-circle (close-circle) */
     color: red; /* Change icon color on hover if needed */
 }

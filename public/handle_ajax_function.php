@@ -47,8 +47,9 @@ function update_booking_slot() {
         $get_previous_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
 
         // if previous booking slot id is not empty then update previous booking slot status to available
-        if (!empty($get_previous_bookings_slot_id)) {
+        if (!empty($get_previous_bookings_slot_id) ) {
             update_post_meta($get_previous_bookings_slot_id, '_booking_status', 'available');
+            update_post_meta($get_previous_bookings_slot_id, '_saver_booking_status', 'available');
         }
 
         // Update the new selected_booking_slot_id post meta value
@@ -61,6 +62,7 @@ function update_booking_slot() {
 
         // Update booking slot status
         update_post_meta($bookings_slot_id, '_booking_status', 'fully_booked');
+        update_post_meta($bookings_slot_id, '_saver_booking_status', 'fully_booked');
 
         // Slot Booking Current Time
         $time_format = get_option('time_format');
