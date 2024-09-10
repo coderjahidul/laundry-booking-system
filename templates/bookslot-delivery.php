@@ -12,8 +12,7 @@ function lbs_bookslot_delivery_function() {
                     type="button" role="tab" aria-controls="delivery" aria-selected="true">Delivery</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="click-collect-tab" data-bs-toggle="tab" data-bs-target="#click-collect"
-                    type="button" role="tab" aria-controls="click-collect" aria-selected="false">Click & Collect</button>
+                <a href="<?php echo site_url(); ?>/click-collect" class="nav-link"  type="button" >Click & Collect</a>
             </li>
         </ul>
 
@@ -24,7 +23,7 @@ function lbs_bookslot_delivery_function() {
             <?php lbs_delevery(); ?>
 
             <!-- Click & Collect Section -->
-            <?php lbs_collection(); ?>
+            <?php //lbs_collection(); ?>
         </div>
     </div>
     <!-- add address from -->
@@ -63,6 +62,38 @@ function lbs_bookslot_delivery_function() {
         </div>
     </div>
     <!-- Choose your slot -->
+    
+     
+<?php
+}
+
+add_shortcode( 'lbs_bookslot_click_collect', 'lbs_bookslot_click_collect_function' );
+
+function lbs_bookslot_click_collect_function() {
+    ?>
+    <div class="bookslot-delivery">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs justify-content-center border-0" id="deliveryTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a href="<?php echo site_url(); ?>/bookslot-delivery/" class="nav-link" type="button">Delivery</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="click-collect-tab" data-bs-toggle="tab" data-bs-target="#click-collect" type="button" role="tab" aria-controls="click-collect" aria-selected="false">Click & Collect</button>
+            </li>
+        </ul>
+
+        <!-- Delivery Address Section -->
+        <div class="tab-content" id="deliveryTabContent">
+
+            <!-- Delivery Section -->
+            <?php //lbs_delevery(); ?>
+
+            <!-- Click & Collect Section -->
+            <?php lbs_collection(); ?>
+        </div>
+    </div>
+    <!-- add address from -->
+    <?php add_address_from();?>
     
      
 <?php

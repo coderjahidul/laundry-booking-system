@@ -124,7 +124,7 @@ function lbs_delevery() {
 function lbs_collection() {
     ?>
 <!-- Click & Collect Section -->
-<div class="collect-section tab-pane fade " id="click-collect" role="tabpanel" aria-labelledby="click-collect-tab">
+<div class="collect-section tab-pane fade show active" id="click-collect" role="tabpanel" aria-labelledby="click-collect-tab">
     <h2 class="text-center mb-4">Choose a store for collection</h2>
 
     <!-- Search Bar -->
