@@ -651,11 +651,11 @@ function saver_function(){
                             if($delivery_date == $bookings_slot_date){
                                 if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
                                     ?>
-                                        <div class="booking-slot booking-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
                                     <?php
                                 }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
                                     ?>
-                                        <div class="booking-slot booking-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
                                     <?php
                                 }elseif($bookings_slot_status == 'fully_booked'){
                                     ?>
@@ -667,11 +667,11 @@ function saver_function(){
                                     <?php
                                 }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
                                     ?>
-                                        <div class="booking-slot booking-slot-hour available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-saver available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
                                     <?php
                                 }elseif($bookings_slot_status == 'available'){
                                     ?>
-                                        <div class="booking-slot booking-slot-hour available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <div class="booking-slot booking-slot-saver available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
                                     <?php
                                 }
                             }
@@ -681,7 +681,28 @@ function saver_function(){
                 <!-- Additional fully booked slots can be added here -->
             </div>
             <!-- Modal -->
-                
+                <div class="modal slot-modal fade" id="cancelModalSaver" tabindex="-1" aria-labelledby="cancelModalSaverLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cancelModalSaverLabel">Cancel reserved slot</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                    <?php
+                                    // Booking slot date and time
+                                    booking_slot_date_time($user_bookings_slot_id);
+                                    ?>
+                                </strong>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary btn-keep" data-bs-dismiss="modal">Keep slot</button>
+                                <button type="button" data-bookings-slot-id = "<?= $bookings_slot_id;?>" class="btn btn-cancel cancel-booking-slot">Cancel slot</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php }?>
             
         </div>

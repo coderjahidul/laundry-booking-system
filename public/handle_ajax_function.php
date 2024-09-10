@@ -89,8 +89,11 @@ function cancel_booking_slot() {
     if(isset($_POST['bookings_slot_id']) && !empty($_POST['bookings_slot_id'])) {
         $bookings_slot_id = intval($_POST['bookings_slot_id']);
         $user_id = get_current_user_id();
+        // get selected booking slot id
+        $selected_booking_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
         // Update booking slot status to available
-        update_post_meta($bookings_slot_id, '_booking_status', 'available');
+        update_post_meta($selected_booking_slot_id, '_booking_status', 'available');
+        update_post_meta($selected_booking_slot_id, '_saver_booking_status', 'available');
 
         // cancle booking slot select to update selected booking slot to empty
         update_user_meta($user_id, 'selected_booking_slot', '');
