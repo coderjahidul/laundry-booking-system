@@ -131,7 +131,12 @@ function add_delivery_cost( $cart ) {
     $delivery_cost = isset($booking_slot_price) ? $booking_slot_price : 0;
 
     // Add the delivery cost to the cart
-    $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+    if(!empty($delivery_booking_slot_time) && !empty($delivery_type)){
+        $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+    }else{
+        // Delivery Slot not selected
+    }
+    
 }
 
 
