@@ -86,3 +86,92 @@
     margin: 0 2px;
     border-radius: 3px;
 }
+
+
+    /* Style the form table */
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style table rows */
+    .form-table tbody tr {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .form-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    /* Style labels */
+    .form-table th {
+        text-align: left;
+        padding: 15px 20px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* Style input fields and textarea */
+    .form-table input[type="text"],
+    .form-table textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        color: #555;
+        background-color: #fff;
+        transition: border-color 0.3s;
+    }
+
+    .form-table input[type="text"]:focus,
+    .form-table textarea:focus {
+        border-color: #007cba;
+        outline: none;
+    }
+
+    /* Style table data cells */
+    .form-table td {
+        padding: 15px 20px;
+    }
+
+    /* Style the submit button (if needed) */
+    .form-table input[type="submit"] {
+        background-color: #007cba;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .form-table input[type="submit"]:hover {
+        background-color: #005f8a;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .form-table th,
+        .form-table td {
+            display: block;
+            width: 100%;
+        }
+
+        .form-table th {
+            margin-bottom: 10px;
+        }
+
+        .form-table input[type="text"],
+        .form-table textarea {
+            width: 100%;
+        }
+    }
+

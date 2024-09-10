@@ -230,7 +230,7 @@ add_action('init', 'create_store_post_type');
 function add_store_meta_boxes() {
     add_meta_box(
         'store_details_meta_box', // ID
-        'Store Details', // Title
+        'Add Store Details', // Title
         'display_store_meta_box', // Callback
         'store', // Post type
         'normal', // Context
@@ -241,12 +241,89 @@ add_action('add_meta_boxes', 'add_store_meta_boxes');
 
 
 // display meta box for custom fields in store post type
-// function display_store_meta_box($post) {
-//     $store_name = get_post_meta($post->ID, '_store_name', true);
-//     $store_address = get_post_meta($post->ID, '_store_address', true);
-//     $store_postcode = get_post_meta($post->ID, '_store_postcode', true);
-//     $store_phone = get_post_meta($post->ID, '_store_phone', true);
-//     $store_email = get_post_meta($post->ID, '_store_email', true);
-//     $store_description = get_post_meta($post->ID, '_store_description', true);
-// }
+function display_store_meta_box($post) {
+    $store_name = get_post_meta($post->ID, '_store_name', true);
+    $store_address = get_post_meta($post->ID, '_store_address', true);
+    $store_postcode = get_post_meta($post->ID, '_store_postcode', true);
+    $store_phone = get_post_meta($post->ID, '_store_phone', true);
+    $store_email = get_post_meta($post->ID, '_store_email', true);
+    $store_distance = get_post_meta($post->ID, '_store_distance', true);
+    $store_description = get_post_meta($post->ID, '_store_description', true);
+    ?>
+    <table class="form-table">
+        <tbody>
+            <tr>
+                <th><label for="store_name">Store Name</label></th>
+                <td><input type="text" id="store_name" name="store_name" placeholder="Enter Your Store Name" value="<?php echo esc_attr($store_name); ?>" /></td>
+            </tr>
+            <tr>
+                <th><label for="store_address">Store Address</label></th>
+                <td><input type="text" id="store_address" name="store_address" placeholder="Enter Your Store Address" value="<?php echo esc_attr($store_address); ?>" /></td>
+            </tr>
+            <tr>
+                <th><label for="store_postcode">Store Postcode</label></th>
+                <td><input type="text" id="store_postcode" name="store_postcode" placeholder="Enter Your Store Postcode" value="<?php echo esc_attr($store_postcode); ?>" /></td>
+            </tr>
+            <tr>
+                <th><label for="store_phone">Store Phone</label></th>
+                <td><input type="text" id="store_phone" name="store_phone" placeholder="Enter Your Store Phone" value="<?php echo esc_attr($store_phone); ?>" /></td>
+            </tr>
+            <tr>
+                <th><label for="store_email">Store Email</label></th>
+                <td><input type="text" id="store_email" name="store_email" placeholder="Enter Your Store Email" value="<?php echo esc_attr($store_email); ?>" /></td>
+            </tr>
+            <tr>
+                <th><label for="store_distance">Store Distance</label></th>
+                <td><input type="text" id="store_distance" name="store_distance" placeholder="Enter Your Store Distance" value="<?php echo esc_attr($store_distance); ?>" /></td>
+            </tr>
+            <tr>
+                <th><label for="store_description">Store Description</label></th>
+                <td><textarea id="store_description" name="store_description" rows="5" cols="50"><?php echo esc_attr($store_description); ?></textarea></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <?php
+}
+
+// save meta box for custom fields in store post type
+function save_store_meta_box_data($post_id) {
+    // Verify this is not an auto-save routine.
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+
+    // Check if current user has permission to edit post.
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    // Save the meta box data as post meta
+    if (isset($_POST['store_name'])) {
+        update_post_meta($post_id, '_store_name', sanitize_text_field($_POST['store_name']));
+    }
+    
+    if (isset($_POST['store_address'])) {
+        update_post_meta($post_id, '_store_address', sanitize_text_field($_POST['store_address']));
+    }
+
+    if (isset($_POST['store_postcode'])) {
+        update_post_meta($post_id, '_store_postcode', sanitize_text_field($_POST['store_postcode']));
+    }
+
+    if (isset($_POST['store_phone'])) {
+        update_post_meta($post_id, '_store_phone', sanitize_text_field($_POST['store_phone']));
+    }
+
+    if (isset($_POST['store_email'])) {
+        update_post_meta($post_id, '_store_email', sanitize_text_field($_POST['store_email']));
+    }
+
+    if (isset($_POST['store_distance'])) {
+        update_post_meta($post_id, '_store_distance', sanitize_text_field($_POST['store_distance']));
+    }
+
+    if (isset($_POST['store_description'])) {
+        update_post_meta($post_id, '_store_description', sanitize_text_field($_POST['store_description']));
+    }
+
+}
+
+add_action('save_post', 'save_store_meta_box_data');
 
