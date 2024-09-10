@@ -190,5 +190,63 @@ function save_saver_booking_meta_box_data($post_id) {
     }
 }
 add_action('save_post', 'save_saver_booking_meta_box_data');
+
+
+// Register Custom Post Type store
+function create_store_post_type() {
+    register_post_type('store',
+        array(
+            'labels' => array(
+                'name' => __('Stores'),
+                'singular_name' => __('Store'),
+                'add_new_item' => __('Add New Store'),
+                'edit_item' => __('Edit Store'),
+                'view_item' => __('View Store'),
+                'all_items' => __('All Stores'),
+                'search_items' => __('Search Stores'),
+                'not_found' => __('No stores found'),
+                'not_found_in_trash' => __('No stores found in trash'),
+                'menu_name' => __('Stores'),
+                'name_admin_bar' => __('Store'),
+                'archives' => __('Store Archives'),
+                'attributes' => __('Store Attributes'),
+                'view_item' => __('View Store'),
+                'uploaded_to_this_item' => __('Uploaded to this store'),
+                'filter_items_list' => __('Filter stores list'),
+                'items_list_navigation' => __('Stores list navigation'),
+                'items_list' => __('Stores list'),
+                'item_published' => __('Store published')
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'menu_icon' => 'dashicons-location',
+            'supports' => array('title'),
+        )
+    );
+}
+add_action('init', 'create_store_post_type');
     
-    
+// add meta box for custom fields in store post type
+function add_store_meta_boxes() {
+    add_meta_box(
+        'store_details_meta_box', // ID
+        'Store Details', // Title
+        'display_store_meta_box', // Callback
+        'store', // Post type
+        'normal', // Context
+        'high' // Priority
+    );
+}
+add_action('add_meta_boxes', 'add_store_meta_boxes');
+
+
+// display meta box for custom fields in store post type
+// function display_store_meta_box($post) {
+//     $store_name = get_post_meta($post->ID, '_store_name', true);
+//     $store_address = get_post_meta($post->ID, '_store_address', true);
+//     $store_postcode = get_post_meta($post->ID, '_store_postcode', true);
+//     $store_phone = get_post_meta($post->ID, '_store_phone', true);
+//     $store_email = get_post_meta($post->ID, '_store_email', true);
+//     $store_description = get_post_meta($post->ID, '_store_description', true);
+// }
+
