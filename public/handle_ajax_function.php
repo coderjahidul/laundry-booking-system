@@ -50,6 +50,7 @@ function update_booking_slot() {
         if (!empty($get_previous_bookings_slot_id) ) {
             update_post_meta($get_previous_bookings_slot_id, '_booking_status', 'available');
             update_post_meta($get_previous_bookings_slot_id, '_saver_booking_status', 'available');
+            update_post_meta($get_previous_bookings_slot_id, '_collection_booking_status', 'available');
         }
 
         // Update the new selected_booking_slot_id post meta value
@@ -63,6 +64,7 @@ function update_booking_slot() {
         // Update booking slot status
         update_post_meta($bookings_slot_id, '_booking_status', 'fully_booked');
         update_post_meta($bookings_slot_id, '_saver_booking_status', 'fully_booked');
+        update_post_meta($bookings_slot_id, '_collection_booking_status', 'fully_booked');
 
         // Slot Booking Current Time
         $time_format = get_option('time_format');
@@ -94,6 +96,7 @@ function cancel_booking_slot() {
         // Update booking slot status to available
         update_post_meta($selected_booking_slot_id, '_booking_status', 'available');
         update_post_meta($selected_booking_slot_id, '_saver_booking_status', 'available');
+        update_post_meta($selected_booking_slot_id, '_collection_booking_status', 'available');
 
         // cancle booking slot select to update selected booking slot to empty
         update_user_meta($user_id, 'selected_booking_slot', '');
@@ -142,6 +145,10 @@ function add_delivery_cost( $cart ) {
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_saver_booking_price', true);
         $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true);
         $delivery_type = "Saver";
+    }elseif(get_post_meta($user_bookings_slot_id, '_collection_booking_price', true)){
+        $booking_slot_price = get_post_meta($user_bookings_slot_id, '_collection_booking_price', true);
+        $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true);
+        $delivery_type = "Collection";
     }
     
     // Define the delivery cost and set it to 0 initially

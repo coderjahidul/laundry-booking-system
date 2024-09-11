@@ -291,7 +291,17 @@ function lbs_choose_your_slot() {
 </div>
 <?php
 }
+// Choose your collection slot
+function lbs_choose_your_collection_slot() {
+    ?>
+<div class="choose-your-slot">
+    <h2 class="text-center">Choose your slot</h2>
+        <!-- Hour Section -->
+        <?php collection_function(); ?>
 
+</div>
+<?php
+}
 // Hour function
 function hour_function(){
     ?>
@@ -734,6 +744,229 @@ function saver_function(){
                 </div>
             <?php }?>
             
+        </div>
+    </div>
+</div>
+<?php
+}
+
+// Collection function
+function collection_function(){
+    ?>
+<div class="collection-section tab-pane fade show active" id="hour" role="tabpanel" aria-labelledby="hour-tab">
+    <div class="container my-4">
+        <div class="d-flex justify-content-between">
+            <?php 
+                // Get current page, default is 1
+                $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+                $per_page = 5; // Number of unique dates per page
+
+                $args = array(
+                    'post_type' => 'collection',
+                    'posts_per_page' => -1, // Get all bookings
+                    'meta_key' => '_collection_booking_date',
+                    'orderby' => 'meta_value',
+                    'order' => 'ASC',
+                );
+
+                $bookings_date = new WP_Query($args);
+                $delivery_dates = array(); // Array to store unique booking dates
+
+                if ($bookings_date->have_posts()) {
+                    while ($bookings_date->have_posts()) {
+                        $bookings_date->the_post();
+
+                        $slot_date = get_post_meta(get_the_ID(), '_collection_booking_date', true);
+
+                        // Add the date if it is unique
+                        if (!in_array($slot_date, $delivery_dates)) {
+                            $delivery_dates[] = $slot_date;
+                        }
+                    }
+                } else {
+                    echo "<p>No bookings found.</p>";
+                }
+
+                // Reset post data
+                wp_reset_postdata();
+
+                // Pagination logic for the $delivery_dates array
+                $total_dates = count($delivery_dates); // Total number of unique dates
+                $total_pages = ceil($total_dates / $per_page); // Calculate total number of pages
+
+                // Ensure current page is not beyond total pages
+                if ($paged > $total_pages) {
+                    $paged = $total_pages;
+                }
+
+                // Calculate the start index of the slice based on the current page
+                $start_index = ($paged - 1) * $per_page;
+
+                // Slice the array to get the dates for the current page
+                $paged_dates = array_slice($delivery_dates, $start_index, $per_page);
+                if ($total_pages > 1) {
+                    // Previous Button
+                    if ($paged > 1) {
+                        $prev_page = $paged - 1;
+                        echo '<a href="' . esc_url(add_query_arg('paged', $prev_page)) . '" class="btn btn-link">&lt; Previous</a>';
+                    } else {
+                        echo '<span class="btn btn-link disabled">&lt; Previous</span>';
+                    }
+                    ?>
+                    <input type="text" id="hour_datepicker" style="display:none;">
+                    <button class="btn btn-outline-secondary" id="open-hour_datepicker">View calendar</button>
+                    <?php
+                    // Next Button
+                    if ($paged < $total_pages) {
+                        $next_page = $paged + 1;
+                        echo '<a href="' . esc_url(add_query_arg('paged', $next_page)) . '" class="btn btn-link">Next &gt;</a>';
+                    } else {
+                        echo '<span class="btn btn-link disabled">Next &gt;</span>';
+                    }
+                }
+            ?>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-2 schedule-header"></div>
+            <?php
+                // Display the paginated dates
+                foreach ($paged_dates as $date) {
+                    echo "<div class='col-2 schedule-header'>" . date("D, j M", strtotime($date)) . "</div>";
+                }
+            ?>
+
+        </div>
+
+        <div class="row">
+            <div class="col-2">
+            <?php 
+                $args = array(
+                    'post_type' => 'collection',
+                    'posts_per_page' => -1, // Fetch all posts
+                    'meta_key' => '_collection_booking_time_slot',
+                    'orderby' => 'meta_value',
+                    'order' => 'ASC', // Ascending order for natural time order
+                );
+
+                $bookings_time = new WP_Query($args);
+
+                $printed_slots = array(); // Array to keep track of printed slots
+                $unique_time_slot_count = 0;  // Counter to limit to 14 unique time slots
+
+                $time_slots = array(); // Array to collect time slots
+
+                if ($bookings_time->have_posts()) {
+                    while ($bookings_time->have_posts()) {
+                        $bookings_time->the_post();
+                        // Get the time slot
+                        $time_slot = get_post_meta(get_the_ID(), '_collection_booking_time_slot', true);
+                        
+                        // Collect time slots in an array
+                        $time_slots[] = $time_slot;
+                    }
+
+                    // Sort the time slots
+                    $time_slots = sortTimeRanges($time_slots);
+
+                    // Print the sorted and unique time slots
+                    foreach ($time_slots as $time_slot) {
+                        // Check if the time slot is already in the printed array
+                        if (!in_array($time_slot, $printed_slots)) {
+                            echo "<div class='booking-time-list'>$time_slot</div>";
+                            // Add the time slot to the array and increment the counter
+                            $printed_slots[] = $time_slot;
+                            $unique_time_slot_count++;
+
+                            // Break the loop if 14 unique time slots have been printed
+                            if ($unique_time_slot_count >= 14) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                ?>
+
+                
+
+                <!-- Additional fully booked slots can be added here -->
+            </div>
+            <?php foreach($paged_dates as $delivery_date){?>
+            <div class="col-2 slot-with-price">
+                <?php 
+                    $args = array(
+                        'post_type' => 'collection',
+                        'posts_per_page' => -1, // Adjust as needed
+                        'order' => 'ASC',
+                    );
+
+                    $bookings = new WP_Query($args);
+                    if($bookings->have_posts()){
+                        while($bookings->have_posts()){ 
+                            $bookings->the_post();
+                            $bookings_slot_id = get_the_ID();
+                            $user_id = get_current_user_id();
+                            $bookings_slot_date = get_post_meta(get_the_ID(), '_collection_booking_date', true);
+                            $bookings_slot_status = get_post_meta(get_the_ID(), '_collection_booking_status', true);
+                            $bookings_slot_price = get_post_meta(get_the_ID(), '_collection_booking_price', true);
+                            $bookings_slot_time = get_post_meta(get_the_ID(), '_collection_booking_time_slot', true);
+                            $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+                            if($delivery_date == $bookings_slot_date){
+                                if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
+                                    ?>
+                                        <div class="booking-slot booking-slot-collection available selected" data-bs-toggle="modal" data-bs-target="#cancelModalCollection" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price"><i class="fa fa-check-circle" aria-hidden="true"></i></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
+                                    ?>
+                                        <div class="booking-slot booking-slot-collection available selected" data-bs-toggle="modal" data-bs-target="#cancelModalCollection" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'fully_booked'){
+                                    ?>
+                                        <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>">Fully Booked</div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'unavailable'){
+                                    ?>
+                                        <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>">Unavailable</div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
+                                    ?>
+                                        <div class="booking-slot booking-slot-collection available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price"><i class="fa fa-check-circle" aria-hidden="true"></i></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'available'){
+                                    ?>
+                                        <div class="booking-slot booking-slot-collection available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }
+                            }
+                        }
+                    }
+                ?>
+                <!-- Additional fully booked slots can be added here -->
+            </div>
+            <!-- Modal -->
+                <div class="modal slot-modal fade" id="cancelModalCollection" tabindex="-1" aria-labelledby="cancelModalCollectionLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cancelModalCollectionLabel">Cancel reserved slot</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                    <?php
+                                    // Booking slot date and time
+                                    booking_slot_date_time($user_bookings_slot_id);
+                                    ?>
+                                </strong>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary btn-keep" data-bs-dismiss="modal">Keep slot</button>
+                                <button type="button" data-bookings-slot-id = "<?= $bookings_slot_id;?>" class="btn btn-cancel cancel-booking-slot">Cancel slot</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php }?>
         </div>
     </div>
 </div>

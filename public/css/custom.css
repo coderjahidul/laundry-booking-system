@@ -183,13 +183,15 @@
 }
 
 .hour-section .slot-with-price .selected,
-.saver-section .slot-with-price .selected {
+.saver-section .slot-with-price .selected,
+.collection-section .slot-with-price .selected {
     border: 1px solid green !important;
     position: relative; /* Ensure the pseudo-element is positioned relative to this */
 }
 
 .hour-section .slot-with-price .selected:hover,
-.saver-section .slot-with-price .selected:hover {
+.saver-section .slot-with-price .selected:hover, 
+.collection-section .slot-with-price .selected:hover {
     border-color: red !important;
 }
 
@@ -220,8 +222,23 @@
     transition: content 0.13s ease; /* Smooth transition for icon change */
 }
 
+.collection-section .slot-with-price .selected::before {
+    content: "\f058"; /* Unicode for Font Awesome check-circle */
+    font-family: 'Font Awesome 5 Free'; /* Ensure you use the correct font family */
+    font-weight: 900; /* Bold style for Font Awesome */
+    color: green; /* Icon color */
+    font-size: 16px; /* Adjust size as needed */
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 46%; 
+    transform: translateY(-50%); /* Center vertically in the middle */
+    display: inline-block;
+    transition: content 0.13s ease; /* Smooth transition for icon change */
+}
+
 .hour-section .slot-with-price .selected:hover::before,
-.saver-section .slot-with-price .selected:hover::before {
+.saver-section .slot-with-price .selected:hover::before,
+.collection-section .slot-with-price .selected:hover::before {
     content: "\f057"; /* Unicode for Font Awesome times-circle (close-circle) */
     color: red; /* Change icon color on hover if needed */
 }
@@ -272,7 +289,8 @@
 /* hour-section & saver-section */
 
 .hour-section,
-.saver-section {
+.saver-section,
+.collection-section {
     margin-top: 20px !important;
 }
 
@@ -286,7 +304,8 @@
     padding-left: calc(var(--bs-gutter-x) / 3) !important;
 }
 
-.hour-section .booking-slot {
+.hour-section .booking-slot,
+.collection-section .booking-slot {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -295,7 +314,8 @@
     padding: 5px 5px !important;  
     border: 1px solid #ccc !important;  
 }
-.hour-section .booking-time-list {
+.hour-section .booking-time-list,
+.collection-section .booking-time-list {
     display: flex;
     /* align-items: left; */
     justify-content: right;
@@ -306,23 +326,28 @@
 }
 .hour-section .unavailable,
 .saver-section .unavailable,
+.collection-section .unavailable,
 .hour-section .fully-booked,
-.saver-section .fully-booked {
+.saver-section .fully-booked,
+.collection-section .fully-booked {
     background-color: #f5f5f5;
     color: #999;
 }
 .hour-section .available,
-.saver-section .available {
+.saver-section .available,
+.collection-section .available {
     background-color: #fff;
     color: #000;
     cursor: pointer;
 }
 .hour-section .available:hover,
-.saver-section .available:hover {
+.saver-section .available:hover,
+.collection-section .available:hover {
     border: 1px solid #000 !important;
 }
 .hour-section .schedule-header,
-.saver-section .schedule-header {
+.saver-section .schedule-header,
+.collection-section .schedule-header {
     font-weight: bold;
     text-align: center;
     padding: 10px 0;

@@ -92,7 +92,39 @@ function lbs_bookslot_click_collect_function() {
             <?php lbs_collection(); ?>
         </div>
     </div>
-    
+    <div class="slot-section" x-data="{ open: false }">
+        <div class="choose-your-slot-section">
+            <?php 
+                // If user logged in
+                if(is_user_logged_in()){
+                    lbs_choose_your_collection_slot();
+                }else{
+                    // If user not logged in
+                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                }
+            ?>
+        </div>
+
+        <!-- Reserved Slot -->
+        <div class="reserved-delivery-slot-section">
+            <?php 
+                $user_id = get_current_user_id();
+                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                    ?>
+                    <div class="delivery-details">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
+                }else{
+                    ?>
+                    <div class="delivery-details" x-show="open">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
+                }
+            ?>
+        </div>
+    </div>
      
 <?php
 }
