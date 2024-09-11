@@ -89,6 +89,7 @@ function add_collection_meta_boxes(){
         'high' // Priority
     );
 }
+add_action('add_meta_boxes', 'add_collection_meta_boxes');
 
 // hour display booking meta box
 function display_booking_meta_box($post){
@@ -175,10 +176,10 @@ function display_saver_booking_meta_box($post){
 
 // collection display booking meta box
 function display_collection_meta_box($post){
-    $date = get_post_meta($post->ID, '_collection_date', true);
-    $time_slot = get_post_meta($post->ID, '_collection_time_slot', true);
-    $status = get_post_meta($post->ID, '_collection_status', true);
-    $price = get_post_meta($post->ID, '_collection_price', true);
+    $date = get_post_meta($post->ID, '_collection_booking_date', true);
+    $time_slot = get_post_meta($post->ID, '_collection_booking_time_slot', true);
+    $status = get_post_meta($post->ID, '_collection_booking_status', true);
+    $price = get_post_meta($post->ID, '_collection_booking_price', true);
     ?>
         <div class="booking-form">
             <!-- Date Field -->
@@ -188,8 +189,6 @@ function display_collection_meta_box($post){
             <!-- Time Slot Field -->
             <label for="collection_booking_time_slot">Time Slot:</label>
             <select name="collection_booking_time_slot" id="collection_booking_time_slot">
-                <option value="8am - 9am" <?php selected($time_slot, '8am - 9am'); ?>>8am - 9am</option>
-                <option value="9am - 10am" <?php selected($time_slot, '9am - 10am'); ?>>9am - 10am</option>
                 <option value="10am - 11am" <?php selected($time_slot, '10am - 11am'); ?>>10am - 11am</option>
                 <option value="11am - 12pm" <?php selected($time_slot, '11am - 12pm'); ?>>11am - 12pm</option>
                 <option value="12pm - 1pm" <?php selected($time_slot, '12pm - 1pm'); ?>>12pm - 1pm</option>
@@ -200,8 +199,6 @@ function display_collection_meta_box($post){
                 <option value="5pm - 6pm" <?php selected($time_slot, '5pm - 6pm'); ?>>5pm - 6pm</option>
                 <option value="6pm - 7pm" <?php selected($time_slot, '6pm - 7pm'); ?>>6pm - 7pm</option>
                 <option value="7pm - 8pm" <?php selected($time_slot, '7pm - 8pm'); ?>>7pm - 8pm</option>
-                <option value="8pm - 9pm" <?php selected($time_slot, '8pm - 9pm'); ?>>8pm - 9pm</option>
-                <option value="9pm - 10pm" <?php selected($time_slot, '9pm - 10pm'); ?>>9pm - 10pm</option>
             </select>
 
             <!-- Status Field -->
