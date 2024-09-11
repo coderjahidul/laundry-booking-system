@@ -92,8 +92,6 @@ function lbs_bookslot_click_collect_function() {
             <?php lbs_collection(); ?>
         </div>
     </div>
-    <!-- add address from -->
-    <?php add_address_from();?>
     
      
 <?php

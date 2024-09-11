@@ -125,7 +125,36 @@ function lbs_collection() {
     ?>
 <!-- Click & Collect Section -->
 <div class="collect-section tab-pane fade show active" id="click-collect" role="tabpanel" aria-labelledby="click-collect-tab">
-    <h2 class="text-center mb-4">Choose a store for collection</h2>
+    <?php 
+        $user_id = get_current_user_id();
+        $selected_store_id = get_user_meta($user_id, 'selected_store_id', true);
+
+        // if selected store is not set
+        if(!$selected_store_id){
+            ?>
+                <div class="collection-address" id="show-collection-address">
+                    <h2 class="text-center mb-4">Choose a store for collection</h2>
+                </div>
+            <?php
+        }else{
+            ?>
+            <div class="collection-address">
+                <div class="header">
+                    <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
+                    <div class="title">
+                        <h3>Collection from</h3>
+                    </div>
+                </div>
+                <!-- Selected Address Section -->
+                <div class="address" id="show-selected-store-address">
+                    <?php 
+                        selected_store_address();
+                    ?>
+                </div>
+            </div>
+            <?php
+        }
+    ?>
 
     <!-- Search Bar -->
     <div class="row justify-content-center mb-4">
@@ -141,61 +170,61 @@ function lbs_collection() {
 
     <!-- Store Cards -->
     <div class="row">
-        <div class="col-md-3 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Morningside</h5>
-                    <p class="card-text">
-                        145 Morningside Road<br>
-                        Edinburgh<br>
-                        EH10 4AX<br>
-                        <strong>5.3 miles away</strong><br>
-                    </p>
-                    <p class="card-text">Car park or in-store collection</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Comely Bank</h5>
-                    <p class="card-text">
-                        38 Comely Bank Road<br>
-                        Edinburgh<br>
-                        EH4 1AW<br>
-                        <strong>6 miles away</strong><br>
-                    </p>
-                    <p class="card-text">Car park or in-store collection</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Stirling</h5>
-                    <p class="card-text">
-                        Waitrose Ltd Burghmuir Road<br>
-                        FK7 7GX<br>
-                        <strong>35.5 miles away</strong><br>
-                    </p>
-                    <p class="card-text">Car park or in-store collection</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Byres Road</h5>
-                    <p class="card-text">
-                        373 Byres Road<br>
-                        Glasgow<br>
-                        G12 8AU<br>
-                        <strong>47.3 miles away</strong><br>
-                    </p>
-                    <p class="card-text">In-store collection</p>
-                </div>
-            </div>
-        </div>
+        <?php 
+            $args = array(
+                'post_type' => 'store',
+                'posts_per_page' => -1,
+                'order' => 'ASC',
+            );
+            $store = new WP_Query($args);
+            if($store->have_posts()){
+                while($store->have_posts()){
+                    $store->the_post();
+                    $post_id = get_the_ID();
+                    $store_name = get_post_meta($post_id, '_store_name', true);
+                    $store_address = get_post_meta($post_id, '_store_address', true);
+                    $store_postcode = get_post_meta($post_id, '_store_postcode', true);
+                    $store_distance = get_post_meta($post_id, '_store_distance', true);
+                    $store_description = get_post_meta($post_id, '_store_description', true);
+
+                    // if selected store id and post id matches then add selected class
+                    if($selected_store_id == $post_id){
+                        ?>
+                            <div class="col-md-3 mb-3 store-list">
+                                <div class="card collection-store select-store h-100 selected" data-post-id = <?= $post_id; ?>>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $store_name; ?></h5>
+                                        <p class="card-text">
+                                            <?php echo $store_address; ?><br>
+                                            <?php echo $store_postcode;?><br>
+                                            <strong><?php echo $store_distance; ?></strong><br>
+                                        </p>
+                                        <p class="card-text"><?php echo $store_description; ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                    }else{
+                        ?>
+                            <div class="col-md-3 mb-3 store-list">
+                                <div class="card collection-store select-store h-100" data-post-id = <?= $post_id; ?>>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $store_name; ?></h5>
+                                        <p class="card-text">
+                                            <?php echo $store_address; ?><br>
+                                            <?php echo $store_postcode;?><br>
+                                            <strong><?php echo $store_distance; ?></strong><br>
+                                        </p>
+                                        <p class="card-text"><?php echo $store_description; ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                    }
+                }
+            }
+        ?>
+        
     </div>
 
     <!-- Accordion for Additional Information -->
@@ -983,6 +1012,18 @@ function booking_slot_date_time($user_bookings_slot_id) {
             $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
             echo $booking_slot_date . " " . $booking_slot_time;
         }
+    }
+}
+
+// selected store address function
+function selected_store_address(){
+    $user_id = get_current_user_id();
+    $selected_store_id = get_user_meta($user_id, 'selected_store_id', true);
+    if(!empty($selected_store_id)){
+        $store_name = get_post_meta($selected_store_id, '_store_name', true);
+        echo "Waitrose & Partners " .  $store_name;
+    }else{
+        // No match found
     }
 }
 

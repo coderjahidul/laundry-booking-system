@@ -107,6 +107,23 @@ function cancel_booking_slot() {
 add_action('wp_ajax_cancel_booking_slot', 'cancel_booking_slot');
 add_action('wp_ajax_nopriv_cancel_booking_slot', 'cancel_booking_slot');
 
+// Update Selected Store
+function update_selected_store() {
+    if(isset($_POST['post_id']) && !empty($_POST['post_id'])) {
+        $post_id = intval($_POST['post_id']);
+        $user_id = get_current_user_id();
+        update_user_meta($user_id, 'selected_store_id', $post_id);
+
+        // get store name from database by post id
+        $store_name = get_post_meta($post_id, '_store_name', true);
+        wp_send_json_success(array('store_name' => $store_name));
+    }else {
+        wp_send_json_error(array('message' => 'Error updating selected store.'));
+    }
+}
+add_action('wp_ajax_update_selected_store', 'update_selected_store');
+add_action('wp_ajax_nopriv_update_selected_store', 'update_selected_store');
+
 // Add delivery cost in checkout 
 add_action( 'woocommerce_cart_calculate_fees', 'add_delivery_cost' );
 
@@ -138,6 +155,8 @@ function add_delivery_cost( $cart ) {
     }
     
 }
+
+
 
 
 

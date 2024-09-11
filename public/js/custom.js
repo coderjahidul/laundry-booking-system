@@ -239,6 +239,51 @@ jQuery(document).ready(function($){
         })
 
     });
+    // Select Store
+    $('.select-store').on('click', function () {
+        // Remove 'selected' class from all store cards
+        $('.select-store').removeClass('selected');
+
+        // Add 'selected' class to the clicked store card
+        $(this).addClass('selected');
+
+        let postId = $(this).data('post-id');
+        console.log('Selected Post ID:', postId); // Debugging line
+
+        $.ajax({
+            type: 'POST',
+            url: ajax_object.ajaxurl,
+            data: {
+                action: 'update_selected_store',
+                post_id: postId,
+            },
+            success: function(response){
+                if(response.success){
+                    let storeName = response.data.store_name;
+                    //console.log('Selected store:', storeName); // Debugging line
+
+                    // Add the store name to the HTML
+                    $('#show-collection-address').html(
+                        `<div class="header">
+                            <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
+                            <div class="title">
+                                <h3>Collection from</h3>
+                            </div>
+                        </div>
+                        <!-- Selected Address Section -->
+                        <div class="address" id="show-selected-store-address">` + response + `</div>`
+                    );
+                    // Update the store name in the HTML
+                    $('#show-selected-store-address').html("Waitrose & Partners" + " " + storeName);
+                }else{
+                    console.log('Failed to select the store.');
+                }
+            },
+            error: function(){
+                console.log('There was an error.');
+            }
+        })
+    });
 });
 
 

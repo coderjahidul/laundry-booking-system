@@ -124,6 +124,7 @@
     text-align: center;
 }
 
+
 .bookslot-delivery .header {
     display: flex;
     justify-content: center;
@@ -226,7 +227,8 @@
 }
 
 
-.bookslot-delivery .address-card.selected {
+.bookslot-delivery .address-card.selected,
+.store-list .collection-store.selected {
     border: 1px solid green !important;
 }
 
@@ -474,4 +476,12 @@
 }
 .slot-modal .btn-close {
     padding: 0 10px !important;
+}
+/* store-list */
+.store-list .collection-store {
+    cursor: pointer;
+}
+.collect-section .collection-address {
+    padding: 20px;
+    text-align: center;
 }
