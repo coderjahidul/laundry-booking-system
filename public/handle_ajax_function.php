@@ -48,9 +48,30 @@ function update_booking_slot() {
 
         // if previous booking slot id is not empty then update previous booking slot status to available
         if (!empty($get_previous_bookings_slot_id) ) {
-            update_post_meta($get_previous_bookings_slot_id, '_booking_status', 'available');
-            update_post_meta($get_previous_bookings_slot_id, '_saver_booking_status', 'available');
-            update_post_meta($get_previous_bookings_slot_id, '_collection_booking_status', 'available');
+            global $wpdb;
+            // Query to get the post ID where _booking_status exists
+            $hour_booking_post_id = $wpdb->get_col(
+                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_status'"
+            );
+            $saver_booking_post_id = $wpdb->get_col(
+                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_saver_booking_status'"
+            );
+            $collection_booking_post_id = $wpdb->get_col(
+                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_collection_booking_status'"
+            );
+
+
+            // Check if a post ID was found
+            if ( in_array( $get_previous_bookings_slot_id, $hour_booking_post_id) ) {
+                // Update the booking status meta key for the found post
+                update_post_meta($get_previous_bookings_slot_id, '_booking_status', 'available');
+            }elseif( in_array( $get_previous_bookings_slot_id, $saver_booking_post_id) ) {
+                // Update the booking status meta key for the found post
+                update_post_meta($get_previous_bookings_slot_id, '_saver_booking_status', 'available');
+            }elseif( in_array( $get_previous_bookings_slot_id, $collection_booking_post_id) ) {    
+                // Update the booking status meta key for the found post
+                update_post_meta($get_previous_bookings_slot_id, '_collection_booking_status', 'available');
+            }
         }
 
         // Update the new selected_booking_slot_id post meta value
@@ -62,9 +83,13 @@ function update_booking_slot() {
         $bookings_slot_status = intval($_POST['bookings_slot_status']);
 
         // Update booking slot status
-        update_post_meta($bookings_slot_id, '_booking_status', 'fully_booked');
-        update_post_meta($bookings_slot_id, '_saver_booking_status', 'fully_booked');
-        update_post_meta($bookings_slot_id, '_collection_booking_status', 'fully_booked');
+        if(in_array($bookings_slot_id, $hour_booking_post_id)) {
+            update_post_meta($bookings_slot_id, '_booking_status', 'fully_booked');
+        }elseif(in_array($bookings_slot_id, $saver_booking_post_id)) {
+            update_post_meta($bookings_slot_id, '_saver_booking_status', 'fully_booked');
+        }elseif(in_array($bookings_slot_id, $collection_booking_post_id)) {
+            update_post_meta($bookings_slot_id, '_collection_booking_status', 'fully_booked');
+        }
 
         // Slot Booking Current Time
         $time_format = get_option('time_format');
@@ -93,10 +118,29 @@ function cancel_booking_slot() {
         $user_id = get_current_user_id();
         // get selected booking slot id
         $selected_booking_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+        
+        global $wpdb;
+
+        // Query to get the post IDs for each booking status
+        $hour_booking_post_ids = $wpdb->get_col(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_status'"
+        );
+        $saver_booking_post_ids = $wpdb->get_col(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_saver_booking_status'"
+        );
+        $collection_booking_post_ids = $wpdb->get_col(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_collection_booking_status'"
+        );
+
         // Update booking slot status to available
-        update_post_meta($selected_booking_slot_id, '_booking_status', 'available');
-        update_post_meta($selected_booking_slot_id, '_saver_booking_status', 'available');
-        update_post_meta($selected_booking_slot_id, '_collection_booking_status', 'available');
+        if (in_array($selected_booking_slot_id, $hour_booking_post_ids)) {
+            update_post_meta($selected_booking_slot_id, '_booking_status', 'available');
+        } elseif (in_array($selected_booking_slot_id, $saver_booking_post_ids)) {
+            update_post_meta($selected_booking_slot_id, '_saver_booking_status', 'available');
+        } elseif (in_array($selected_booking_slot_id, $collection_booking_post_ids)) {
+            update_post_meta($selected_booking_slot_id, '_collection_booking_status', 'available');
+        }
+
 
         // cancle booking slot select to update selected booking slot to empty
         update_user_meta($user_id, 'selected_booking_slot', '');
@@ -119,7 +163,9 @@ function update_selected_store() {
 
         // get store name from database by post id
         $store_name = get_post_meta($post_id, '_store_name', true);
-        wp_send_json_success(array('store_name' => $store_name));
+        $store_address = get_post_meta($post_id, '_store_address', true);
+        $store_postcode = get_post_meta($post_id, '_store_postcode', true);
+        wp_send_json_success(array('store_name' => $store_name, 'store_name' => $store_name, 'store_address' => $store_address, 'store_postcode' => $store_postcode));
     }else {
         wp_send_json_error(array('message' => 'Error updating selected store.'));
     }

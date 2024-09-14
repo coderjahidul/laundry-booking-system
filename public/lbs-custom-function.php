@@ -1013,12 +1013,38 @@ function lbs_reserved_slot($user_id){
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="info-box">
+                    <?php 
+                    $user_id = get_current_user_id(); 
+                    global $wpdb;
+
+                    // get post meta table from database postmeta
+                    $table_name = $wpdb->prefix . 'postmeta';
+                    $meta_key = '_collection_booking_status';
+                    // Prepare the SQL query and use placeholders to avoid SQL injection
+                    $sql = $wpdb->prepare("SELECT post_id FROM $table_name WHERE meta_key = %s", $meta_key);
+                    $get_collection_slot_ids = $wpdb->get_col($sql); // Fetch post IDs as an array
+                    $get_selected_booking_slot = get_user_meta($user_id, 'selected_booking_slot', true);
+
+                    // Debug check to see if the selected slot is in the array
+                    if (in_array($get_selected_booking_slot, $get_collection_slot_ids)) {
+                        ?>
+                        <div class="info-box collection">
+                            <strong id="collection-title">Collection address</strong>
+                            <p id="show-selected-collection">
+                                <?php collection_address(); ?>
+                            </p>
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="info-box delivery">
                             <strong>Delivery address</strong>
                             <p id="show-selected-delivery">
                                 <?php selected_address(); ?>
                             </p>
                         </div>
+                        <?php
+                    }?>
                     </div>
                 </div>
 
@@ -1227,6 +1253,15 @@ function selected_address(){
     }
 }
 
+function collection_address(){
+    $selected_store_id = get_user_meta(get_current_user_id(), 'selected_store_id', true);
+    $store_name = get_post_meta($selected_store_id, '_store_name', true);
+    $store_address = get_post_meta($selected_store_id, '_store_address', true);
+    $store_postcode = get_post_meta($selected_store_id, '_store_postcode', true);
+
+    echo "Waitrose & Partners, " . $store_name . ', ' . $store_address . ', ' . $store_postcode;
+}
+
 // Booking slot date and time function
 function booking_slot_date_time($user_bookings_slot_id) {
     if( get_post_meta($user_bookings_slot_id, '_booking_date', true) &&  get_post_meta($user_bookings_slot_id, '_booking_time_slot', true)) {
@@ -1237,6 +1272,15 @@ function booking_slot_date_time($user_bookings_slot_id) {
             $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
             echo $booking_slot_date . " " . $booking_slot_time;
         }
+    }elseif(get_post_meta($user_bookings_slot_id, '_collection_booking_date', true) &&  get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true)){
+        $booking_slot_date = get_post_meta($user_bookings_slot_id, '_collection_booking_date', true);
+        $booking_slot_time = get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true);
+
+        if(isset($booking_slot_date) && isset($booking_slot_time)){
+            $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
+            echo $booking_slot_date . " " . $booking_slot_time;
+        }
+
     }else{
         $booking_slot_date = get_post_meta($user_bookings_slot_id, '_saver_booking_date', true);
         $booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true);

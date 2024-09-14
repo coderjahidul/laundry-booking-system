@@ -400,6 +400,7 @@
     padding: 20px;
     /* border-radius: 8px; */
     background-color: #ffffff;
+    height: 120px;
 }
 .reserved-slot .justify-content-center {
     margin-bottom: 10px;

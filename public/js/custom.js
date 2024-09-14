@@ -346,6 +346,8 @@ jQuery(document).ready(function($){
             success: function(response){
                 if(response.success){
                     let storeName = response.data.store_name;
+                    let storeAddress = response.data.store_address;
+                    let storePostcode = response.data.store_postcode;
                     //console.log('Selected store:', storeName); // Debugging line
 
                     // Add the store name to the HTML
@@ -361,6 +363,8 @@ jQuery(document).ready(function($){
                     );
                     // Update the store name in the HTML
                     $('#show-selected-store-address').html("Waitrose & Partners" + " " + storeName);
+                    $('#collection-title').html("Collection address");
+                    $('#show-selected-collection').html("Waitrose & Partners, " + storeName + ", " + storeAddress + ", " + storePostcode);
                 }else{
                     console.log('Failed to select the store.');
                 }
