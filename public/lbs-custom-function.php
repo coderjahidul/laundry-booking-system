@@ -1076,22 +1076,20 @@ function add_address_from(){
         <!-- First Name -->
         <div class="mb-3">
             <label for="firstName" class="form-label">First name</label>
-            <input type="text" class="form-control" name="customar_shipping_first_name" id="firstName" placeholder="First name"
-                required>
+            <input type="text" class="form-control" name="customar_shipping_first_name" id="firstName" placeholder="First name">
         </div>
 
         <!-- Last Name -->
         <div class="mb-3">
             <label for="lastName" class="form-label">Last name</label>
-            <input type="text" class="form-control" name="customar_shipping_last_name" id="lastName" placeholder="Last name"
-                required>
+            <input type="text" class="form-control" name="customar_shipping_last_name" id="lastName" placeholder="Last name">
         </div>
 
         <!-- Contact Number -->
         <div class="mb-3">
             <label for="contactNumber" class="form-label">Contact number</label>
             <input type="text" class="form-control" name="customar_shipping_phone" id="contactNumber"
-                placeholder="Contact number" required>
+                placeholder="Contact number">
             <small class="form-text text-muted">We use this if we need to contact you about your
                 order</small>
         </div>
@@ -1111,7 +1109,7 @@ function add_address_from(){
         <div class="mb-3" id="addressFinderDiv">
             <label for="addressFinder" class="form-label">Address finder</label>
             <input type="text" class="form-control" name="customar_shipping_address_or_postcode" id="addressFinder"
-                placeholder="Start typing an address or postcode" required>
+                placeholder="Start typing an address or postcode">
             <small class="form-text text-muted">Start typing an address or postcode</small>
         </div>
 
@@ -1161,8 +1159,7 @@ function add_address_from(){
             <!-- Postcode -->
             <div class="mb-3">
                 <label for="postcode" class="form-label">Postcode</label>
-                <input type="text" class="form-control" name="customar_shipping_postcode" id="postcode" placeholder="Postcode"
-                    required>
+                <input type="text" class="form-control" name="customar_shipping_postcode" id="postcode" placeholder="Postcode">
             </div>
         </div>
 
