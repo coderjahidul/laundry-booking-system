@@ -157,7 +157,7 @@ function lbs_collection() {
     ?>
 
     <!-- Search Bar -->
-    <div class="row justify-content-center mb-4">
+    <!-- <div class="row justify-content-center mb-4">
         <div class="col-md-6">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Collection from" value="EH21 6UU">
@@ -166,7 +166,7 @@ function lbs_collection() {
                 </button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Store Cards -->
     <div class="row">
@@ -1075,8 +1075,8 @@ function add_address_from(){
 
         <!-- First Name -->
         <div class="mb-3">
-            <label for="firstName" class="form-label">First name</label>
-            <input type="text" class="form-control" name="customar_shipping_first_name" id="firstName" placeholder="First name">
+            <label for="firstName" class="form-label">First name<span class="required">*</span></label>
+            <input type="text" class="form-control" name="customar_shipping_first_name" id="firstName" placeholder="First name" required>
         </div>
 
         <!-- Last Name -->
@@ -1087,9 +1087,9 @@ function add_address_from(){
 
         <!-- Contact Number -->
         <div class="mb-3">
-            <label for="contactNumber" class="form-label">Contact number</label>
+            <label for="contactNumber" class="form-label">Contact number<span class="required">*</span></label>
             <input type="text" class="form-control" name="customar_shipping_phone" id="contactNumber"
-                placeholder="Contact number">
+                placeholder="Contact number" required>
             <small class="form-text text-muted">We use this if we need to contact you about your
                 order</small>
         </div>
@@ -1106,21 +1106,21 @@ function add_address_from(){
         </div>
 
         <!-- Address Finder -->
-        <div class="mb-3" id="addressFinderDiv">
+        <!-- <div class="mb-3" id="addressFinderDiv">
             <label for="addressFinder" class="form-label">Address finder</label>
             <input type="text" class="form-control" name="customar_shipping_address_or_postcode" id="addressFinder"
                 placeholder="Start typing an address or postcode">
             <small class="form-text text-muted">Start typing an address or postcode</small>
-        </div>
+        </div> -->
 
         <!-- Enter Address Manually Button -->
-        <div class="mb-3" id="enterAddressManuallyButton">
+        <!-- <div class="mb-3" id="enterAddressManuallyButton">
             <button type="button" class="btn btn-secondary" onclick="showManualAddress()">Enter
                 address manually</button>
-        </div>
+        </div> -->
 
         <!-- Hidden Address Fields -->
-        <div id="manualAddressFields" class="d-none">
+        <div id="manualAddressFields"> <!--- Hidden function on to First add style="display: none" in this div--->
             <!-- Address line 1 -->
             <div class="mb-3">
                 <label for="addressLine1" class="form-label">Address line 1</label>
@@ -1130,51 +1130,49 @@ function add_address_from(){
 
             <!-- Address line 2 -->
             <div class="mb-3">
-                <label for="addressLine2" class="form-label">Address line 2
-                    <span>(optional)</span></label>
+                <label for="addressLine2" class="form-label">Address line 2</label>
                 <input type="text" class="form-control" name="customar_shipping_address_2" id="addressLine2"
                     placeholder="Address line 2">
             </div>
 
             <!-- Address line 3 -->
             <div class="mb-3">
-                <label for="addressLine3" class="form-label">Address line 3
-                    <span>(optional)</span></label>
+                <label for="addressLine3" class="form-label">Address line 3</label>
                 <input type="text" class="form-control" name="customar_shipping_address_3" id="addressLine3"
                     placeholder="Address line 3">
             </div>
 
             <!-- Town -->
             <div class="mb-3">
-                <label for="town" class="form-label">Town <span>(optional)</span></label>
-                <input type="text" class="form-control" name="customar_shipping_city" id="town" placeholder="Town">
+                <label for="town" class="form-label">City <span class="required">*</span></label>
+                <input type="text" class="form-control" name="customar_shipping_city" id="town" placeholder="Town" required>
             </div>
 
             <!-- County -->
             <div class="mb-3">
-                <label for="county" class="form-label">County <span>(optional)</span></label>
+                <label for="county" class="form-label">County </label>
                 <input type="text" class="form-control" name="customar_shipping_state" id="county" placeholder="County">
             </div>
 
             <!-- Postcode -->
             <div class="mb-3">
-                <label for="postcode" class="form-label">Postcode</label>
-                <input type="text" class="form-control" name="customar_shipping_postcode" id="postcode" placeholder="Postcode">
+                <label for="postcode" class="form-label">Postcode<span class="required">*</span></label>
+                <input type="text" class="form-control" name="customar_shipping_postcode" id="postcode" placeholder="Postcode" required>
             </div>
         </div>
 
         <!-- Save and Select Button -->
-        <button type="submit" class="btn btn-dark w-100">Save and select</button>
+        <button type="submit" class="btn btn-dark w-100">Save</button>
     </form>
 </div>
 <!-- JavaScript to Show Hidden Fields -->
-<script>
+<!-- <script>
     function showManualAddress() {
         document.getElementById('manualAddressFields').classList.remove('d-none');
         document.getElementById('enterAddressManuallyButton').classList.add('d-none');
         document.getElementById('addressFinderDiv').classList.add('d-none');
     }
-</script>
+</script> -->
 <?php
 return ob_get_clean();
 }

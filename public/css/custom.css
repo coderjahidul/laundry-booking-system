@@ -441,6 +441,9 @@
     /* display: block; */
     margin-bottom: 0 !important;
 }
+.add-address-from label .required {
+    color: red;
+}
 .address-form-modal .btn-close {
     background-color: #fff !important;
     border:1px solid #000;
