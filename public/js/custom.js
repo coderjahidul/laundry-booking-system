@@ -377,41 +377,65 @@ jQuery(document).ready(function($){
     });
 
     // Address Autocomplete Function
-    $(document).ready(function () {
-        $('#address_autocomplete').on('input', function() {
-            let query = $(this).val();
-            let $suggestionsList = $('#suggestions');
     
-            if (query.length > 2) {
-                $.ajax({
-                    url: `https://api.radar.io/v1/search/autocomplete`,
-                    type: 'GET',
-                    data: { query: query },
-                    headers: {
-                        'Authorization': 'prj_test_sk_0df413283b3edd9536fbc5e24510e670eec6bb29'
-                    },
-                    success: function(response) {
-                        let suggestions = response.addresses;
-                        $suggestionsList.empty();
-    
-                        suggestions.forEach(function(suggestion) {
-                            let displayText = suggestion.formattedAddress;
-                            if (suggestion.postcode) {
-                                displayText += ', ' + suggestion.postcode;
-                            }
-                            let $div = $('<div>').text(displayText);
-                            $div.on('click', function() {
-                                $('#address_autocomplete').val(displayText);
-                                $suggestionsList.empty();
-                            });
-                            $suggestionsList.append($div);
+    $('#address_autocomplete').on('input', function() {
+        let query = $(this).val();
+        let $suggestionsList = $('#suggestions');
+
+        if (query.length > 2) {
+            $.ajax({
+                url: `https://api.radar.io/v1/search/autocomplete`,
+                type: 'GET',
+                data: { query: query },
+                headers: {
+                    'Authorization': 'prj_test_sk_0df413283b3edd9536fbc5e24510e670eec6bb29'
+                },
+                success: function(response) {
+                    let suggestions = response.addresses;
+                    $suggestionsList.empty();
+
+                    suggestions.forEach(function(suggestion) {
+                        let displayText = suggestion.formattedAddress;
+                        if (suggestion.postcode) {
+                            displayText += ', ' + suggestion.postcode;
+                        }
+                        let $div = $('<div>').text(displayText);
+                        $div.on('click', function() {
+                            $('#address_autocomplete').val(displayText);
+                            $suggestionsList.empty();
                         });
-                    }
+                        $suggestionsList.append($div);
+                    });
+                }
+            });
+        } else {
+            $suggestionsList.empty();
+        }
+    });
+
+    // Load shipping areas
+    $.ajax({
+        url: ajax_object.ajaxurl, // WordPress built-in AJAX URL.
+        method: 'POST',
+        data: {
+            action: 'get_shipping_areas',
+        },
+        success: function(response) {
+            if (response.success) {
+                var $select = $('#select_area');
+                $select.empty(); // Clear existing options.
+                
+                // Loop through the shipping areas and append them to the select.
+                $.each(response.data, function(index, area) {
+                    $select.append('<option value="' + area.title + '">' + area.title + '</option>');
                 });
             } else {
-                $suggestionsList.empty();
+                alert('Failed to load shipping areas.');
             }
-        });
+        },
+        error: function() {
+            alert('AJAX error.');
+        }
     });
 });
 

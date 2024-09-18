@@ -51,6 +51,24 @@ function create_collection_post_type() {
 
 add_action('init', 'create_collection_post_type');
 
+// custom post type for shipping Area
+function create_shipping_area_post_type() {
+    register_post_type('shipping-area',
+        array(
+            'labels' => array(
+                'name' => __('Shipping Area'),
+                'singular_name' => __('Shipping Area')
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'menu_icon' => 'dashicons-location',
+            'supports' => array('title'),
+        )
+    );
+}
+
+add_action('init', 'create_shipping_area_post_type');
+
 
 // add meta box for custom fields in booking post type
 function add_booking_meta_boxes(){
@@ -316,7 +334,7 @@ function create_store_post_type() {
             ),
             'public' => true,
             'has_archive' => true,
-            'menu_icon' => 'dashicons-location',
+            'menu_icon' => 'dashicons-store',
             'supports' => array('title'),
         )
     );

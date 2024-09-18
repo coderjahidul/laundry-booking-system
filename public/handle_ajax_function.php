@@ -218,16 +218,9 @@ function add_delivery_cost( $cart ) {
 
 // Address Autocomplete API call 
 function handle_address_autocomplete() {
-    check_ajax_referer('address_autocomplete_nonce', 'nonce');
-
     $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
-
     $secret_key = 'prj_test_sk_0df413283b3edd9536fbc5e24510e670eec6bb29';
-    $response = wp_remote_get("https://api.radar.io/v1/search/autocomplete?query=" . urlencode($query), array(
-        'headers' => array(
-            'Authorization' => 'Bearer ' . $secret_key
-        )
-    ));
+    $response = wp_remote_get("https://api.radar.io/v1/search/autocomplete?query=" . urlencode($query), array('headers' => array('Authorization' => 'Bearer ' . $secret_key)));
 
     if (is_wp_error($response)) {
         wp_send_json_error('Failed to retrieve suggestions');
@@ -241,6 +234,40 @@ function handle_address_autocomplete() {
 add_action('wp_ajax_address_autocomplete', 'handle_address_autocomplete');
 add_action('wp_ajax_nopriv_address_autocomplete', 'handle_address_autocomplete');
 
+// Get Shipping Areas ajax call
+function get_shipping_areas() {
+    // Check if this is an AJAX request.
+    if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+        return;
+    }
+
+    // Query the 'shipping-area' custom post type.
+    $args = array(
+        'post_type' => 'shipping-area',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+    );
+
+    $shipping_areas = new WP_Query($args);
+
+    $areas = array();
+
+    if ($shipping_areas->have_posts()) {
+        while ($shipping_areas->have_posts()) {
+            $shipping_areas->the_post();
+            $areas[] = array(
+                'id' => get_the_ID(),
+                'title' => get_the_title(),
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    // Return the data as JSON.
+    wp_send_json_success($areas);
+}
+add_action('wp_ajax_get_shipping_areas', 'get_shipping_areas');
+add_action('wp_ajax_nopriv_get_shipping_areas', 'get_shipping_areas');
 
 
 

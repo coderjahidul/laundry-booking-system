@@ -1116,10 +1116,9 @@ function add_address_from(){
         <div class="mb-3">
             <label for="country" class="form-label">Country</label>
             <select class="form-select" name="customar_shipping_country" id="country" aria-label="Country select">
-                <option value="united-kingdom" selected disabled>United Kingdom</option>
-                <option value="bangladesh">Bangladesh</option>
-                <option value="india">India</option>
-                <option value="pakistan">Pakistan</option>
+                <option value="united-kingdom" selected>United Kingdom</option>
+                <option value="jersey">Jersey</option>
+                <option value="guernsey">Guernsey</option>
             </select>
         </div>
 
@@ -1158,21 +1157,17 @@ function add_address_from(){
 
             <!-- Address line 3 -->
             <div class="mb-3">
-                <label for="addressLine3" class="form-label">Address line 3</label>
-                <input type="text" class="form-control" name="customar_shipping_address_3" id="addressLine3"
-                    placeholder="Address line 3">
+                <label for="select_area" class="form-label">Select Area</label>
+                <select class="form-select" name="customar_shipping_address_3" id="select_area" aria-label="Area select">
+                    <option value="" selected disabled>Select Shipping Area</option>
+                </select>
             </div>
+
 
             <!-- Town -->
             <div class="mb-3">
                 <label for="town" class="form-label">City <span class="required">*</span></label>
-                <input type="text" class="form-control" name="customar_shipping_city" id="town" placeholder="Town">
-            </div>
-
-            <!-- County -->
-            <div class="mb-3">
-                <label for="county" class="form-label">County </label>
-                <input type="text" class="form-control" name="customar_shipping_state" id="county" placeholder="County">
+                <input type="text" class="form-control" name="customar_shipping_city" id="town" placeholder="City">
             </div>
 
             <!-- Postcode -->
