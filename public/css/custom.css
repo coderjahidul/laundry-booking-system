@@ -514,3 +514,21 @@
     padding: 20px;
     text-align: center;
 }
+#suggestions {
+    border: 1px solid #ddd;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+}
+
+#suggestions div {
+    padding: 10px;
+    cursor: pointer;
+    width: 600px;
+}
+
+#suggestions div:hover {
+    background-color: #f0f0f0;
+}

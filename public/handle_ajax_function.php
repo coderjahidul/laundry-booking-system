@@ -14,14 +14,21 @@ function update_selected_address() {
 
         global $wpdb;
         $table_name = $wpdb->prefix . 'lbs_customar_address';
-        $sql = "SELECT id, city, postcode FROM $table_name WHERE user_id = $user_id";
+        $sql = "SELECT id, address_or_postcode, city, postcode FROM $table_name WHERE user_id = $user_id";
         $get_selected_address = $wpdb->get_results($sql);
         $selected_address_id = get_user_meta($user_id, 'selected_address', true);
         foreach($get_selected_address as $address){
+            $address_or_postcode = $address->address_or_postcode;
             $city = $address->city;
             $postcode = $address->postcode;
-            if($address->id == $selected_address_id){
-                wp_send_json_success(array('city' => $city, 'postcode' => $postcode));
+            if($address->id == $selected_address_id && !empty($address_or_postcode)){
+                $selected_address = $address_or_postcode;
+                // wp_send_json_success(array('address_or_postcode' => $address_or_postcode));
+                wp_send_json_success(array('selected_address' => $selected_address));
+            }elseif($address->id == $selected_address_id && !empty($city) && !empty($postcode)){
+                $selected_address = $city . ' - ' . $postcode;
+                // wp_send_json_success(array('city' => $city, 'postcode' => $postcode));
+                wp_send_json_success(array('selected_address' => $selected_address));
             }
 
         }
@@ -208,6 +215,32 @@ function add_delivery_cost( $cart ) {
     }
     
 }
+
+// Address Autocomplete API call 
+function handle_address_autocomplete() {
+    check_ajax_referer('address_autocomplete_nonce', 'nonce');
+
+    $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
+
+    $secret_key = 'prj_test_sk_0df413283b3edd9536fbc5e24510e670eec6bb29';
+    $response = wp_remote_get("https://api.radar.io/v1/search/autocomplete?query=" . urlencode($query), array(
+        'headers' => array(
+            'Authorization' => 'Bearer ' . $secret_key
+        )
+    ));
+
+    if (is_wp_error($response)) {
+        wp_send_json_error('Failed to retrieve suggestions');
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    wp_send_json_success($data['addresses']);
+}
+add_action('wp_ajax_address_autocomplete', 'handle_address_autocomplete');
+add_action('wp_ajax_nopriv_address_autocomplete', 'handle_address_autocomplete');
+
 
 
 

@@ -27,10 +27,11 @@ jQuery(document).ready(function($){
             },
             success: function(response) {
                 if (response.success) {
-                    let city = response.data.city;
-                    let postcode = response.data.postcode;
-                    $('#show-selected-address').html('<span>' + city + ' - ' + postcode + '</span>');
-                    $('#show-selected-delivery').html(city + ' - ' + postcode);
+                    // let city = response.data.city;
+                    // let postcode = response.data.postcode;
+                    let selected_address = response.data.selected_address;
+                    $('#show-selected-address').html('<span>' + selected_address + '</span>');
+                    $('#show-selected-delivery').html(selected_address);
                 } else {
                     console.log('Failed to select the address.');
                 }
@@ -374,6 +375,45 @@ jQuery(document).ready(function($){
             }
         })
     });
+
+    // Address Autocomplete Function
+    $(document).ready(function () {
+        $('#address_autocomplete').on('input', function() {
+            let query = $(this).val();
+            let $suggestionsList = $('#suggestions');
+    
+            if (query.length > 2) {
+                $.ajax({
+                    url: `https://api.radar.io/v1/search/autocomplete`,
+                    type: 'GET',
+                    data: { query: query },
+                    headers: {
+                        'Authorization': 'prj_test_sk_0df413283b3edd9536fbc5e24510e670eec6bb29'
+                    },
+                    success: function(response) {
+                        let suggestions = response.addresses;
+                        $suggestionsList.empty();
+    
+                        suggestions.forEach(function(suggestion) {
+                            let displayText = suggestion.formattedAddress;
+                            if (suggestion.postcode) {
+                                displayText += ', ' + suggestion.postcode;
+                            }
+                            let $div = $('<div>').text(displayText);
+                            $div.on('click', function() {
+                                $('#address_autocomplete').val(displayText);
+                                $suggestionsList.empty();
+                            });
+                            $suggestionsList.append($div);
+                        });
+                    }
+                });
+            } else {
+                $suggestionsList.empty();
+            }
+        });
+    });
 });
+
 
 

@@ -6,13 +6,14 @@ function lbs_delevery() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'lbs_customar_address';
     $user_id = get_current_user_id();
-    $sql = "SELECT id, city, postcode FROM $table_name WHERE user_id = $user_id";
+    $sql = "SELECT id, address_or_postcode, city, postcode FROM $table_name WHERE user_id = $user_id";
     $get_shipping_address = $wpdb->get_results($sql);
     // check if city and postcode not empty
     $get_shipping_city = isset($get_shipping_address[0]->city) ? $get_shipping_address[0]->city : '';
     $get_shipping_postcode = isset($get_shipping_address[0]->postcode) ? $get_shipping_address[0]->postcode : '';
+    $get_address_or_postcode = isset($get_shipping_address[0]->address_or_postcode) ? $get_shipping_address[0]->address_or_postcode : '';
     
-    if($get_shipping_city && $get_shipping_postcode){
+    if($get_shipping_city && $get_shipping_postcode && $get_address_or_postcode || !empty($get_shipping_address)){
         ?>
         <!-- Delivery Section -->
         <div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
@@ -37,25 +38,42 @@ function lbs_delevery() {
                 <?php 
                    $selected_address_id = get_user_meta($user_id, 'selected_address', true);
                    foreach ($get_shipping_address as $shipping_address) {
+                        $address_or_postcode = $shipping_address->address_or_postcode;
                         $city = $shipping_address->city;
                         $postcode = $shipping_address->postcode;
                         $post_id = $shipping_address->id;
                         if($selected_address_id == $post_id ){
-                            ?>
-                                <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
-                                    <span><?= $city; ?></span>
-                                    <br>
-                                    <span><?= $postcode; ?></span>
-                                </div>
-                            <?php
+                            if(!empty($address_or_postcode)){
+                                ?>
+                                    <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $address_or_postcode; ?></span>
+                                    </div>
+                                <?php
+                            }else{
+                                ?>
+                                    <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $city; ?></span>
+                                        <br>
+                                        <span><?= $postcode; ?></span>
+                                    </div>
+                                <?php
+                            }
                         }else{
-                            ?>
-                                <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
-                                    <span><?= $city; ?></span>
-                                    <br>
-                                    <span><?= $postcode; ?></span>
-                                </div>
-                            <?php
+                            if(!empty($address_or_postcode)){
+                                ?>
+                                    <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $address_or_postcode; ?></span>
+                                    </div>
+                                <?php
+                            }else{
+                                ?>
+                                    <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $city; ?></span>
+                                        <br>
+                                        <span><?= $postcode; ?></span>
+                                    </div>
+                                <?php
+                            }
                         }
                    }
                 ?>
@@ -1087,7 +1105,7 @@ function add_address_from(){
 
         <!-- Contact Number -->
         <div class="mb-3">
-            <label for="contactNumber" class="form-label">Contact number<span class="required">*</span></label>
+            <label for="contactNumber" class="form-label">Contact number <span class="required">*</span></label>
             <input type="text" class="form-control" name="customar_shipping_phone" id="contactNumber"
                 placeholder="Contact number" required>
             <small class="form-text text-muted">We use this if we need to contact you about your
@@ -1106,21 +1124,24 @@ function add_address_from(){
         </div>
 
         <!-- Address Finder -->
-        <!-- <div class="mb-3" id="addressFinderDiv">
-            <label for="addressFinder" class="form-label">Address finder</label>
-            <input type="text" class="form-control" name="customar_shipping_address_or_postcode" id="addressFinder"
-                placeholder="Start typing an address or postcode">
-            <small class="form-text text-muted">Start typing an address or postcode</small>
-        </div> -->
+        <div class="mb-3" id="addressFinderDiv">
+            <label for="addressFinder" class="form-label">Address finder <span class="required">*</span></label>
+            <input type="text" class="form-control" name="customar_shipping_address_or_postcode" id="address_autocomplete"
+                placeholder="Start typing an address" autocomplete="off">
+            <small class="form-text text-muted">Start typing an address</small>
+        </div>
+
+        <!-- Suggestions -->
+        <div id="suggestions"></div>
 
         <!-- Enter Address Manually Button -->
-        <!-- <div class="mb-3" id="enterAddressManuallyButton">
+        <div class="mb-3" id="enterAddressManuallyButton">
             <button type="button" class="btn btn-secondary" onclick="showManualAddress()">Enter
                 address manually</button>
-        </div> -->
+        </div>
 
         <!-- Hidden Address Fields -->
-        <div id="manualAddressFields"> <!--- Hidden function on to First add style="display: none" in this div--->
+        <div id="manualAddressFields" class="d-none"> <!--- Hidden function on to First add style="display: none" in this div--->
             <!-- Address line 1 -->
             <div class="mb-3">
                 <label for="addressLine1" class="form-label">Address line 1</label>
@@ -1145,7 +1166,7 @@ function add_address_from(){
             <!-- Town -->
             <div class="mb-3">
                 <label for="town" class="form-label">City <span class="required">*</span></label>
-                <input type="text" class="form-control" name="customar_shipping_city" id="town" placeholder="Town" required>
+                <input type="text" class="form-control" name="customar_shipping_city" id="town" placeholder="Town">
             </div>
 
             <!-- County -->
@@ -1157,7 +1178,7 @@ function add_address_from(){
             <!-- Postcode -->
             <div class="mb-3">
                 <label for="postcode" class="form-label">Postcode<span class="required">*</span></label>
-                <input type="text" class="form-control" name="customar_shipping_postcode" id="postcode" placeholder="Postcode" required>
+                <input type="text" class="form-control" name="customar_shipping_postcode" id="postcode" placeholder="Postcode">
             </div>
         </div>
 
@@ -1166,20 +1187,20 @@ function add_address_from(){
     </form>
 </div>
 <!-- JavaScript to Show Hidden Fields -->
-<!-- <script>
+<script>
     function showManualAddress() {
         document.getElementById('manualAddressFields').classList.remove('d-none');
         document.getElementById('enterAddressManuallyButton').classList.add('d-none');
         document.getElementById('addressFinderDiv').classList.add('d-none');
     }
-</script> -->
+</script>
 <?php
 return ob_get_clean();
 }
 
 function handle_uk_address_form_submission() {
     // Check if the form has been submitted
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customar_shipping_first_name'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customar_shipping_first_name']) && isset($_POST['customar_shipping_city']) && isset($_POST['customar_shipping_postcode']) || $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customar_shipping_first_name']) && isset($_POST['customar_shipping_address_or_postcode'])) {
 
         // Get the user ID
         $user_id = get_current_user_id();
@@ -1235,13 +1256,16 @@ function selected_address(){
     global $wpdb;
     $table_name = $wpdb->prefix . 'lbs_customar_address';
     $user_id = get_current_user_id();
-    $sql = "SELECT id, city, postcode FROM $table_name WHERE user_id = $user_id";
+    $sql = "SELECT id, address_or_postcode, city, postcode FROM $table_name WHERE user_id = $user_id";
     $get_selected_address = $wpdb->get_results($sql);
     $selected_address_id = get_user_meta($user_id, 'selected_address', true);
     foreach($get_selected_address as $address){
+        $address_or_postcode = $address->address_or_postcode;
         $city = $address->city;
         $postcode = $address->postcode;
-        if($address->id == $selected_address_id){
+        if(!empty($address_or_postcode) && $selected_address_id == $address->id){
+            echo $address_or_postcode;
+        }elseif(!empty($city) && !empty($postcode) && $selected_address_id == $address->id){
             echo $city . ' - ' . $postcode;
         }
 
