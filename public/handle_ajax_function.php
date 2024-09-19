@@ -190,15 +190,15 @@ function add_delivery_cost( $cart ) {
 
     $user_id = get_current_user_id();
     $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
-    if(get_post_meta($user_bookings_slot_id, '_booking_price', true)){
+    if(get_post_meta($user_bookings_slot_id, '_booking_time_slot', true)){
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
         $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_time_slot', true);
         $delivery_type = "Hour";
-    }elseif(get_post_meta($user_bookings_slot_id, '_saver_booking_price', true)){
+    }elseif(get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true)){
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_saver_booking_price', true);
         $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true);
         $delivery_type = "Saver";
-    }elseif(get_post_meta($user_bookings_slot_id, '_collection_booking_price', true)){
+    }elseif(get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true)){
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_collection_booking_price', true);
         $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true);
         $delivery_type = "Collection";
@@ -210,11 +210,25 @@ function add_delivery_cost( $cart ) {
     // Add the delivery cost to the cart
     if(!empty($delivery_booking_slot_time) && !empty($delivery_type)){
         $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
-    }else{
-        // Delivery Slot not selected
+    }elseif(!empty($delivery_booking_slot_time) && empty($delivery_type)){
+        $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
     }
     
 }
+
+// Add custom address after the order total on checkout page
+function add_custom_address_after_order_total() {
+    $selected_store_id = get_user_meta(get_current_user_id(), 'selected_store_id', true);
+    $store_name = get_post_meta($selected_store_id, '_store_name', true);
+    $store_address = get_post_meta($selected_store_id, '_store_address', true);
+    $store_postcode = get_post_meta($selected_store_id, '_store_postcode', true);
+
+    $collection_store_address= "Waitrose & Partners, " . $store_name . ', ' . $store_address . ', ' . $store_postcode;
+    echo '<tr class="store-address">
+            <th>' . $collection_store_address . '</th>
+         </tr>';
+}
+add_action( 'woocommerce_review_order_after_order_total', 'add_custom_address_after_order_total' );
 
 // Address Autocomplete API call 
 function handle_address_autocomplete() {
