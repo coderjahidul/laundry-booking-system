@@ -218,15 +218,19 @@ function add_delivery_cost( $cart ) {
 
 // Add custom address after the order total on checkout page
 function add_custom_address_after_order_total() {
-    $selected_store_id = get_user_meta(get_current_user_id(), 'selected_store_id', true);
-    $store_name = get_post_meta($selected_store_id, '_store_name', true);
-    $store_address = get_post_meta($selected_store_id, '_store_address', true);
-    $store_postcode = get_post_meta($selected_store_id, '_store_postcode', true);
+    $user_id = get_current_user_id();
+    $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+    if(get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true)){
+        $selected_store_id = get_user_meta(get_current_user_id(), 'selected_store_id', true);
+        $store_name = get_post_meta($selected_store_id, '_store_name', true);
+        $store_address = get_post_meta($selected_store_id, '_store_address', true);
+        $store_postcode = get_post_meta($selected_store_id, '_store_postcode', true);
 
-    $collection_store_address= "Waitrose & Partners, " . $store_name . ', ' . $store_address . ', ' . $store_postcode;
-    echo '<tr class="store-address">
-            <th>' . $collection_store_address . '</th>
-         </tr>';
+        $collection_store_address= "Waitrose & Partners, " . $store_name . ', ' . $store_address . ', ' . $store_postcode;
+        echo '<tr class="store-address">
+                <th>' . $collection_store_address . '</th>
+            </tr>';
+    }
 }
 add_action( 'woocommerce_review_order_after_order_total', 'add_custom_address_after_order_total' );
 
