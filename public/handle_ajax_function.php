@@ -193,25 +193,31 @@ function add_delivery_cost( $cart ) {
     if(get_post_meta($user_bookings_slot_id, '_booking_time_slot', true)){
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
         $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_time_slot', true);
+        $delivery_booking_date = get_post_meta($user_bookings_slot_id, '_booking_date', true);
         $delivery_type = "Hour";
     }elseif(get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true)){
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_saver_booking_price', true);
         $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true);
+        $delivery_booking_date = get_post_meta($user_bookings_slot_id, '_saver_booking_date', true);
         $delivery_type = "Saver";
     }elseif(get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true)){
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_collection_booking_price', true);
         $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_collection_booking_time_slot', true);
+        $delivery_booking_date = get_post_meta($user_bookings_slot_id, '_collection_booking_date', true);
         $delivery_type = "Collection";
     }
     
     // Define the delivery cost and set it to 0 initially
     $delivery_cost = isset($booking_slot_price) ? $booking_slot_price : 0;
 
+    // date format to Y-m-d like Monday 23 September
+    $delivery_date = date("l, j F", strtotime($delivery_booking_date));
+
     // Add the delivery cost to the cart
     if(!empty($delivery_booking_slot_time) && !empty($delivery_type)){
-        $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
-    }elseif(!empty($delivery_booking_slot_time) && empty($delivery_type)){
-        $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+        $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+    }else{
+        // If delivery time is not set
     }
     
 }
