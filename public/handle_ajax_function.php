@@ -243,7 +243,7 @@ add_action( 'woocommerce_review_order_after_order_total', 'add_custom_address_af
 // Address Autocomplete API call 
 function handle_address_autocomplete() {
     $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
-    $secret_key = 'prj_test_sk_0df413283b3edd9536fbc5e24510e670eec6bb29';
+    $secret_key = 'prj_live_sk_827ca591a20f08a8adfbcc4b14880de5dcad2944';
     $response = wp_remote_get("https://api.radar.io/v1/search/autocomplete?query=" . urlencode($query), array('headers' => array('Authorization' => 'Bearer ' . $secret_key)));
 
     if (is_wp_error($response)) {

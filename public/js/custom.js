@@ -388,7 +388,7 @@ jQuery(document).ready(function($){
                 type: 'GET',
                 data: { query: query },
                 headers: {
-                    'Authorization': 'prj_test_sk_0df413283b3edd9536fbc5e24510e670eec6bb29'
+                    'Authorization': 'prj_live_sk_827ca591a20f08a8adfbcc4b14880de5dcad2944'
                 },
                 success: function(response) {
                     let suggestions = response.addresses;
