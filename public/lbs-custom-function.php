@@ -314,7 +314,7 @@ function lbs_choose_your_collection_slot() {
     ?>
 <div class="choose-your-slot">
     <h2 class="text-center">Choose your slot</h2>
-        <!-- Hour Section -->
+        <!-- Collection Section -->
         <?php collection_function(); ?>
 
 </div>

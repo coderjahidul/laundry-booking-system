@@ -574,8 +574,29 @@
         display: inline-block; /* Make each item appear side-by-side */
         margin-right: 20px; /* Add some spacing between items */
     }
-    .choose-your-slot-section {
-      height: 100%; /* Adjust height for mobile devices */
+    .hour-section,
+    .saver-section,
+    .collection-section{
+        width: 1190px;
+    }
+    .delivery-details .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .bookslot-delivery .address-card {
+        flex: 45%;
+    }
+    .add-address-from {
+        width: 100% !important;
+    }
+    .booking-slot .header {
+        padding: 0;
+    }
+    .booking-slot .options {
+        flex-direction: column;
+    }
+    .booking-slot .option {
+        width: 330px;
     }
   }
   
