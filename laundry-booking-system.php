@@ -225,6 +225,7 @@ function restrict_page_to_logged_in_users() {
 }
 add_action('template_redirect', 'restrict_page_to_logged_in_users');
 
+// add to cart redirect not logged in user 
 add_filter( 'woocommerce_add_to_cart_redirect', 'custom_add_to_cart_redirect' );
 function custom_add_to_cart_redirect( $url ) {
     // if user is not logged in, redirect to login page
