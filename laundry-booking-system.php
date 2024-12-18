@@ -225,6 +225,17 @@ function restrict_page_to_logged_in_users() {
 }
 add_action('template_redirect', 'restrict_page_to_logged_in_users');
 
+add_filter( 'woocommerce_add_to_cart_redirect', 'custom_add_to_cart_redirect' );
+function custom_add_to_cart_redirect( $url ) {
+    // if user is not logged in, redirect to login page
+    if (!is_user_logged_in()){
+        $redirect_url = site_url() . '/my-account';
+        return $redirect_url;
+    }else{
+        return $url;
+    }
+}
+
 
 
 
