@@ -154,19 +154,22 @@
     
 }
 
-.bookslot-delivery .change-address {
+.bookslot-delivery .change-address,
+.bookslot-delivery .change-return-address a{
     display: block;
     margin-top: 10px;
     cursor: pointer;
     font-size: 14px;
 }
-.bookslot-delivery .change-address i{
+.bookslot-delivery .change-address i,
+.bookslot-delivery .change-return-address i{
     font-size: 20px;
 }
 
 
 /* Address Options Styling */
-.bookslot-delivery .address-options {
+.bookslot-delivery .address-options,
+.bookslot-delivery .return-address-options {
     display: flex;
     gap: 10px;
     padding: 20px;

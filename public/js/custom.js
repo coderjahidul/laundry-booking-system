@@ -6,6 +6,12 @@ jQuery(document).ready(function($){
         $(".address-options").slideToggle(); // Toggle the address options
     });
 
+    // Toggle the return options
+    $(".change-return-address").click(function(e) {
+        e.preventDefault(); // Prevent the default anchor behavior
+        $(".return-address-options").slideToggle(); // Toggle the return options
+    });
+
     // Select an address
     $('.select-address').on('click', function () {
         // Remove 'selected' class from all address cards

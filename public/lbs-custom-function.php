@@ -138,6 +138,144 @@ function lbs_delevery() {
     }
 }
 
+function lbs_lave_return() {
+    $user_id = get_current_user_id();
+    // get customar all address city and postcode from table lbs_customar_address
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'lbs_customar_address';
+    $user_id = get_current_user_id();
+    $sql = "SELECT id, address_or_postcode, city, postcode FROM $table_name WHERE user_id = $user_id";
+    $get_shipping_address = $wpdb->get_results($sql);
+    // check if city and postcode not empty
+    $get_shipping_city = isset($get_shipping_address[0]->city) ? $get_shipping_address[0]->city : '';
+    $get_shipping_postcode = isset($get_shipping_address[0]->postcode) ? $get_shipping_address[0]->postcode : '';
+    $get_address_or_postcode = isset($get_shipping_address[0]->address_or_postcode) ? $get_shipping_address[0]->address_or_postcode : '';
+    
+    if($get_shipping_city && $get_shipping_postcode && $get_address_or_postcode || !empty($get_shipping_address)){
+        ?>
+        <!-- Delivery Section -->
+        <div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+            <div class="delivery-address">
+                <div class="header">
+                    <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
+                    <div class="title">
+                        <h3>The addres LAVE will return your cleaned laundry</h3>
+                    </div>
+                </div>
+                <!-- Selected Address Section -->
+                <div class="address" id="show-selected-return-address">
+                    <?php 
+                        echo selected_return_address();
+                    ?>
+                </div>
+                <a href="#" class="change-return-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+            </div>
+
+            <!-- Address Options -->
+            <div class="return-address-options" style="display: none;">
+                <?php 
+                   $selected_address_id = get_user_meta($user_id, 'selected_return_address', true);
+                   foreach ($get_shipping_address as $shipping_address) {
+                        $address_or_postcode = $shipping_address->address_or_postcode;
+                        $city = $shipping_address->city;
+                        $postcode = $shipping_address->postcode;
+                        $post_id = $shipping_address->id;
+                        if($selected_address_id == $post_id ){
+                            if(!empty($address_or_postcode)){
+                                ?>
+                                    <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $address_or_postcode; ?></span>
+                                    </div>
+                                <?php
+                            }else{
+                                ?>
+                                    <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $city; ?></span>
+                                        <br>
+                                        <span><?= $postcode; ?></span>
+                                    </div>
+                                <?php
+                            }
+                        }else{
+                            if(!empty($address_or_postcode)){
+                                ?>
+                                    <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $address_or_postcode; ?></span>
+                                    </div>
+                                <?php
+                            }else{
+                                ?>
+                                    <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                        <span><?= $city; ?></span>
+                                        <br>
+                                        <span><?= $postcode; ?></span>
+                                    </div>
+                                <?php
+                            }
+                        }
+                   }
+                ?>
+                
+                <div class="address-card add-address" data-bs-toggle="modal" data-bs-target="#myModal">
+                    <!-- <span onclick="showAddressForm()">+ Add an address</span> -->
+                    <span>+ Add an address</span>
+                </div>
+                <div class="modal fade address-form-modal" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <?php echo add_address_from();?>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <?php
+    }else{
+        ?>
+        <!-- Delivery Section -->
+        <div class="delevery-section tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+            <div class="delivery-address">
+                <div class="header">
+                    <!-- <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div> -->
+                    <div class="title">
+                        <h3>Enter your delivery postcode</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="address-cards add-address" data-bs-toggle="modal" data-bs-target="#myModal">
+                <!-- <span onclick="showAddressForm()">+ Add an address</span> -->
+                <span>+ Add an address</span>
+            </div>
+            <div class="modal fade address-form-modal" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <?php echo add_address_from();?>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <?php
+    }
+}
+
 // Collection function
 function lbs_collection() {
     ?>
@@ -340,9 +478,9 @@ function lbs_choose_lave_return_slot() {
 
     <div class="tab-content" id="ChooseYourSlotContent">
         <!-- Hour Section -->
-        <?php hour_function(); ?>
+        <?php //hour_function(); ?>
         <!-- Saver Section -->
-        <?php saver_function();?>
+        <?php //saver_function();?>
     </div>
 
 </div>
@@ -355,7 +493,7 @@ function lbs_choose_your_collect_return_slot() {
 <div class="choose-your-slot">
     <h2 class="text-center">Choose a conveneint time to pick-up your cleaned laundry</h2>
         <!-- Collection Section -->
-        <?php collection_function(); ?>
+        <?php //collection_function(); ?>
 
 </div>
 <?php
@@ -1317,6 +1455,26 @@ function selected_address(){
     $sql = "SELECT id, address_or_postcode, city, postcode FROM $table_name WHERE user_id = $user_id";
     $get_selected_address = $wpdb->get_results($sql);
     $selected_address_id = get_user_meta($user_id, 'selected_address', true);
+    foreach($get_selected_address as $address){
+        $address_or_postcode = $address->address_or_postcode;
+        $city = $address->city;
+        $postcode = $address->postcode;
+        if(!empty($address_or_postcode) && $selected_address_id == $address->id){
+            return $address_or_postcode;
+        }elseif(!empty($city) && !empty($postcode) && $selected_address_id == $address->id){
+            return $city . ' - ' . $postcode;
+        }
+
+    }
+}
+
+function selected_return_address(){
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'lbs_customar_address';
+    $user_id = get_current_user_id();
+    $sql = "SELECT id, address_or_postcode, city, postcode FROM $table_name WHERE user_id = $user_id";
+    $get_selected_address = $wpdb->get_results($sql);
+    $selected_address_id = get_user_meta($user_id, 'selected_return_address', true);
     foreach($get_selected_address as $address){
         $address_or_postcode = $address->address_or_postcode;
         $city = $address->city;
