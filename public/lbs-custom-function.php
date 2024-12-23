@@ -1425,7 +1425,7 @@ function handle_uk_address_form_submission() {
             $wpdb->insert($table_name, $data);
 
             // Redirect to bookslot delivery page
-            wp_redirect(home_url('bookslot-delivery'));
+            wp_redirect(home_url('lave-collects/'));
             exit;
         }
     }
