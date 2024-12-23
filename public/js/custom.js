@@ -63,6 +63,7 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
+        let collection_address = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
 
@@ -75,7 +76,8 @@ jQuery(document).ready(function($){
                 bookings_slot_date: bookingsSlotDate,
                 bookings_slot_time: bookingsSlotTime,
                 bookings_slot_price: bookingsSlotPrice,
-                bookings_slot_status: bookingsSlotStatus
+                bookings_slot_status: bookingsSlotStatus,
+                collection_address: collection_address
             },
             success: function(response){
                 if(response.success){
@@ -83,7 +85,14 @@ jQuery(document).ready(function($){
                     let bookings_slot_date = response.data.bookings_slot_date;
                     let bookings_slot_time = response.data.bookings_slot_time;
                     let bookings_slot_current_time = response.data.bookings_slot_current_time;
+                    let collection_address = response.data.collection_address;
                     // alert("Slot Price: " + bookings_slot_price + "Slot Date: " + bookings_slot_date + "Slot Time: " + bookings_slot_time);
+                    // show delivery title
+                    $('#collection-div-title').html("ADDRESS WHERE LAVE COLLECTS FROM");
+                    // show collection address
+                    $('#show-selected-collection-address').html(collection_address);
+                    // show collection-time-date-title
+                    $('#collection-time-date-title').html("DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
@@ -145,6 +154,7 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
+        let collectionAddress = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
 
@@ -157,7 +167,8 @@ jQuery(document).ready(function($){
                 bookings_slot_date: bookingsSlotDate,
                 bookings_slot_time: bookingsSlotTime,
                 bookings_slot_price: bookingsSlotPrice,
-                bookings_slot_status: bookingsSlotStatus
+                bookings_slot_status: bookingsSlotStatus,
+                collection_address: collectionAddress
             },
             success: function(response){
                 if(response.success){
@@ -165,7 +176,14 @@ jQuery(document).ready(function($){
                     let bookings_slot_date = response.data.bookings_slot_date;
                     let bookings_slot_time = response.data.bookings_slot_time;
                     let bookings_slot_current_time = response.data.bookings_slot_current_time;
+                    let collection_address = response.data.collection_address;
                     // alert("Slot Price: " + bookings_slot_price + "Slot Date: " + bookings_slot_date + "Slot Time: " + bookings_slot_time);
+                    // show delivery title
+                    $('#collection-div-title').html("ADDRESS WHERE LAVE COLLECTS FROM");
+                    // show collection address
+                    $('#show-selected-collection-address').html(collection_address);
+                    // show collection-time-date-title
+                    $('#collection-time-date-title').html("DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
@@ -227,8 +245,11 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
+        let collectionAddress = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
+
+        // console.log("Collection Address: " + collectionAddress);
 
         $.ajax({
             type: 'POST',
@@ -239,7 +260,8 @@ jQuery(document).ready(function($){
                 bookings_slot_date: bookingsSlotDate,
                 bookings_slot_time: bookingsSlotTime,
                 bookings_slot_price: bookingsSlotPrice,
-                bookings_slot_status: bookingsSlotStatus
+                bookings_slot_status: bookingsSlotStatus,
+                collection_address: collectionAddress
             },
             success: function(response){
                 if(response.success){
@@ -247,7 +269,14 @@ jQuery(document).ready(function($){
                     let bookings_slot_date = response.data.bookings_slot_date;
                     let bookings_slot_time = response.data.bookings_slot_time;
                     let bookings_slot_current_time = response.data.bookings_slot_current_time;
+                    let collection_address = response.data.collection_address;
                     // alert("Slot Price: " + bookings_slot_price + "Slot Date: " + bookings_slot_date + "Slot Time: " + bookings_slot_time);
+                    // show collection title
+                    $('#collection-div-title').html("ADDRESS WHERE YOU DROP-OFF");
+                    // show collection address
+                    $('#show-selected-collection-address').html(collection_address);
+                    // show collection-time-date-title
+                    $('#collection-time-date-title').html("DATE AND TIME WHEN YOU DROP-OFF");
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
@@ -356,7 +385,7 @@ jQuery(document).ready(function($){
                         `<div class="header">
                             <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
                             <div class="title">
-                                <h3>Collection from</h3>
+                                <h3>Choose a preferred location to drop-off your dirty laundry</h3>
                             </div>
                         </div>
                         <!-- Selected Address Section -->
@@ -364,8 +393,8 @@ jQuery(document).ready(function($){
                     );
                     // Update the store name in the HTML
                     $('#show-selected-store-address').html("Waitrose & Partners" + " " + storeName);
-                    $('#collection-title').html("Collection address");
-                    $('#show-selected-collection').html("Waitrose & Partners, " + storeName + ", " + storeAddress + ", " + storePostcode);
+                    $('#collection-div-title').html("ADDRESS WHERE YOU DROP-OFF");
+                    $('#show-selected-collection-address').html("Waitrose & Partners, " + storeName + ", " + storeAddress + ", " + storePostcode);
                 }else{
                     console.log('Failed to select the store.');
                 }

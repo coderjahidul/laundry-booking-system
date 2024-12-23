@@ -88,6 +88,7 @@ function update_booking_slot() {
         $bookings_slot_date = date("l, j F", strtotime(isset($_POST['bookings_slot_date']) ? $_POST['bookings_slot_date'] : ''));
         $bookings_slot_time = isset($_POST['bookings_slot_time']) ? $_POST['bookings_slot_time'] : '';
         $bookings_slot_status = intval($_POST['bookings_slot_status']);
+        $collection_address = isset($_POST['collection_address']) ? $_POST['collection_address'] : '';
 
         // Update booking slot status
         if(in_array($bookings_slot_id, $hour_booking_post_id)) {
@@ -108,7 +109,7 @@ function update_booking_slot() {
         // Update booking slot current time
         update_user_meta($user_id, 'booking_slot_current_time', $bookings_slot_current_time);
 
-        wp_send_json_success(array("bookings_slot_price" => $bookings_slot_price, "bookings_slot_date" => $bookings_slot_date, "bookings_slot_time" => $bookings_slot_time, "bookings_slot_current_time" => $bookings_slot_current_time));
+        wp_send_json_success(array("bookings_slot_price" => $bookings_slot_price, "bookings_slot_date" => $bookings_slot_date, "bookings_slot_time" => $bookings_slot_time, "bookings_slot_current_time" => $bookings_slot_current_time, "collection_address" => $collection_address));
 
 
     }else {
