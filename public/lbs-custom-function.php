@@ -168,7 +168,7 @@ function lbs_lave_return() {
                         echo selected_return_address();
                     ?>
                 </div>
-                <a href="#" class="change-return-address">Change address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                <a href="#" class="change-return-address">Change Return address <i class="fa fa-angle-down" aria-hidden="true"></i></a>
             </div>
 
             <!-- Address Options -->
@@ -183,13 +183,13 @@ function lbs_lave_return() {
                         if($selected_address_id == $post_id ){
                             if(!empty($address_or_postcode)){
                                 ?>
-                                    <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                    <div class="address-card select-return-address selected" data-post-id="<?= $post_id; ?>">
                                         <span><?= $address_or_postcode; ?></span>
                                     </div>
                                 <?php
                             }else{
                                 ?>
-                                    <div class="address-card select-address selected" data-post-id="<?= $post_id; ?>">
+                                    <div class="address-card select-return-address selected" data-post-id="<?= $post_id; ?>">
                                         <span><?= $city; ?></span>
                                         <br>
                                         <span><?= $postcode; ?></span>
@@ -199,13 +199,13 @@ function lbs_lave_return() {
                         }else{
                             if(!empty($address_or_postcode)){
                                 ?>
-                                    <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                    <div class="address-card select-return-address" data-post-id="<?= $post_id; ?>">
                                         <span><?= $address_or_postcode; ?></span>
                                     </div>
                                 <?php
                             }else{
                                 ?>
-                                    <div class="address-card select-address" data-post-id="<?= $post_id; ?>">
+                                    <div class="address-card select-return-address" data-post-id="<?= $post_id; ?>">
                                         <span><?= $city; ?></span>
                                         <br>
                                         <span><?= $postcode; ?></span>

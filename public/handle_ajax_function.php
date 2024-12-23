@@ -45,6 +45,48 @@ function update_selected_address() {
 add_action('wp_ajax_update_selected_address', 'update_selected_address');
 add_action('wp_ajax_nopriv_update_selected_address', 'update_selected_address');
 
+// Update selected return address
+function update_selected_return_address() {
+    if (isset($_POST['post_id']) && !empty($_POST['post_id'])) {
+        $post_id = intval($_POST['post_id']);
+        $user_id = get_current_user_id();
+
+        // Update the selected_address post meta value
+        update_user_meta($user_id, 'selected_return_address', $post_id);
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'lbs_customar_address';
+        $sql = "SELECT id, address_or_postcode, city, postcode FROM $table_name WHERE user_id = $user_id";
+        $get_selected_address = $wpdb->get_results($sql);
+        $selected_address_id = get_user_meta($user_id, 'selected_return_address', true);
+        foreach($get_selected_address as $address){
+            $address_or_postcode = $address->address_or_postcode;
+            $city = $address->city;
+            $postcode = $address->postcode;
+            if($address->id == $selected_address_id && !empty($address_or_postcode)){
+                $selected_address = $address_or_postcode;
+                // wp_send_json_success(array('address_or_postcode' => $address_or_postcode));
+                wp_send_json_success(array('selected_return_address' => $selected_address));
+            }elseif($address->id == $selected_address_id && !empty($city) && !empty($postcode)){
+                $selected_address = $city . ' - ' . $postcode;
+                // wp_send_json_success(array('city' => $city, 'postcode' => $postcode));
+                wp_send_json_success(array('selected_return_address' => $selected_address));
+            }
+
+        }
+
+        // Fallback if no match found
+        wp_send_json_error(array('message' => 'No matching address found.'));
+    } else {
+        wp_send_json_error(array('message' => 'Error updating address.'));
+    }
+
+    wp_die();
+}
+
+add_action('wp_ajax_update_selected_return_address', 'update_selected_return_address');
+add_action('wp_ajax_nopriv_update_selected_return_address', 'update_selected_return_address');
+
 // Update Booking Slot
 function update_booking_slot() {
     if(isset($_POST['bookings_slot_id']) && !empty($_POST['bookings_slot_id'])) {
