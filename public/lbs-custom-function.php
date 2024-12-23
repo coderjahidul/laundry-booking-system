@@ -320,6 +320,47 @@ function lbs_choose_your_collection_slot() {
 </div>
 <?php
 }
+
+// Choose your slot
+function lbs_choose_lave_return_slot() {
+    ?>
+<div class="choose-your-slot">
+    <h2 class="text-center">Choose a convenient time for LAVE to return your cleaned laundry</h2>
+
+    <ul class="nav nav-tabs justify-content-center border-0" id="ChooseYourSlot" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="hour-tab" data-bs-toggle="tab" data-bs-target="#hour" type="button"
+                role="tab" aria-controls="hour" aria-selected="true"><i class="fa fa-clock"></i> 1 Hour</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="saver-tab" data-bs-toggle="tab" data-bs-target="#saver" type="button"
+                role="tab" aria-controls="saver" aria-selected="false"><i class="fa fa-dollar"></i> Saver</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="ChooseYourSlotContent">
+        <!-- Hour Section -->
+        <?php hour_function(); ?>
+        <!-- Saver Section -->
+        <?php saver_function();?>
+    </div>
+
+</div>
+<?php
+}
+
+// Choose your collection return slot
+function lbs_choose_your_collect_return_slot() {
+    ?>
+<div class="choose-your-slot">
+    <h2 class="text-center">Choose a conveneint time to pick-up your cleaned laundry</h2>
+        <!-- Collection Section -->
+        <?php collection_function(); ?>
+
+</div>
+<?php
+}
+
 // Hour function
 function hour_function(){
     ?>

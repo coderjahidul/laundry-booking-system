@@ -1,5 +1,6 @@
 <?php 
 // Template Name: Bookslot Delivery
+// lave collects shortcode
 add_shortcode( 'lbs_lave_collects', 'lbs_bookslot_delivery_function' );
 
 function lbs_bookslot_delivery_function() {
@@ -67,6 +68,7 @@ function lbs_bookslot_delivery_function() {
 <?php
 }
 
+// you drop off shortcode
 add_shortcode( 'lbs_you_drop_off', 'lbs_bookslot_click_collect_function' );
 
 function lbs_bookslot_click_collect_function() {
@@ -98,6 +100,137 @@ function lbs_bookslot_click_collect_function() {
                 // If user logged in
                 if(is_user_logged_in()){
                     lbs_choose_your_collection_slot();
+                }else{
+                    // If user not logged in
+                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                }
+            ?>
+        </div>
+
+        <!-- Reserved Slot -->
+        <div class="reserved-delivery-slot-section">
+            <?php 
+                $user_id = get_current_user_id();
+                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                    ?>
+                    <div class="delivery-details">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
+                }else{
+                    ?>
+                    <div class="delivery-details" x-show="open">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
+                }
+            ?>
+        </div>
+    </div>
+     
+<?php
+}
+
+// lave return shortcode
+add_shortcode( 'lbs_lave_return_shortcode', 'lbs_lave_return_function' );
+function lbs_lave_return_function() {
+    ?>
+    <div class="bookslot-delivery">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs justify-content-center border-0" id="deliveryTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery"
+                    type="button" role="tab" aria-controls="delivery" aria-selected="true">LAVE RETURN</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="<?php echo site_url(); ?>/you-collect/" class="nav-link"  type="button" >YOU COLLECT</a>
+            </li>
+        </ul>
+
+        <!-- Delivery Address Section -->
+        <div class="tab-content" id="deliveryTabContent">
+
+            <!-- Delivery Section -->
+            <?php //lbs_lave_return(); ?>
+            <?php lbs_delevery(); ?>
+
+            <!-- Click & Collect Section -->
+            <?php //lbs_you_collect_return(); ?>
+        </div>
+    </div>
+    <!-- add address from -->
+    <?php add_address_from();?>
+    <div class="slot-section" x-data="{ open: false }">
+        <div class="choose-your-slot-section">
+            <?php 
+                // If user logged in
+                if(is_user_logged_in()){
+                    lbs_choose_lave_return_slot();
+                }else{
+                    // If user not logged in
+                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                }
+            ?>
+        </div>
+
+        <!-- Reserved Slot -->
+        <div class="reserved-delivery-slot-section">
+            <?php 
+                $user_id = get_current_user_id();
+                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                    ?>
+                    <div class="delivery-details">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
+                }else{
+                    ?>
+                    <div class="delivery-details" x-show="open">
+                        <?php lbs_reserved_slot($user_id); ?>
+                    </div>
+                    <?php
+                }
+            ?>
+        </div>
+    </div>
+    <!-- Choose your slot -->
+    
+     
+<?php
+}
+// you collect shortcode
+add_shortcode( 'lbs_you_collect_shortcode', 'lbs_you_collect_function' );
+
+function lbs_you_collect_function() {
+    ?>
+    <div class="bookslot-delivery">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs justify-content-center border-0" id="deliveryTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a href="<?php echo site_url(); ?>/lave-return/" class="nav-link" type="button">LAVE RETURN</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="click-collect-tab" data-bs-toggle="tab" data-bs-target="#click-collect" type="button" role="tab" aria-controls="click-collect" aria-selected="false">YOU COLLECT</button>
+            </li>
+        </ul>
+
+        <!-- Delivery Address Section -->
+        <div class="tab-content" id="deliveryTabContent">
+
+            <!-- Delivery Section -->
+            <?php //lbs_lave_return(); ?>
+
+            <!-- Click & Collect Section -->
+            <?php //lbs_you_collect_return(); ?>
+            <?php lbs_collection(); ?>
+        </div>
+    </div>
+    <div class="slot-section" x-data="{ open: false }">
+        <div class="choose-your-slot-section">
+            <?php 
+                // If user logged in
+                if(is_user_logged_in()){
+                    lbs_choose_your_collect_return_slot();
                 }else{
                     // If user not logged in
                     echo '<h2 class="text-center">Please login to choose your slot</h2>';
