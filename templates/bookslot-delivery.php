@@ -1,6 +1,6 @@
 <?php 
 // Template Name: Bookslot Delivery
-add_shortcode( 'lbs_bookslot_delivery', 'lbs_bookslot_delivery_function' );
+add_shortcode( 'lbs_lave_collects', 'lbs_bookslot_delivery_function' );
 
 function lbs_bookslot_delivery_function() {
     ?>
@@ -9,10 +9,10 @@ function lbs_bookslot_delivery_function() {
         <ul class="nav nav-tabs justify-content-center border-0" id="deliveryTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery"
-                    type="button" role="tab" aria-controls="delivery" aria-selected="true">Delivery</button>
+                    type="button" role="tab" aria-controls="delivery" aria-selected="true">LAVE COLLECTS</button>
             </li>
             <li class="nav-item" role="presentation">
-                <a href="<?php echo site_url(); ?>/click-collect" class="nav-link"  type="button" >Click & Collect</a>
+                <a href="<?php echo site_url(); ?>/you-drop-off/" class="nav-link"  type="button" >YOU DROP-OFF</a>
             </li>
         </ul>
 
@@ -67,7 +67,7 @@ function lbs_bookslot_delivery_function() {
 <?php
 }
 
-add_shortcode( 'lbs_bookslot_click_collect', 'lbs_bookslot_click_collect_function' );
+add_shortcode( 'lbs_you_drop_off', 'lbs_bookslot_click_collect_function' );
 
 function lbs_bookslot_click_collect_function() {
     ?>
@@ -75,10 +75,10 @@ function lbs_bookslot_click_collect_function() {
         <!-- Tabs -->
         <ul class="nav nav-tabs justify-content-center border-0" id="deliveryTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <a href="<?php echo site_url(); ?>/bookslot-delivery/" class="nav-link" type="button">Delivery</a>
+                <a href="<?php echo site_url(); ?>/lave-collects/" class="nav-link" type="button">LAVE COLLECTS</a>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="click-collect-tab" data-bs-toggle="tab" data-bs-target="#click-collect" type="button" role="tab" aria-controls="click-collect" aria-selected="false">Click & Collect</button>
+                <button class="nav-link active" id="click-collect-tab" data-bs-toggle="tab" data-bs-target="#click-collect" type="button" role="tab" aria-controls="click-collect" aria-selected="false">YOU DROP-OFF</button>
             </li>
         </ul>
 

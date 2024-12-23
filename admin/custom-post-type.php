@@ -124,6 +124,8 @@ function display_booking_meta_box($post){
         <!-- Time Slot Field -->
         <label for="booking_time_slot">Time Slot:</label>
         <select name="booking_time_slot" id="booking_time_slot">
+            <option value="6am - 7am" <?php selected($time_slot, '6am - 7am'); ?>>6am - 7am</option>
+            <option value="7am - 8am" <?php selected($time_slot, '7am - 8am'); ?>>7am - 8am</option>
             <option value="8am - 9am" <?php selected($time_slot, '8am - 9am'); ?>>8am - 9am</option>
             <option value="9am - 10am" <?php selected($time_slot, '9am - 10am'); ?>>9am - 10am</option>
             <option value="10am - 11am" <?php selected($time_slot, '10am - 11am'); ?>>10am - 11am</option>
