@@ -453,6 +453,30 @@ function save_saver_booking_meta_box_data($post_id) {
 }
 add_action('save_post', 'save_saver_booking_meta_box_data');
 
+// saver save booking return meta box
+function save_saver_booking_return_meta_box_data($post_id) {
+    // Verify this is not an auto-save routine.
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+
+    // Check if current user has permission to edit post.
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    // Save the meta box data as post meta
+    if (isset($_POST['saver_booking_return_date'])) {
+        update_post_meta($post_id, '_saver_booking_return_date', sanitize_text_field($_POST['saver_booking_return_date']));
+    }
+    if (isset($_POST['saver_booking_return_time_slot'])) {
+        update_post_meta($post_id, '_saver_booking_return_time_slot', sanitize_text_field($_POST['saver_booking_return_time_slot']));
+    }
+    if (isset($_POST['saver_booking_return_status'])) {
+        update_post_meta($post_id, '_saver_booking_return_status', sanitize_text_field($_POST['saver_booking_return_status']));
+    }
+    if (isset($_POST['saver_booking_return_price'])) {
+        update_post_meta($post_id, '_saver_booking_return_price', sanitize_text_field($_POST['saver_booking_return_price']));
+    }
+}
+add_action('save_post', 'save_saver_booking_return_meta_box_data');
+
 // collection save booking meta box
 function save_collection_booking_meta_box_data($post_id) {
     // Verify this is not an auto-save routine.
