@@ -1438,6 +1438,7 @@ function lbs_reserved_slot($user_id){
                     $sql = $wpdb->prepare("SELECT post_id FROM $table_name WHERE meta_key = %s", $meta_key);
                     $get_collection_slot_ids = $wpdb->get_col($sql); // Fetch post IDs as an array
                     $get_selected_booking_slot = get_user_meta($user_id, 'selected_booking_slot', true);
+                    $get_selected_return_booking_slot = get_user_meta($user_id, 'selected_return_booking_slot', true);
                     ?>
                     <div class="col-md-4">
                         <?php 
@@ -1470,26 +1471,92 @@ function lbs_reserved_slot($user_id){
                     </div>
                     <div class="col-md-4">
                     <?php 
+                    $meta_key = '_collection_booking_return_status';
+                    // Prepare the SQL query and use placeholders to avoid SQL injection
+                    $sql = $wpdb->prepare("SELECT post_id FROM $table_name WHERE meta_key = %s", $meta_key);
+                    $get_collection_return_slot_ids = $wpdb->get_col($sql); // Fetch post IDs as an array
+                    if(!empty($get_selected_return_booking_slot)){
+                        if (in_array($get_selected_return_booking_slot, $get_collection_return_slot_ids)) {
+                            ?>
+                            <div class="info-box collection">
+                                <strong id="collection-div-title">ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY</strong>
+                                <p id="show-selected-collection-address">
+                                    <?php echo collection_return_address(); ?>
+                                </p>
+                            </div>
+                            <?php
+                        } else {
+                            ?>
+                            <div class="info-box delivery">
+                                <strong id="collection-div-title">ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY</strong>
+                                <p id="show-selected-collection-address">
+                                    <?php echo selected_return_address(); ?>
+                                </p>
+                            </div>
+                            <?php
+                        }
+                    }else{
+                        // Debug check to see if the selected slot is in the array
+                        if (in_array($get_selected_booking_slot, $get_collection_slot_ids)) {
+                            ?>
+                            <div class="info-box collection">
+                                <strong id="collection-div-title">ADDRESS WHERE YOU DROP-OFF</strong>
+                                <p id="show-selected-collection-address">
+                                    <?php echo collection_address(); ?>
+                                </p>
+                            </div>
+                            <?php
+                        } else {
+                            ?>
+                            <div class="info-box delivery">
+                                <strong id="collection-div-title">ADDRESS WHERE LAVE COLLECTS FROM</strong>
+                                <p id="show-selected-collection-address">
+                                    <?php echo selected_address(); ?>
+                                </p>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
+                    </div>
+                    <div class="col-md-4">
+                    <?php 
                     // Debug check to see if the selected slot is in the array
-                    if (in_array($get_selected_booking_slot, $get_collection_slot_ids)) {
-                        ?>
-                        <div class="info-box collection">
-                            <strong id="collection-div-title">ADDRESS WHERE YOU DROP-OFF</strong>
-                            <p id="show-selected-collection-address">
-                                <?php echo collection_address(); ?>
-                            </p>
-                        </div>
-                        <?php
-                    } else {
+                    if(!empty($get_selected_return_booking_slot)){
+                        if (in_array($get_selected_return_booking_slot, $get_collection_return_slot_ids)) {
+                            ?>
+                            <div class="info-box collection">
+                                <strong id="return-time-date-title">DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY</strong>
+                                <p id="show-selected-return-delivery-time-date">
+                                    <?php
+                                        // Booking slot date and time
+                                        return_booking_slot_date_time($get_selected_return_booking_slot);
+                                    ?>
+                                </p>
+                            </div>
+                            <?php
+                        } else {
+                            ?>
+                            <div class="info-box delivery">
+                                <strong id="return-time-date-title">DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY</strong>
+                                <p id="show-selected-return-delivery-time-date">
+                                    <?php
+                                        // Booking slot date and time
+                                        return_booking_slot_date_time($get_selected_return_booking_slot);
+                                    ?>
+                                </p>
+                            </div>
+                            <?php
+                        }
+                    }else{
                         ?>
                         <div class="info-box delivery">
-                            <strong id="collection-div-title">ADDRESS WHERE LAVE COLLECTS FROM</strong>
-                            <p id="show-selected-collection-address">
-                                <?php echo selected_address(); ?>
-                            </p>
+                            <strong id="return-time-date-title"></strong>
+                            <p id="show-selected-return-delivery-time-date"></p>
                         </div>
                         <?php
-                    }?>
+                    }
+                    ?>
                     </div>
                 </div>
 
@@ -1723,6 +1790,15 @@ function collection_address(){
     return "Waitrose & Partners, " . $store_name . ', ' . $store_address . ', ' . $store_postcode;
 }
 
+function collection_return_address(){
+    $selected_store_id = get_user_meta(get_current_user_id(), 'selected_return_store_id', true);
+    $store_name = get_post_meta($selected_store_id, '_store_name', true);
+    $store_address = get_post_meta($selected_store_id, '_store_address', true);
+    $store_postcode = get_post_meta($selected_store_id, '_store_postcode', true);
+
+    return "Waitrose & Partners, " . $store_name . ', ' . $store_address . ', ' . $store_postcode;
+}
+
 // Booking slot date and time function
 function booking_slot_date_time($user_bookings_slot_id) {
     if( get_post_meta($user_bookings_slot_id, '_booking_date', true) &&  get_post_meta($user_bookings_slot_id, '_booking_time_slot', true)) {
@@ -1745,6 +1821,36 @@ function booking_slot_date_time($user_bookings_slot_id) {
     }else{
         $booking_slot_date = get_post_meta($user_bookings_slot_id, '_saver_booking_date', true);
         $booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_time_slot', true);
+
+        if(isset($booking_slot_date) && isset($booking_slot_time)){
+            $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
+            echo $booking_slot_date . " " . $booking_slot_time;
+        }
+    }
+}
+
+// Return Booking slot date and time function
+function return_booking_slot_date_time($user_bookings_slot_id) {
+    if( get_post_meta($user_bookings_slot_id, '_booking_return_date', true) &&  get_post_meta($user_bookings_slot_id, '_booking_return_time_slot', true)) {
+        $booking_slot_date = get_post_meta($user_bookings_slot_id, '_booking_return_date', true);
+        $booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_return_time_slot', true);
+
+        if(isset($booking_slot_date) && isset($booking_slot_time)){
+            $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
+            echo $booking_slot_date . " " . $booking_slot_time;
+        }
+    }elseif(get_post_meta($user_bookings_slot_id, '_collection_booking_return_date', true) &&  get_post_meta($user_bookings_slot_id, '_collection_booking_return_time_slot', true)){
+        $booking_slot_date = get_post_meta($user_bookings_slot_id, '_collection_booking_return_date', true);
+        $booking_slot_time = get_post_meta($user_bookings_slot_id, '_collection_booking_return_time_slot', true);
+
+        if(isset($booking_slot_date) && isset($booking_slot_time)){
+            $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));
+            echo $booking_slot_date . " " . $booking_slot_time;
+        }
+
+    }else{
+        $booking_slot_date = get_post_meta($user_bookings_slot_id, '_saver_booking_return_date', true);
+        $booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_return_time_slot', true);
 
         if(isset($booking_slot_date) && isset($booking_slot_time)){
             $booking_slot_date =  date("l, j F", strtotime($booking_slot_date));

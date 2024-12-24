@@ -405,13 +405,13 @@ jQuery(document).ready(function($){
                     let collection_address = response.data.collection_address;
                     // alert("Slot Price: " + bookings_slot_price + "Slot Date: " + bookings_slot_date + "Slot Time: " + bookings_slot_time);
                     // show delivery title
-                    // $('#collection-div-title').html("ADDRESS WHERE LAVE COLLECTS FROM");
+                    $('#collection-div-title').html("ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY");
                     // show collection address
-                    // $('#show-selected-collection-address').html(collection_address);
+                    $('#show-selected-collection-address').html(collection_address);
                     // show collection-time-date-title
-                    // $('#collection-time-date-title').html("DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY");
+                    $('#return-time-date-title').html("DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
-                    // $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    $("#show-selected-return-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
                     // $("#show-selected-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot price in reserved slot discription
