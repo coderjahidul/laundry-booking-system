@@ -220,7 +220,7 @@ function lbs_you_collect_function() {
             <?php //lbs_lave_return(); ?>
 
             <!-- Click & Collect Section -->
-            <?php //lbs_you_collect_return(); ?>
+            <?php lbs_collection(); ?>
         </div>
     </div>
     <div class="slot-section" x-data="{ open: false }">

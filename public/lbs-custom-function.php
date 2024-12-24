@@ -298,7 +298,17 @@ function lbs_collection() {
                 <div class="header">
                     <div class="icon"><i class="fa fa-check-circle" aria-hidden="true"></i></div>
                     <div class="title">
-                        <h3>Choose a preferred location to drop-off your dirty laundry</h3>
+                        <?php 
+                            if (strpos($_SERVER['REQUEST_URI'], 'you-drop-off') !== false){
+                                ?>
+                                    <h3>Choose a preferred location to drop-off your dirty laundry</h3>
+                                <?php
+                            }else{
+                                ?>
+                                    <h3>The location where you can pick-up your cleaned laundry</h3>
+                                <?php
+                            }
+                        ?>
                     </div>
                 </div>
                 <!-- Selected Address Section -->
