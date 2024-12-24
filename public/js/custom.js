@@ -593,9 +593,9 @@ jQuery(document).ready(function($){
                     // show collection address
                     $('#show-selected-collection-address').html(collection_address);
                     // show collection-time-date-title
-                    $('#collection-time-date-title').html("DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY");
+                    $('#return-time-date-title').html("DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
-                    $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    $("#show-selected-return-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
                     // $("#show-selected-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot price in reserved slot discription
