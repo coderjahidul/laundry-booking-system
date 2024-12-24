@@ -480,7 +480,7 @@ function lbs_choose_lave_return_slot() {
         <!-- Hour Section -->
         <?php hour_return_function(); ?>
         <!-- Saver Section -->
-        <?php //saver_function();?>
+        <?php saver_return_function();?>
     </div>
 
 </div>
@@ -1175,6 +1175,230 @@ function saver_function(){
 <?php
 }
 
+// saver return function
+function saver_return_function(){
+    ?>
+<div class="saver-section tab-pane fade" id="saver" role="tabpanel" aria-labelledby="saver-tab">
+    <p class="text-center">Great value if you can be more flexible. On the day, we’ll text you an estimated 1 hour
+        delivery window.</p>
+    <div class="container my-4">
+        <div class="d-flex justify-content-between">
+        <?php 
+                // Get current page, default is 1
+                $saver_paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+                $saver_per_page = 5; // Number of unique dates per page
+
+                $args = array(
+                    'post_type' => 'saver-booking-return',
+                    'posts_per_page' => -1, // Get all bookings
+                    'meta_key' => '_saver_booking_return_date',
+                    'orderby' => 'meta_value',
+                    'order' => 'ASC',
+                );
+
+                $saver_bookings_date = new WP_Query($args);
+                $saver_delivery_dates = array(); // Array to store unique booking dates
+
+                if ($saver_bookings_date->have_posts()) {
+                    while ($saver_bookings_date->have_posts()) {
+                        $saver_bookings_date->the_post();
+
+                        $saver_slot_date = get_post_meta(get_the_ID(), '_saver_booking_return_date', true);
+
+                        // Add the date if it is unique
+                        if (!in_array($saver_slot_date, $saver_delivery_dates)) {
+                            $saver_delivery_dates[] = $saver_slot_date;
+                        }
+                    }
+                } else {
+                    echo "<p>No bookings found.</p>";
+                }
+
+                // Reset post data
+                wp_reset_postdata();
+
+                // Pagination logic for the $delivery_dates array
+                $saver_total_dates = count($saver_delivery_dates); // Total number of unique dates
+                $saver_total_pages = ceil($saver_total_dates / $saver_per_page); // Calculate total number of pages
+
+                // Ensure current page is not beyond total pages
+                if ($saver_paged > $saver_total_pages) {
+                    $saver_paged = $saver_total_pages;
+                }
+
+                // Calculate the start index of the slice based on the current page
+                $saver_start_index = ($saver_paged - 1) * $saver_per_page;
+
+                // Slice the array to get the dates for the current page
+                $saver_paged_dates = array_slice($saver_delivery_dates, $saver_start_index, $saver_per_page);
+                if ($saver_total_pages > 1) {
+                    // Previous Button
+                    if ($saver_paged > 1) {
+                        $saver_prev_page = $saver_paged - 1;
+                        echo '<a href="' . esc_url(add_query_arg('paged', $saver_prev_page)) . '" class="btn btn-link">&lt; Previous</a>';
+                    } else {
+                        echo '<span class="btn btn-link disabled">&lt; Previous</span>';
+                    }
+                    ?>
+                    <input type="text" id="saver_datepicker" style="display:none;">
+                    <button class="btn btn-outline-secondary" id="open-saver_datepicker">View calendar</button>
+                    <?php
+                    // Next Button
+                    if ($saver_paged < $saver_total_pages) {
+                        $saver_next_page = $saver_paged + 1;
+                        echo '<a href="' . esc_url(add_query_arg('paged', $saver_next_page)) . '" class="btn btn-link">Next &gt;</a>';
+                    } else {
+                        echo '<span class="btn btn-link disabled">Next &gt;</span>';
+                    }
+                }
+            ?>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-2 schedule-header"></div>
+            <?php
+                // Display the paginated dates
+                foreach ($saver_paged_dates as $saver_date) {
+                    echo "<div class='col-2 schedule-header'>" . date("D, j M", strtotime($saver_date)) . "</div>";
+                }
+            ?>
+        </div>
+
+        <div class="row">
+            <div class="col-2">
+            <?php 
+                $args = array(
+                    'post_type' => 'saver-booking-return',
+                    'posts_per_page' => -1, // Fetch all posts
+                    'meta_key' => '_saver_booking_return_time_slot',
+                    'orderby' => 'meta_value',
+                    'order' => 'ASC', // Ascending order for natural time order
+                );
+
+                $saver_bookings_time = new WP_Query($args);
+
+                $saver_printed_slots = array(); // Array to keep track of printed slots
+                $saver_unique_time_slot_count = 0;  // Counter to limit to 14 unique time slots
+
+                $saver_time_slots = array(); // Array to collect time slots
+
+                if ($saver_bookings_time->have_posts()) {
+                    while ($saver_bookings_time->have_posts()) {
+                        $saver_bookings_time->the_post();
+                        // Get the time slot
+                        $saver_time_slot = get_post_meta(get_the_ID(), '_saver_booking_return_time_slot', true);
+                        
+                        // Collect time slots in an array
+                        $saver_time_slots[] = $saver_time_slot;
+                    }
+
+                    // Sort the time slots
+                    $saver_time_slots = sortTimeRanges($saver_time_slots);
+
+                    // Print the sorted and unique time slots
+                    foreach ($saver_time_slots as $saver_time_slot) {
+                        // Check if the time slot is already in the printed array
+                        if (!in_array($saver_time_slot, $saver_printed_slots)) {
+                            echo "<div class='booking-time-list'>$saver_time_slot</div>";
+                            // Add the time slot to the array and increment the counter
+                            $saver_printed_slots[] = $saver_time_slot;
+                            $saver_unique_time_slot_count++;
+
+                            // Break the loop if 14 unique time slots have been printed
+                            if ($saver_unique_time_slot_count >= 14) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                ?>
+
+                <!-- Additional fully booked slots can be added here -->
+            </div>
+            <?php foreach($saver_paged_dates as $delivery_date){?>
+            <div class="col-2 slot-with-price">
+                <?php 
+                    $args = array(
+                        'post_type' => 'saver-booking-return',
+                        'posts_per_page' => -1, // Adjust as needed
+                        'order' => 'ASC',
+                    );
+
+                    $bookings = new WP_Query($args);
+                    if($bookings->have_posts()){
+                        while($bookings->have_posts()){ 
+                            $bookings->the_post();
+                            $bookings_slot_id = get_the_ID();
+                            $user_id = get_current_user_id();
+                            $bookings_slot_date = get_post_meta(get_the_ID(), '_saver_booking_return_date', true);
+                            $bookings_slot_status = get_post_meta(get_the_ID(), '_saver_booking_return_status', true);
+                            $bookings_slot_price = get_post_meta(get_the_ID(), '_saver_booking_return_price', true);
+                            $bookings_slot_time = get_post_meta(get_the_ID(), '_saver_booking_return_time_slot', true);
+                            $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+                            $collection_address = selected_return_address();
+                            if($delivery_date == $bookings_slot_date){
+                                if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
+                                    ?>
+                                        <div class="booking-slot booking-return-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
+                                    ?>
+                                        <div class="booking-slot booking-return-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'fully_booked'){
+                                    ?>
+                                        <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked <br> <?php echo $bookings_slot_time;?></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'unavailable'){
+                                    ?>
+                                        <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable <br> <?php echo $bookings_slot_time;?></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
+                                    ?>
+                                        <div class="booking-slot booking-return-slot-saver available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }elseif($bookings_slot_status == 'available'){
+                                    ?>
+                                        <div class="booking-slot booking-return-slot-saver available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                    <?php
+                                }
+                            }
+                        }
+                    }
+                ?>
+                <!-- Additional fully booked slots can be added here -->
+            </div>
+            <!-- Modal -->
+                <div class="modal slot-modal fade" id="cancelModalSaver" tabindex="-1" aria-labelledby="cancelModalSaverLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cancelModalSaverLabel">Cancel reserved slot</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                    <?php
+                                    // Booking slot date and time
+                                    booking_slot_date_time($user_bookings_slot_id);
+                                    ?>
+                                </strong>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary btn-keep" data-bs-dismiss="modal">Keep slot</button>
+                                <button type="button" data-bookings-slot-id = "<?= $bookings_slot_id;?>" class="btn btn-cancel cancel-return-booking-slot">Cancel slot</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php }?>
+            
+        </div>
+    </div>
+</div>
+<?php
+}
+
 // Collection function
 function collection_function(){
     ?>
@@ -1487,7 +1711,7 @@ function lbs_reserved_slot($user_id){
                             <?php
                         } else {
                             ?>
-                            <div class="info-box delivery">
+                            <div class="info-box collection">
                                 <strong id="collection-div-title">ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY</strong>
                                 <p id="show-selected-collection-address">
                                     <?php echo selected_return_address(); ?>
@@ -1508,7 +1732,7 @@ function lbs_reserved_slot($user_id){
                             <?php
                         } else {
                             ?>
-                            <div class="info-box delivery">
+                            <div class="info-box collection">
                                 <strong id="collection-div-title">ADDRESS WHERE LAVE COLLECTS FROM</strong>
                                 <p id="show-selected-collection-address">
                                     <?php echo selected_address(); ?>
