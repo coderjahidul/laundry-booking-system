@@ -278,6 +278,49 @@ function cancel_booking_slot() {
 add_action('wp_ajax_cancel_booking_slot', 'cancel_booking_slot');
 add_action('wp_ajax_nopriv_cancel_booking_slot', 'cancel_booking_slot');
 
+// cancel booking slot
+function cancel_return_booking_slot() {
+    if(isset($_POST['bookings_slot_id']) && !empty($_POST['bookings_slot_id'])) {
+        $bookings_slot_id = intval($_POST['bookings_slot_id']);
+        $user_id = get_current_user_id();
+        // get selected booking slot id
+        $selected_booking_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+        
+        global $wpdb;
+
+        // Query to get the post IDs for each booking status
+        $hour_booking_post_ids = $wpdb->get_col(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_return_status'"
+        );
+        $saver_booking_post_ids = $wpdb->get_col(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_saver_booking_return_status'"
+        );
+        $collection_booking_post_ids = $wpdb->get_col(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_collection_booking_return_status'"
+        );
+
+        // Update booking slot status to available
+        if (in_array($selected_booking_slot_id, $hour_booking_post_ids)) {
+            update_post_meta($selected_booking_slot_id, '_booking_return_status', 'available');
+        } elseif (in_array($selected_booking_slot_id, $saver_booking_post_ids)) {
+            update_post_meta($selected_booking_slot_id, '_saver_booking_return_status', 'available');
+        } elseif (in_array($selected_booking_slot_id, $collection_booking_post_ids)) {
+            update_post_meta($selected_booking_slot_id, '_collection_booking_return_status', 'available');
+        }
+
+
+        // cancle booking slot select to update selected booking slot to empty
+        update_user_meta($user_id, 'selected_return_booking_slot', '');
+
+        wp_send_json_success("Return Booking slot canceled successfully.");
+    }else {
+        wp_send_json_error(array('message' => 'Error updating booking slot.'));
+    }
+}
+
+add_action('wp_ajax_cancel_return_booking_slot', 'cancel_return_booking_slot');
+add_action('wp_ajax_nopriv_cancel_return_booking_slot', 'cancel_return_booking_slot');
+
 // Update Selected Store
 function update_selected_store() {
     if(isset($_POST['post_id']) && !empty($_POST['post_id'])) {

@@ -939,7 +939,7 @@ function hour_return_function(){
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary btn-keep" data-bs-dismiss="modal">Keep slot</button>
-                                    <button type="button" data-bookings-slot-id = "<?= $bookings_slot_id;?>" class="btn btn-cancel cancel-booking-slot">Cancel slot</button>
+                                    <button type="button" data-bookings-slot-id = "<?= $bookings_slot_id;?>" class="btn btn-cancel cancel-return-booking-slot">Cancel slot</button>
                                 </div>
                             </div>
                         </div>

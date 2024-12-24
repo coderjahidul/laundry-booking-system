@@ -487,6 +487,44 @@ jQuery(document).ready(function($){
         })
 
     });
+
+    // Cancel Return Booking Slot
+    $('.cancel-return-booking-slot').on('click', function () {
+        $('#cancelModal').modal('hide');
+        $('#cancelModalSaver').modal('hide');
+        $('#cancelModalCollection').modal('hide');
+        $('.booking-return-slot-hour').removeClass('selected');
+        $('.booking-return-slot-saver').removeClass('selected');
+        $('.booking-return-slot-collection').removeClass('selected');
+        $('.booking-return-slot-hour').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.booking-return-slot-saver').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.booking-return-slot-collection').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.reserved-slot').addClass('d-none');
+
+        let bookingsSlotId = $(this).data('bookings-slot-id');
+
+        console.log("Slot ID: " + bookingsSlotId);
+
+        $.ajax({
+            type: 'POST',
+            url: ajax_object.ajaxurl,
+            data: {
+                action: 'cancel_return_booking_slot',
+                bookings_slot_id: bookingsSlotId
+            },
+            success: function(response){
+                if(response.success){
+                    console.log('Return Booking slot canceled successfully.');
+                }else{
+                    console.log('Failed to cancel the booking slot.');
+                }
+            },
+            error: function(){
+                console.log('There was an error.');
+            }
+        })
+
+    });
     
     // Select Store
     $('.select-store').on('click', function () {
