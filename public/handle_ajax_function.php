@@ -349,6 +349,17 @@ function add_delivery_cost( $cart ) {
     }
 
     $user_id = get_current_user_id();
+    global $wpdb;
+
+    // get post meta table from database postmeta
+    $table_name = $wpdb->prefix . 'postmeta';
+    $meta_key = '_collection_booking_status';
+
+    // Prepare the SQL query and use placeholders to avoid SQL injection
+    $sql = $wpdb->prepare("SELECT post_id FROM $table_name WHERE meta_key = %s", $meta_key);
+    $get_collection_slot_ids = $wpdb->get_col($sql); // Fetch post IDs as an array
+    
+    // Booking Slot
     $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
     if(get_post_meta($user_bookings_slot_id, '_booking_time_slot', true)){
         $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_price', true);
@@ -375,12 +386,75 @@ function add_delivery_cost( $cart ) {
 
     // Add the delivery cost to the cart
     if(!empty($delivery_booking_slot_time) && !empty($delivery_type)){
-        $cart->add_fee( __( 'Delivery ' . $delivery_type . ' (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+        if(in_array($user_bookings_slot_id, $get_collection_slot_ids)){
+            $cart->add_fee( __( 'DATE AND TIME WHEN YOU DROP-OFF (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+        }else{
+            $cart->add_fee( __( 'DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+        }
+        
     }else{
         // If delivery time is not set
     }
     
 }
+
+// Add delivery cost in checkout 
+add_action( 'woocommerce_cart_calculate_fees', 'add_delivery_return_cost' );
+
+function add_delivery_return_cost( $cart ) {
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+        return;
+    }
+
+    $user_id = get_current_user_id();
+    global $wpdb;
+
+    // get post meta table from database postmeta
+    $table_name = $wpdb->prefix . 'postmeta';
+    $meta_key = '_collection_booking_return_status';
+
+    // Prepare the SQL query and use placeholders to avoid SQL injection
+    $sql = $wpdb->prepare("SELECT post_id FROM $table_name WHERE meta_key = %s", $meta_key);
+    $get_collection_return_slot_ids = $wpdb->get_col($sql); // Fetch post IDs as an array
+    
+    // Booking Slot
+    $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+    if(get_post_meta($user_bookings_slot_id, '_booking_return_time_slot', true)){
+        $booking_slot_price = get_post_meta($user_bookings_slot_id, '_booking_return_price', true);
+        $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_return_time_slot', true);
+        $delivery_booking_date = get_post_meta($user_bookings_slot_id, '_booking_return_date', true);
+        $delivery_type = "Hour";
+    }elseif(get_post_meta($user_bookings_slot_id, '_saver_booking_return_time_slot', true)){
+        $booking_slot_price = get_post_meta($user_bookings_slot_id, '_saver_booking_return_price', true);
+        $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_saver_booking_return_time_slot', true);
+        $delivery_booking_date = get_post_meta($user_bookings_slot_id, '_saver_booking_return_date', true);
+        $delivery_type = "Saver";
+    }elseif(get_post_meta($user_bookings_slot_id, '_collection_booking_return_time_slot', true)){
+        $booking_slot_price = get_post_meta($user_bookings_slot_id, '_collection_booking_return_price', true);
+        $delivery_booking_slot_time = get_post_meta($user_bookings_slot_id, '_collection_booking_return_time_slot', true);
+        $delivery_booking_date = get_post_meta($user_bookings_slot_id, '_collection_booking_return_date', true);
+        $delivery_type = "Collection";
+    }
+    
+    // Define the delivery cost and set it to 0 initially
+    $delivery_cost = isset($booking_slot_price) ? $booking_slot_price : 0;
+
+    // date format to Y-m-d like Monday 23 September
+    $delivery_date = date("l, j F", strtotime($delivery_booking_date));
+
+    // Add the delivery cost to the cart
+    if(!empty($delivery_booking_slot_time) && !empty($delivery_type)){
+        if(in_array($user_bookings_slot_id, $get_collection_return_slot_ids)){
+            $cart->add_fee( __( 'DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+        }else{
+            $cart->add_fee( __( 'DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+        }
+        
+    }else{
+        // If delivery time is not set
+    }
+}
+
 
 // Add custom address after the order total on checkout page
 function add_custom_address_after_order_total() {
