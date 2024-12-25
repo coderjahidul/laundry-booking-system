@@ -1938,7 +1938,7 @@ function lbs_reserved_slot($user_id){
                             <div class="info-box collection">
                                 <strong id="collection-div-title">ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY</strong>
                                 <p id="show-selected-collection-address">
-                                    <?php echo collection_return_address(); ?>
+                                    <?php echo collection_address(); ?>
                                 </p>
                             </div>
                             <?php
