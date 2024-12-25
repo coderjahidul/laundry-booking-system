@@ -387,9 +387,12 @@ function add_delivery_cost( $cart ) {
     // Add the delivery cost to the cart
     if(!empty($delivery_booking_slot_time) && !empty($delivery_type)){
         if(in_array($user_bookings_slot_id, $get_collection_slot_ids)){
-            $cart->add_fee( __( 'DATE AND TIME WHEN YOU DROP-OFF (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+            // get selected address
+            $selected_address = collection_address();
+            $cart->add_fee( __( "DATE AND TIME WHEN YOU DROP-OFF (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE YOU DROP-OFF (" . $selected_address . ")", "woocommerce" ), $delivery_cost );
         }else{
-            $cart->add_fee( __( 'DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+            $selected_address = selected_address();
+            $cart->add_fee( __( "DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE LAVE COLLECTS FROM (" . $selected_address . ")", "woocommerce" ), $delivery_cost );
         }
         
     }else{
@@ -445,9 +448,13 @@ function add_delivery_return_cost( $cart ) {
     // Add the delivery cost to the cart
     if(!empty($delivery_booking_slot_time) && !empty($delivery_type)){
         if(in_array($user_bookings_slot_id, $get_collection_return_slot_ids)){
-            $cart->add_fee( __( 'DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+            // get selected return address
+            $get_selected_return_address = collection_address();
+            $cart->add_fee( __( "DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY (" . $get_selected_return_address . ")", "woocommerce" ), $delivery_cost );
         }else{
-            $cart->add_fee( __( 'DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY (' . $delivery_date . ' ' . $delivery_booking_slot_time . ')', 'woocommerce' ), $delivery_cost );
+            // get selected return address
+            $get_selected_return_address = selected_return_address();
+            $cart->add_fee( __( "DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY (" . $get_selected_return_address . ")", "woocommerce" ), $delivery_cost );
         }
         
     }else{
