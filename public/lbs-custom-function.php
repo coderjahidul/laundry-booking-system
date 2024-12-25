@@ -2016,8 +2016,23 @@ function lbs_reserved_slot($user_id){
                     ?>
                     </div>
                 </div>
-
-                <a href="<?php echo get_site_url(); ?>/laundry-service" class="btn btn-outline-secondary mt-3 continue-btn">Continue</a>
+                <?php 
+                    if (strpos($_SERVER['REQUEST_URI'], 'lave-collects') !== false){
+                        ?>
+                            <a href="<?php echo get_site_url(); ?>/lave-return" class="btn btn-outline-secondary mt-3 continue-btn">BOOK A SLOT FOR THE RETURN OF YOUR CLEANED LAUNDRY</a>
+                        <?php
+                    }elseif(strpos($_SERVER['REQUEST_URI'], 'you-drop-off') !== false){
+                        ?>
+                        <a href="<?php echo get_site_url(); ?>/you-collect" class="btn btn-outline-secondary mt-3 continue-btn">BOOK A SLOT FOR THE COLLECTION OF YOUR DIRTY LAUNDRY</a>
+                        <?php
+                    }else{
+                        ?>
+                        <a href="<?php echo get_site_url(); ?>/laundry-service" class="btn btn-outline-secondary mt-3 continue-btn">CONTINUE ADDING LAUNDRY TO
+                            YOUR BASKET</a>
+                        <?php
+                    }
+                ?>
+                
             </div>
         </div>
     <?php
