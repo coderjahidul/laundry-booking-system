@@ -252,6 +252,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-laundry-booking-system.php
 
 require plugin_dir_path(__FILE__) . 'admin/custom-post-type.php';
 
+/**
+ *  Admin Endpoints
+ *  */
+require plugin_dir_path(__FILE__) . 'admin/endpoints.php';
 
 /**
  * Booking Management Page in Admin Dashboard
