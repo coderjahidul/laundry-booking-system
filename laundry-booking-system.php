@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://github.com/coderjahidul/
- * @since             1.0.0
+ * @since             1.1.0
  * @package           Laundry_Booking_System
  *
  * @wordpress-plugin
  * Plugin Name:       Laundry Booking System
  * Plugin URI:        https://github.com/coderjahidul/laundry-booking-system
  * Description:       Laundry booking System WordPress plugin
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Jahidul Islam Sabuz
  * Author URI:        https://github.com/coderjahidul/
  * License:           GPL-2.0+
