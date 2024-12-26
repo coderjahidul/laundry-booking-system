@@ -898,6 +898,16 @@ function hour_return_function(){
                                 $bookings_slot_price = get_post_meta(get_the_ID(), '_booking_return_price', true);
                                 $bookings_slot_time = get_post_meta(get_the_ID(), '_booking_return_time_slot', true);
                                 $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+
+                                // get user selected booking slot id
+                                $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+                                // get user selected booking date
+                                $get_user_selected_bookings_date = get_post_meta( $get_user_selected_bookings_slot_id, '_booking_date', true) ?? '';
+                                // add 2 days to get user selected booking date
+                                if(!empty($get_user_selected_bookings_date)){
+                                    $get_user_selected_bookings_date = date('Y-m-d', strtotime($get_user_selected_bookings_date . ' +2 days'));
+                                }
+
                                 $collection_address = selected_return_address();
                                 if($delivery_date == $bookings_slot_date){
                                     if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
@@ -911,6 +921,10 @@ function hour_return_function(){
                                     }elseif($bookings_slot_status == 'fully_booked'){
                                         ?>
                                             <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
+                                        <?php
+                                    }elseif($get_user_selected_bookings_date >= $bookings_slot_date){
+                                        ?>
+                                            <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
                                         <?php
                                     }elseif($bookings_slot_status == 'unavailable'){
                                         ?>
@@ -1345,6 +1359,15 @@ function saver_return_function(){
                             $bookings_slot_price = get_post_meta(get_the_ID(), '_saver_booking_return_price', true);
                             $bookings_slot_time = get_post_meta(get_the_ID(), '_saver_booking_return_time_slot', true);
                             $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+
+                            // get user selected booking slot id
+                            $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+                            // get user selected booking date
+                            $get_user_selected_bookings_date = get_post_meta( $get_user_selected_bookings_slot_id, '_saver_booking_date', true) ?? '';
+                            // add 2 days to get user selected booking date
+                            if(!empty($get_user_selected_bookings_date)){
+                                $get_user_selected_bookings_date = date('Y-m-d', strtotime($get_user_selected_bookings_date . ' +2 days'));
+                            }
                             $collection_address = selected_return_address();
                             if($delivery_date == $bookings_slot_date){
                                 if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
@@ -1358,6 +1381,10 @@ function saver_return_function(){
                                 }elseif($bookings_slot_status == 'fully_booked'){
                                     ?>
                                         <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked <br> <?php echo $bookings_slot_time;?></div>
+                                    <?php
+                                }elseif($get_user_selected_bookings_date >= $bookings_slot_date){
+                                    ?>
+                                        <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable <br> <?php echo $bookings_slot_time;?></div>
                                     <?php
                                 }elseif($bookings_slot_status == 'unavailable'){
                                     ?>
@@ -1793,6 +1820,15 @@ function collection_return_function(){
                                 $bookings_slot_price = get_post_meta(get_the_ID(), '_collection_booking_return_price', true);
                                 $bookings_slot_time = get_post_meta(get_the_ID(), '_collection_booking_return_time_slot', true);
                                 $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+
+                                // get user selected booking slot id
+                                $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+                                // get user selected booking date
+                                $get_user_selected_bookings_date = get_post_meta( $get_user_selected_bookings_slot_id, '_collection_booking_date', true) ?? '';
+                                // add 2 days to get user selected booking date
+                                if(!empty($get_user_selected_bookings_date)){
+                                    $get_user_selected_bookings_date = date('Y-m-d', strtotime($get_user_selected_bookings_date . ' +2 days'));
+                                }
                                 $collection_address = collection_address();
                                 if($delivery_date == $bookings_slot_date){
                                     if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
@@ -1806,6 +1842,10 @@ function collection_return_function(){
                                     }elseif($bookings_slot_status == 'fully_booked'){
                                         ?>
                                             <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
+                                        <?php
+                                    }elseif($get_user_selected_bookings_date >= $bookings_slot_date){
+                                        ?>
+                                            <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
                                         <?php
                                     }elseif($bookings_slot_status == 'unavailable'){
                                         ?>
@@ -2343,6 +2383,10 @@ function selected_store_address(){
     }
 }
 
+// unavailable return slot function
+function unavailable_return_slot(){
+    
+}
 
 
 // update shipping address
