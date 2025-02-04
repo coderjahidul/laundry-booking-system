@@ -175,7 +175,8 @@ function add_saver_booking_slot() {
     );
     $status = "available";
     $price = 2;
-
+    // Sort by index (default behavior of foreach)
+    // ksort($time_slots);
     // Loop through each time slot and create a new post
     foreach ($time_slots as $time_slot) {
         // Create a new post
@@ -199,6 +200,34 @@ function add_saver_booking_slot() {
             ], 500);
         }
     }
+
+    // $total_slots = count($time_slots); // Get total number of time slots
+
+    // for ($i = 0; $i < $total_slots; $i++) {
+    //     $time_slot = $time_slots[$i]; // Get time slot at index $i
+
+    //     // Create a new post
+    //     $post_id = wp_insert_post(array(
+    //         'post_title'   => "Saver Booking Slot: {$date} on {$time_slot}",
+    //         'post_type'    => 'saver-booking',
+    //         'post_status'  => 'publish',
+    //         'meta_input'   => array(
+    //             '_saver_booking_index'     => $i, // Store index
+    //             '_saver_booking_date'      => $date,
+    //             '_saver_booking_time_slot' => $time_slot,
+    //             '_saver_booking_status'    => $status,
+    //             '_saver_booking_price'     => $price,
+    //         ),
+    //     ));
+
+    //     // Check if the post was created successfully
+    //     if (is_wp_error($post_id)) {
+    //         return new WP_REST_Response([
+    //             'error'   => 'Failed to create booking slot',
+    //             'message' => $post_id->get_error_message(),
+    //         ], 500);
+    //     }
+    // }
 
     // Return success message
     return new WP_REST_Response([

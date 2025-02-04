@@ -218,8 +218,8 @@ function disable_postcode_validation($address_fields) {
 
 // Restrict page to logged in users
 function restrict_page_to_logged_in_users() {
-    if (!is_user_logged_in() && is_page('serviceselection')) {
-        wp_redirect(wp_login_url());
+    if (!is_user_logged_in() && (is_page('lave-collects') || is_page('you-drop-off') || is_page('lave-return') || is_page('you-collect'))) {
+        wp_redirect(site_url('/my-account/'));
         exit;
     }
 }

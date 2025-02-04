@@ -434,7 +434,7 @@ function lbs_collection() {
 function lbs_choose_your_slot() {
     ?>
 <div class="choose-your-slot">
-    <h2 class="text-center">Choose a convenient time for LAVE to collect your dirty laundry</h2>
+    <p class="text-center">Select a convenient time for LAVE to pick up your dirty laundry.</p>
 
     <ul class="nav nav-tabs justify-content-center border-0" id="ChooseYourSlot" role="tablist">
         <li class="nav-item" role="presentation">
@@ -658,6 +658,7 @@ function hour_function(){
                     $args = array(
                         'post_type' => 'booking',
                         'posts_per_page' => -1, // Adjust as needed
+                        'orderby' => 'ID',
                         'order' => 'ASC',
                     );
 
@@ -884,6 +885,7 @@ function hour_return_function(){
                         $args = array(
                             'post_type' => 'booking-return',
                             'posts_per_page' => -1, // Adjust as needed
+                            'orderby' => 'ID',
                             'order' => 'ASC',
                         );
 
@@ -903,11 +905,17 @@ function hour_return_function(){
                                 $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
                                 // get user selected booking date
                                 $get_user_selected_bookings_date = get_post_meta( $get_user_selected_bookings_slot_id, '_booking_date', true) ?? '';
+
+                                // get user selected booking time
+                                 $get_user_selected_bookings_time = get_post_meta( $get_user_selected_bookings_slot_id, '_booking_time_slot', true) ?? '';
                                 // add 2 days to get user selected booking date
                                 if(!empty($get_user_selected_bookings_date)){
                                     $get_user_selected_bookings_date = date('Y-m-d', strtotime($get_user_selected_bookings_date . ' +2 days'));
                                 }
-
+                                // call unix_timestamp function
+                                $user_selected_slot_date_time = unix_timestamp($get_user_selected_bookings_date, $get_user_selected_bookings_time);
+                                $slot_date_time = unix_timestamp($bookings_slot_date, $bookings_slot_time);
+                                
                                 $collection_address = selected_return_address();
                                 if($delivery_date == $bookings_slot_date){
                                     if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
@@ -922,7 +930,7 @@ function hour_return_function(){
                                         ?>
                                             <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
                                         <?php
-                                    }elseif($get_user_selected_bookings_date >= $bookings_slot_date){
+                                    }elseif($user_selected_slot_date_time >= $slot_date_time){
                                         ?>
                                             <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
                                         <?php
@@ -1121,6 +1129,7 @@ function saver_function(){
                     $args = array(
                         'post_type' => 'saver-booking',
                         'posts_per_page' => -1, // Adjust as needed
+                        'orderby' => 'ID',
                         'order' => 'ASC',
                     );
 
@@ -1345,6 +1354,7 @@ function saver_return_function(){
                     $args = array(
                         'post_type' => 'saver-booking-return',
                         'posts_per_page' => -1, // Adjust as needed
+                        'orderby' => 'ID',
                         'order' => 'ASC',
                     );
 
@@ -1364,10 +1374,16 @@ function saver_return_function(){
                             $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
                             // get user selected booking date
                             $get_user_selected_bookings_date = get_post_meta( $get_user_selected_bookings_slot_id, '_saver_booking_date', true) ?? '';
+                            // get user selected booking time
+                            $get_user_selected_bookings_time = get_post_meta( $get_user_selected_bookings_slot_id, '_saver_booking_time_slot', true) ?? '';
                             // add 2 days to get user selected booking date
                             if(!empty($get_user_selected_bookings_date)){
                                 $get_user_selected_bookings_date = date('Y-m-d', strtotime($get_user_selected_bookings_date . ' +2 days'));
                             }
+                            // call unix_timestamp function
+                            $user_selected_slot_date_time = unix_timestamp($get_user_selected_bookings_date, $get_user_selected_bookings_time);
+                            $slot_date_time = unix_timestamp($bookings_slot_date, $bookings_slot_time);
+                            
                             $collection_address = selected_return_address();
                             if($delivery_date == $bookings_slot_date){
                                 if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
@@ -1382,7 +1398,7 @@ function saver_return_function(){
                                     ?>
                                         <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked <br> <?php echo $bookings_slot_time;?></div>
                                     <?php
-                                }elseif($get_user_selected_bookings_date >= $bookings_slot_date){
+                                }elseif($user_selected_slot_date_time >= $slot_date_time){
                                     ?>
                                         <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable <br> <?php echo $bookings_slot_time;?></div>
                                     <?php
@@ -1583,6 +1599,7 @@ function collection_function(){
                     $args = array(
                         'post_type' => 'collection',
                         'posts_per_page' => -1, // Adjust as needed
+                        'orderby' => 'ID',
                         'order' => 'ASC',
                     );
 
@@ -1806,6 +1823,7 @@ function collection_return_function(){
                         $args = array(
                             'post_type' => 'collection-return',
                             'posts_per_page' => -1, // Adjust as needed
+                            'orderby' => 'ID',
                             'order' => 'ASC',
                         );
     
@@ -1825,10 +1843,18 @@ function collection_return_function(){
                                 $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
                                 // get user selected booking date
                                 $get_user_selected_bookings_date = get_post_meta( $get_user_selected_bookings_slot_id, '_collection_booking_date', true) ?? '';
+                                // get user selected booking time
+                                $get_user_selected_bookings_time = get_post_meta( $get_user_selected_bookings_slot_id, '_collection_booking_time_slot', true) ?? '';
+                                // print_r($get_user_selected_bookings_date);
+                                // print_r($get_user_selected_bookings_time);
                                 // add 2 days to get user selected booking date
                                 if(!empty($get_user_selected_bookings_date)){
                                     $get_user_selected_bookings_date = date('Y-m-d', strtotime($get_user_selected_bookings_date . ' +2 days'));
                                 }
+                                // call unix_timestamp function
+                                $user_selected_slot_date_time = unix_timestamp($get_user_selected_bookings_date, $get_user_selected_bookings_time);
+                                $slot_date_time = unix_timestamp($bookings_slot_date, $bookings_slot_time);
+
                                 $collection_address = collection_address();
                                 if($delivery_date == $bookings_slot_date){
                                     if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
@@ -1843,7 +1869,7 @@ function collection_return_function(){
                                         ?>
                                             <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
                                         <?php
-                                    }elseif($get_user_selected_bookings_date >= $bookings_slot_date){
+                                    }elseif($user_selected_slot_date_time >= $slot_date_time){
                                         ?>
                                             <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
                                         <?php
@@ -2386,6 +2412,12 @@ function selected_store_address(){
 // unavailable return slot function
 function unavailable_return_slot(){
     
+}
+// Unix timestamp function
+function unix_timestamp($slot_date, $slot_time){
+    $start_time_parts = explode('-', $slot_time);
+    $start_time_string = $slot_date . ' ' . $start_time_parts[0];
+    return strtotime($start_time_string);
 }
 
 

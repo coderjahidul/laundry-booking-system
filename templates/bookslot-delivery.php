@@ -37,7 +37,7 @@ function lbs_bookslot_delivery_function() {
                     lbs_choose_your_slot();
                 }else{
                     // If user not logged in
-                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                    echo '<h2 class="text-center">Log in to choose your preferred laundry pickup and delivery schedule.</h2>';
                 }
             ?>
         </div>
@@ -102,7 +102,7 @@ function lbs_bookslot_click_collect_function() {
                     lbs_choose_your_collection_slot();
                 }else{
                     // If user not logged in
-                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                    echo '<h2 class="text-center">Log in to choose your preferred laundry pickup and delivery schedule.</h2>';
                 }
             ?>
         </div>
@@ -167,7 +167,7 @@ function lbs_lave_return_function() {
                     lbs_choose_lave_return_slot();
                 }else{
                     // If user not logged in
-                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                    echo '<h2 class="text-center">Log in to choose your preferred laundry pickup and delivery schedule.</h2>';
                 }
             ?>
         </div>
@@ -231,7 +231,7 @@ function lbs_you_collect_function() {
                     lbs_choose_your_collect_return_slot();
                 }else{
                     // If user not logged in
-                    echo '<h2 class="text-center">Please login to choose your slot</h2>';
+                    echo '<h2 class="text-center">Log in to choose your preferred laundry pickup and delivery schedule.</h2>';
                 }
             ?>
         </div>
