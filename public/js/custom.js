@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function($){
     // Toggle the address options
     $(".change-address").click(function(e) {

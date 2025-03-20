@@ -117,7 +117,9 @@ function add_hour_booking_slot() {
         "4pm - 5pm",
         "5pm - 6pm",
         "6pm - 7pm",
-        "7pm - 8pm"
+        "7pm - 8pm",
+        "8pm - 9pm",
+        "9pm - 10pm"
     );
     $status = "available";
     $price = 4;
@@ -326,7 +328,9 @@ function add_hour_return_booking_slot() {
         "4pm - 5pm",
         "5pm - 6pm",
         "6pm - 7pm",
-        "7pm - 8pm"
+        "7pm - 8pm",
+        "8pm - 9pm",
+        "9pm - 10pm"
     );
     $status = "available";
     $price = 0;

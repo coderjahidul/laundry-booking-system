@@ -639,8 +639,8 @@ function hour_function(){
                             $printed_slots[] = $time_slot;
                             $unique_time_slot_count++;
 
-                            // Break the loop if 14 unique time slots have been printed
-                            if ($unique_time_slot_count >= 14) {
+                            // Break the loop if 16 unique time slots have been printed
+                            if ($unique_time_slot_count >= 16) {
                                 break;
                             }
                         }
@@ -866,8 +866,8 @@ function hour_return_function(){
                                 $printed_slots[] = $time_slot;
                                 $unique_time_slot_count++;
 
-                                // Break the loop if 14 unique time slots have been printed
-                                if ($unique_time_slot_count >= 14) {
+                                // Break the loop if 16 unique time slots have been printed
+                                if ($unique_time_slot_count >= 16) {
                                     break;
                                 }
                             }
@@ -1968,7 +1968,7 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_booking_slot, $get_collection_slot_ids)) {
                             ?>
                                 <div class="info-box">
-                                    <strong id="collection-time-date-title">DATE AND TIME WHEN YOU DROP-OFF</strong>
+                                    <strong id="collection-time-date-title">Date And Time When You Drop-Off</strong>
                                     <p id="show-selected-delivery-time-date">
                                         <?php
                                             // Booking slot date and time
@@ -1980,7 +1980,7 @@ function lbs_reserved_slot($user_id){
                         }else{
                             ?>
                                 <div class="info-box">
-                                    <strong id="collection-time-date-title">DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY</strong>
+                                    <strong id="collection-time-date-title">Scheduled Pickup Date & Time for Laundry Collection</strong>
                                     <p id="show-selected-delivery-time-date">
                                         <?php
                                             // Booking slot date and time
@@ -2002,7 +2002,7 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_return_booking_slot, $get_collection_return_slot_ids)) {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY</strong>
+                                <strong id="collection-div-title">Pickup Address for Clean Laundry</strong>
                                 <p id="show-selected-collection-address">
                                     <?php echo collection_address(); ?>
                                 </p>
@@ -2011,7 +2011,7 @@ function lbs_reserved_slot($user_id){
                         } else {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY</strong>
+                                <strong id="collection-div-title">Delivery Address for Clean Laundry Return</strong>
                                 <p id="show-selected-collection-address">
                                     <?php echo selected_return_address(); ?>
                                 </p>
@@ -2023,7 +2023,7 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_booking_slot, $get_collection_slot_ids)) {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">ADDRESS WHERE YOU DROP-OFF</strong>
+                                <strong id="collection-div-title">Address for Dirty Laundry Drop-Off</strong>
                                 <p id="show-selected-collection-address">
                                     <?php echo collection_address(); ?>
                                 </p>
@@ -2032,7 +2032,7 @@ function lbs_reserved_slot($user_id){
                         } else {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">ADDRESS WHERE LAVE COLLECTS FROM</strong>
+                                <strong id="collection-div-title">Address for Cleaned Laundry Pickup</strong>
                                 <p id="show-selected-collection-address">
                                     <?php echo selected_address(); ?>
                                 </p>
@@ -2049,7 +2049,7 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_return_booking_slot, $get_collection_return_slot_ids)) {
                             ?>
                             <div class="info-box collection">
-                                <strong id="return-time-date-title">DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY</strong>
+                                <strong id="return-time-date-title">Preferred Date and Time for Collecting Cleaned Laundry</strong>
                                 <p id="show-selected-return-delivery-time-date">
                                     <?php
                                         // Booking slot date and time
@@ -2061,7 +2061,7 @@ function lbs_reserved_slot($user_id){
                         } else {
                             ?>
                             <div class="info-box delivery">
-                                <strong id="return-time-date-title">DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY</strong>
+                                <strong id="return-time-date-title">Date & Time for Clean Laundry Return</strong>
                                 <p id="show-selected-return-delivery-time-date">
                                     <?php
                                         // Booking slot date and time
@@ -2085,16 +2085,15 @@ function lbs_reserved_slot($user_id){
                 <?php 
                     if (strpos($_SERVER['REQUEST_URI'], 'lave-collects') !== false){
                         ?>
-                            <a href="<?php echo get_site_url(); ?>/lave-return" class="btn btn-outline-secondary mt-3 continue-btn">BOOK A SLOT FOR THE RETURN OF YOUR CLEANED LAUNDRY</a>
+                            <a href="<?php echo get_site_url(); ?>/lave-return" class="btn btn-outline-secondary mt-3 continue-btn">Schedule a Slot for Clean Laundry Return</a>
                         <?php
                     }elseif(strpos($_SERVER['REQUEST_URI'], 'you-drop-off') !== false){
                         ?>
-                        <a href="<?php echo get_site_url(); ?>/you-collect" class="btn btn-outline-secondary mt-3 continue-btn">BOOK A SLOT FOR THE COLLECTION OF YOUR DIRTY LAUNDRY</a>
+                        <a href="<?php echo get_site_url(); ?>/you-collect" class="btn btn-outline-secondary mt-3 continue-btn">Schedule a Slot for Dirty Laundry Collection</a>
                         <?php
                     }else{
                         ?>
-                        <a href="<?php echo get_site_url(); ?>/laundry-service" class="btn btn-outline-secondary mt-3 continue-btn">CONTINUE ADDING LAUNDRY TO
-                            YOUR BASKET</a>
+                        <a href="<?php echo get_site_url(); ?>/premium-dry-cleaning-for-you-and-your-family" class="btn btn-outline-secondary mt-3 continue-btn">Proceed to Add Laundry to Your Basket</a>
                         <?php
                     }
                 ?>
