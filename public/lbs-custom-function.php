@@ -901,6 +901,8 @@ function hour_return_function(){
                                 $bookings_slot_time = get_post_meta(get_the_ID(), '_booking_return_time_slot', true);
                                 $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
 
+                                // Get selected booking slot post type where selected_booking_slot
+                                $user_selected_slot_post_type = get_post_type(get_user_meta($user_id, 'selected_booking_slot', true));
                                 // get user selected booking slot id
                                 $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
                                 // get user selected booking date
@@ -918,35 +920,42 @@ function hour_return_function(){
                                 
                                 $collection_address = selected_return_address();
                                 if($delivery_date == $bookings_slot_date){
-                                    if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'fully_booked'){
-                                        ?>
-                                            <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
-                                        <?php
-                                    }elseif($user_selected_slot_date_time >= $slot_date_time){
+                                    if($user_selected_slot_post_type == 'booking'){
+                                        if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-hour available selected" data-bs-toggle="modal" data-bs-target="#cancelModal" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'fully_booked'){
+                                            ?>
+                                                <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
+                                            <?php
+                                        }elseif($user_selected_slot_date_time >= $slot_date_time){
+                                            ?>
+                                                <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'unavailable'){
+                                            ?>
+                                                <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-hour available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'available'){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-hour available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }
+                                    }else{
                                         ?>
                                             <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'unavailable'){
-                                        ?>
-                                            <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-hour available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free</span><span class="loader-wrapper"></span></div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'available'){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-hour available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
                                         <?php
                                     }
+                                    
                                 }
                             }
                         }
@@ -1370,6 +1379,8 @@ function saver_return_function(){
                             $bookings_slot_time = get_post_meta(get_the_ID(), '_saver_booking_return_time_slot', true);
                             $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
 
+                            // Get selected booking slot post type where selected_booking_slot
+                            $user_selected_slot_post_type = get_post_type(get_user_meta($user_id, 'selected_booking_slot', true));
                             // get user selected booking slot id
                             $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
                             // get user selected booking date
@@ -1386,33 +1397,39 @@ function saver_return_function(){
                             
                             $collection_address = selected_return_address();
                             if($delivery_date == $bookings_slot_date){
-                                if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
-                                    ?>
-                                        <div class="booking-slot booking-return-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
-                                    <?php
-                                }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
-                                    ?>
-                                        <div class="booking-slot booking-return-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
-                                    <?php
-                                }elseif($bookings_slot_status == 'fully_booked'){
-                                    ?>
-                                        <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked <br> <?php echo $bookings_slot_time;?></div>
-                                    <?php
-                                }elseif($user_selected_slot_date_time >= $slot_date_time){
+                                if($user_selected_slot_post_type == 'saver-booking'){
+                                    if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
+                                        ?>
+                                            <div class="booking-slot booking-return-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <?php
+                                    }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
+                                        ?>
+                                            <div class="booking-slot booking-return-slot-saver available selected" data-bs-toggle="modal" data-bs-target="#cancelModalSaver" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <?php
+                                    }elseif($bookings_slot_status == 'fully_booked'){
+                                        ?>
+                                            <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked <br> <?php echo $bookings_slot_time;?></div>
+                                        <?php
+                                    }elseif($user_selected_slot_date_time >= $slot_date_time){
+                                        ?>
+                                            <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable <br> <?php echo $bookings_slot_time;?></div>
+                                        <?php
+                                    }elseif($bookings_slot_status == 'unavailable'){
+                                        ?>
+                                            <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable <br> <?php echo $bookings_slot_time;?></div>
+                                        <?php
+                                    }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
+                                        ?>
+                                            <div class="booking-slot booking-return-slot-saver available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <?php
+                                    }elseif($bookings_slot_status == 'available'){
+                                        ?>
+                                            <div class="booking-slot booking-return-slot-saver available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
+                                        <?php
+                                    }
+                                }else{
                                     ?>
                                         <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable <br> <?php echo $bookings_slot_time;?></div>
-                                    <?php
-                                }elseif($bookings_slot_status == 'unavailable'){
-                                    ?>
-                                        <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable <br> <?php echo $bookings_slot_time;?></div>
-                                    <?php
-                                }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
-                                    ?>
-                                        <div class="booking-slot booking-return-slot-saver available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">Free <br> <?php echo $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
-                                    <?php
-                                }elseif($bookings_slot_status == 'available'){
-                                    ?>
-                                        <div class="booking-slot booking-return-slot-saver available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price . '<br>' . $bookings_slot_time;?></span><span class="loader-wrapper"></span></div>
                                     <?php
                                 }
                             }
@@ -1839,6 +1856,8 @@ function collection_return_function(){
                                 $bookings_slot_time = get_post_meta(get_the_ID(), '_collection_booking_return_time_slot', true);
                                 $user_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
 
+                                // Get selected booking slot post type where selected_booking_slot
+                                $user_selected_slot_post_type = get_post_type(get_user_meta($user_id, 'selected_booking_slot', true));
                                 // get user selected booking slot id
                                 $get_user_selected_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
                                 // get user selected booking date
@@ -1857,33 +1876,39 @@ function collection_return_function(){
 
                                 $collection_address = collection_address();
                                 if($delivery_date == $bookings_slot_date){
-                                    if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-collection available selected" data-bs-toggle="modal" data-bs-target="#cancelModalCollection" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price"><i class="fa fa-check-circle" aria-hidden="true"></i></span><span class="loader-wrapper"></span></div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-collection available selected" data-bs-toggle="modal" data-bs-target="#cancelModalCollection" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'fully_booked'){
-                                        ?>
-                                            <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
-                                        <?php
-                                    }elseif($user_selected_slot_date_time >= $slot_date_time){
+                                    if($user_selected_slot_post_type == 'collection'){
+                                        if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-collection available selected" data-bs-toggle="modal" data-bs-target="#cancelModalCollection" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price"><i class="fa fa-check-circle" aria-hidden="true"></i></span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-collection available selected" data-bs-toggle="modal" data-bs-target="#cancelModalCollection" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'fully_booked'){
+                                            ?>
+                                                <div class="booking-slot fully-booked" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Fully Booked</div>
+                                            <?php
+                                        }elseif($user_selected_slot_date_time >= $slot_date_time){
+                                            ?>
+                                                <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'unavailable'){
+                                            ?>
+                                                <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-collection available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price"><i class="fa fa-check-circle" aria-hidden="true"></i></span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }elseif($bookings_slot_status == 'available'){
+                                            ?>
+                                                <div class="booking-slot booking-return-slot-collection available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
+                                            <?php
+                                        }
+                                    }else{
                                         ?>
                                             <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'unavailable'){
-                                        ?>
-                                            <div class="booking-slot unavailable" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>">Unavailable</div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'available' && $bookings_slot_price == 0){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-collection available" @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price"><i class="fa fa-check-circle" aria-hidden="true"></i></span><span class="loader-wrapper"></span></div>
-                                        <?php
-                                    }elseif($bookings_slot_status == 'available'){
-                                        ?>
-                                            <div class="booking-slot booking-return-slot-collection available"  @click="open = true" data-bookings-slot-id = "<?= $bookings_slot_id;?>" data-bookings-slot-date = "<?= $bookings_slot_date;?>" data-bookings-slot-status = "<?= $bookings_slot_status;?>" data-bookings-slot-price = "<?= $bookings_slot_price;?>" data-bookings-slot-time = "<?= $bookings_slot_time;?>" data-collection-address = "<?= $collection_address;?>"><span class="slot-price">£<?php echo $bookings_slot_price;?></span><span class="loader-wrapper"></span></div>
                                         <?php
                                     }
                                 }
