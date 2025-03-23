@@ -159,27 +159,20 @@ add_action('wp_ajax_nopriv_update_booking_slot', 'update_booking_slot');
 // update return booking slot
 function update_return_booking_slot(){
     if(isset($_POST['bookings_slot_id']) && !empty($_POST['bookings_slot_id'])) {
+        global $wpdb;
+
         $bookings_slot_id = intval($_POST['bookings_slot_id']);
         $user_id = get_current_user_id();
-        // Update previous booking slot status to available 
+        // Fetch previous return booking slot
         $get_previous_bookings_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+
+        // Fetch all booking slot IDs
+        $hour_booking_post_id = $wpdb->get_col("SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_return_status'");
+        $saver_booking_post_id = $wpdb->get_col("SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_saver_booking_return_status'");
+        $collection_booking_post_id = $wpdb->get_col("SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_collection_booking_return_status'");
 
         // if previous booking slot id is not empty then update previous booking slot status to available
         if (!empty($get_previous_bookings_slot_id) ) {
-            global $wpdb;
-            // Query to get the post ID where _booking_status exists
-            $hour_booking_post_id = $wpdb->get_col(
-                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_return_status'"
-            );
-            $saver_booking_post_id = $wpdb->get_col(
-                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_saver_booking_return_status'"
-            );
-            $collection_booking_post_id = $wpdb->get_col(
-                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_collection_booking_return_status'"
-            );
-
-
-            // Check if a post ID was found
             if ( in_array( $get_previous_bookings_slot_id, $hour_booking_post_id) ) {
                 // Update the booking status meta key for the found post
                 update_post_meta($get_previous_bookings_slot_id, '_booking_return_status', 'available');
@@ -195,11 +188,13 @@ function update_return_booking_slot(){
         // Update the new selected_booking_slot_id post meta value
         update_user_meta($user_id, 'selected_return_booking_slot', $bookings_slot_id);
 
-        $bookings_slot_price = intval($_POST['bookings_slot_price']);
-        $bookings_slot_date = date("l, j F", strtotime(isset($_POST['bookings_slot_date']) ? $_POST['bookings_slot_date'] : ''));
-        $bookings_slot_time = isset($_POST['bookings_slot_time']) ? $_POST['bookings_slot_time'] : '';
-        $bookings_slot_status = intval($_POST['bookings_slot_status']);
-        $collection_address = isset($_POST['collection_address']) ? $_POST['collection_address'] : '';
+
+        // Sanitize and validate input data
+        $bookings_slot_price = isset($_POST['bookings_slot_price']) ? intval($_POST['bookings_slot_price']) : 0;
+        $bookings_slot_date = isset($_POST['bookings_slot_date']) ? date("l, j F", strtotime($_POST['bookings_slot_date'])) : '';
+        $bookings_slot_time = isset($_POST['bookings_slot_time']) ? sanitize_text_field($_POST['bookings_slot_time']) : '';
+        $bookings_slot_status = isset($_POST['bookings_slot_status']) ? sanitize_text_field($_POST['bookings_slot_status']) : '';
+        $collection_address = isset($_POST['collection_address']) ? sanitize_text_field($_POST['collection_address']) : '';
 
         // Update booking slot status
         if(in_array($bookings_slot_id, $hour_booking_post_id)) {
@@ -220,9 +215,13 @@ function update_return_booking_slot(){
         // Update booking slot current time
         update_user_meta($user_id, 'booking_slot_current_time', $bookings_slot_current_time);
 
-        wp_send_json_success(array("bookings_slot_price" => $bookings_slot_price, "bookings_slot_date" => $bookings_slot_date, "bookings_slot_time" => $bookings_slot_time, "bookings_slot_current_time" => $bookings_slot_current_time, "collection_address" => $collection_address));
-
-
+        wp_send_json_success(array(
+            "bookings_slot_price" => $bookings_slot_price, 
+            "bookings_slot_date" => $bookings_slot_date, 
+            "bookings_slot_time" => $bookings_slot_time, 
+            "bookings_slot_current_time" => $bookings_slot_current_time, 
+            "collection_address" => $collection_address
+        ));
     }else {
         wp_send_json_error(array('message' => 'Error updating booking slot.'));
     }
