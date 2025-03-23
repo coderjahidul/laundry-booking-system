@@ -1993,7 +1993,7 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_booking_slot, $get_collection_slot_ids)) {
                             ?>
                                 <div class="info-box">
-                                    <strong id="collection-time-date-title">Date And Time When You Drop-Off</strong>
+                                    <strong id="collection-time-date-title">DATE AND TIME WHEN YOU DROP-OFF</strong>
                                     <p id="show-selected-delivery-time-date">
                                         <?php
                                             // Booking slot date and time
@@ -2027,8 +2027,8 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_return_booking_slot, $get_collection_return_slot_ids)) {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">Pickup Address for Clean Laundry</strong>
-                                <p id="show-selected-collection-address">
+                                <strong id="collection-div-title">ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY</strong>
+                                <p id="show-selected-delivery">
                                     <?php echo collection_address(); ?>
                                 </p>
                             </div>
@@ -2036,8 +2036,8 @@ function lbs_reserved_slot($user_id){
                         } else {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">Delivery Address for Clean Laundry Return</strong>
-                                <p id="show-selected-return-delivery">
+                                <strong id="collection-div-title">ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY</strong>
+                                <p id="show-selected-delivery">
                                     <?php echo selected_return_address(); ?>
                                 </p>
                             </div>
@@ -2048,8 +2048,8 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_booking_slot, $get_collection_slot_ids)) {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">Address for Dirty Laundry Drop-Off</strong>
-                                <p id="show-selected-collection-address">
+                                <strong id="collection-div-title">ADDRESS WHERE YOU DROP-OFF</strong>
+                                <p id="show-selected-delivery">
                                     <?php echo collection_address(); ?>
                                 </p>
                             </div>
@@ -2074,7 +2074,7 @@ function lbs_reserved_slot($user_id){
                         if (in_array($get_selected_return_booking_slot, $get_collection_return_slot_ids)) {
                             ?>
                             <div class="info-box collection">
-                                <strong id="return-time-date-title">Preferred Date and Time for Collecting Cleaned Laundry</strong>
+                                <strong id="return-time-date-title">DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY</strong>
                                 <p id="show-selected-return-delivery-time-date">
                                     <?php
                                         // Booking slot date and time
@@ -2086,7 +2086,7 @@ function lbs_reserved_slot($user_id){
                         } else {
                             ?>
                             <div class="info-box delivery">
-                                <strong id="return-time-date-title">Date & Time for Clean Laundry Return</strong>
+                                <strong id="return-time-date-title">DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY</strong>
                                 <p id="show-selected-return-delivery-time-date">
                                     <?php
                                         // Booking slot date and time

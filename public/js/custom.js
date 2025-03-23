@@ -72,7 +72,7 @@ jQuery(document).ready(function($){
                     // let postcode = response.data.postcode;
                     let selected_return_address = response.data.selected_return_address;
                     $('#show-selected-return-address').html('<span>' + selected_return_address + '</span>');
-                    $('#show-selected-return-delivery').html(selected_address);
+                    $('#show-selected-delivery').html(selected_return_address);
                 } else {
                     console.log('Failed to select the address.');
                 }
@@ -288,7 +288,7 @@ jQuery(document).ready(function($){
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
         let collectionAddress = $(this).data('collection-address');
 
-        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
+        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Collection Address: " + collectionAddress);
 
         // console.log("Collection Address: " + collectionAddress);
 
@@ -315,7 +315,7 @@ jQuery(document).ready(function($){
                     // show collection title
                     $('#collection-div-title').html("ADDRESS WHERE YOU DROP-OFF");
                     // show collection address
-                    $('#show-selected-collection-address').html(collection_address);
+                    $('#show-selected-delivery').html(collection_address);
                     // show collection-time-date-title
                     $('#collection-time-date-title').html("DATE AND TIME WHEN YOU DROP-OFF");
                     // show booking slot date in reserved slot Delevery section
@@ -381,7 +381,7 @@ jQuery(document).ready(function($){
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
         let collection_address = $(this).data('collection-address');
 
-        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
+        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Collection Address: " + collection_address);
 
         $.ajax({
             type: 'POST',
@@ -406,7 +406,7 @@ jQuery(document).ready(function($){
                     // show delivery title
                     $('#collection-div-title').html("ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY");
                     // show collection address
-                    $('#show-selected-collection-address').html(collection_address);
+                    $('#show-selected-delivery').html(collection_address);
                     // show collection-time-date-title
                     $('#return-time-date-title').html("DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
@@ -497,7 +497,7 @@ jQuery(document).ready(function($){
                     // show delivery title
                     $('#collection-div-title').html("ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY");
                     // show collection address
-                    $('#show-selected-collection-address').html(collection_address);
+                    $('#show-selected-delivery').html(collection_address);
                     // show collection-time-date-title
                     $('#return-time-date-title').html("DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
@@ -590,7 +590,7 @@ jQuery(document).ready(function($){
                     // show collection title
                     $('#collection-div-title').html("ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY");
                     // show collection address
-                    $('#show-selected-collection-address').html(collection_address);
+                    $('#show-selected-delivery').html(collection_address);
                     // show collection-time-date-title
                     $('#return-time-date-title').html("DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
@@ -748,7 +748,7 @@ jQuery(document).ready(function($){
                     // Update the store name in the HTML
                     $('#show-selected-store-address').html("Waitrose & Partners" + " " + storeName);
                     $('#collection-div-title').html("ADDRESS WHERE YOU DROP-OFF");
-                    $('#show-selected-collection-address').html("Waitrose & Partners, " + storeName + ", " + storeAddress + ", " + storePostcode);
+                    $('#show-selected-delivery').html("Waitrose & Partners, " + storeName + ", " + storeAddress + ", " + storePostcode);
                 }else{
                     console.log('Failed to select the store.');
                 }
