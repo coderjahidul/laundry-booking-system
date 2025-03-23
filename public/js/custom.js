@@ -106,7 +106,7 @@ jQuery(document).ready(function($){
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
         let collection_address = $(this).data('collection-address');
 
-        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
+        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Collection Address: " + collection_address);
 
         $.ajax({
             type: 'POST',

@@ -2005,7 +2005,7 @@ function lbs_reserved_slot($user_id){
                         }else{
                             ?>
                                 <div class="info-box">
-                                    <strong id="collection-time-date-title">Scheduled Pickup Date & Time for Laundry Collection</strong>
+                                    <strong id="collection-time-date-title">DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY</strong>
                                     <p id="show-selected-delivery-time-date">
                                         <?php
                                             // Booking slot date and time
@@ -2037,7 +2037,7 @@ function lbs_reserved_slot($user_id){
                             ?>
                             <div class="info-box collection">
                                 <strong id="collection-div-title">Delivery Address for Clean Laundry Return</strong>
-                                <p id="show-selected-collection-address">
+                                <p id="show-selected-return-delivery">
                                     <?php echo selected_return_address(); ?>
                                 </p>
                             </div>
@@ -2057,8 +2057,8 @@ function lbs_reserved_slot($user_id){
                         } else {
                             ?>
                             <div class="info-box collection">
-                                <strong id="collection-div-title">Address for Cleaned Laundry Pickup</strong>
-                                <p id="show-selected-collection-address">
+                                <strong id="collection-div-title">ADDRESS WHERE LAVE COLLECTS FROM</strong>
+                                <p id="show-selected-delivery">
                                     <?php echo selected_address(); ?>
                                 </p>
                             </div>
