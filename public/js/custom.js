@@ -228,7 +228,7 @@ jQuery(document).ready(function($){
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
-                    $("#show-selected-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    $("#show-selected-bookings-saver-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot price in reserved slot discription
                     $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header
@@ -321,7 +321,7 @@ jQuery(document).ready(function($){
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
-                    $("#show-selected-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    $("#show-selected-bookings-collection-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot price in reserved slot discription
                     $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header
@@ -412,7 +412,7 @@ jQuery(document).ready(function($){
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-return-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
-                    // $("#show-selected-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    $("#show-selected-return-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot price in reserved slot discription
                     // $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header
@@ -503,7 +503,7 @@ jQuery(document).ready(function($){
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-return-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
-                    // $("#show-selected-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    $("#show-selected-return-bookings-saver-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot price in reserved slot discription
                     // $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header
@@ -596,7 +596,7 @@ jQuery(document).ready(function($){
                     // show booking slot date in reserved slot Delevery section
                     $("#show-selected-return-delivery-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot date and time in booking slot modal
-                    // $("#show-selected-bookings-time-date").html(bookings_slot_date + " " + bookings_slot_time);
+                    $("#show-selected-return-bookings-collection-time-date").html(bookings_slot_date + " " + bookings_slot_time);
                     // show booking slot price in reserved slot discription
                     // $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header

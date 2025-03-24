@@ -971,10 +971,10 @@ function hour_return_function(){
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center">
-                                    <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                    <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-return-bookings-time-date">
                                         <?php
                                         // Booking slot date and time
-                                        booking_slot_date_time($user_bookings_slot_id);
+                                        return_booking_slot_date_time($user_bookings_slot_id);
                                         ?>
                                     </strong>?</p>
                                 </div>
@@ -1195,7 +1195,7 @@ function saver_function(){
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-center">
-                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-saver-time-date">
                                     <?php
                                     // Booking slot date and time
                                     booking_slot_date_time($user_bookings_slot_id);
@@ -1447,10 +1447,10 @@ function saver_return_function(){
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-center">
-                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-return-bookings-saver-time-date">
                                     <?php
                                     // Booking slot date and time
-                                    booking_slot_date_time($user_bookings_slot_id);
+                                    return_booking_slot_date_time($user_bookings_slot_id);
                                     ?>
                                 </strong>?</p>
                             </div>
@@ -1673,7 +1673,7 @@ function collection_function(){
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-center">
-                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-collection-time-date">
                                     <?php
                                     // Booking slot date and time
                                     booking_slot_date_time($user_bookings_slot_id);
@@ -1926,10 +1926,10 @@ function collection_return_function(){
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center">
-                                    <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-bookings-time-date">
+                                    <p>Are you sure you want to cancel your reserved delivery slot on <strong id="show-selected-return-bookings-collection-time-date">
                                         <?php
                                         // Booking slot date and time
-                                        booking_slot_date_time($user_bookings_slot_id);
+                                        return_booking_slot_date_time($user_bookings_slot_id);
                                         ?>
                                     </strong>?</p>
                                 </div>
