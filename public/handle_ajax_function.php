@@ -529,6 +529,29 @@ add_action('wp_ajax_get_shipping_areas', 'get_shipping_areas');
 add_action('wp_ajax_nopriv_get_shipping_areas', 'get_shipping_areas');
 
 
+function check_return_booking_slot() {
+    $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+    if (!$user_id) {
+        echo "empty";
+        wp_die();
+    }
+
+    $user_selected_return_booking_slot = get_user_meta($user_id, 'selected_return_booking_slot', true);
+
+    if (empty($user_selected_return_booking_slot)) {
+        echo "empty";
+    } else {
+        echo "not_empty";
+    }
+
+    wp_die();
+}
+
+add_action('wp_ajax_check_return_booking_slot', 'check_return_booking_slot');
+add_action('wp_ajax_nopriv_check_return_booking_slot', 'check_return_booking_slot'); // Allow non-logged-in users if needed
+
+
+
 
 
 

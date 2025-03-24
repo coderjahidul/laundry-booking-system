@@ -2117,9 +2117,8 @@ function lbs_reserved_slot($user_id){
                         <a href="<?php echo get_site_url(); ?>/you-collect" class="btn btn-outline-secondary mt-3 continue-btn">Schedule a Slot for Dirty Laundry Collection</a>
                         <?php
                     }else{
-                        ?>
-                        <a href="<?php echo get_site_url(); ?>/premium-dry-cleaning-for-you-and-your-family" class="btn btn-outline-secondary mt-3 continue-btn">Proceed to Add Laundry to Your Basket</a>
-                        <?php
+                        $user_id = get_current_user_id(); // Ensure you have the user ID
+                        echo '<a data-user-id="' . $user_id . '" href="#" class="btn btn-outline-secondary mt-3 continue-btn" id="proceedBtn">Proceed to Add Laundry to Your Basket</a>';
                     }
                 ?>
                 

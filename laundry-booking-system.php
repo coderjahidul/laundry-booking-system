@@ -124,7 +124,10 @@ function my_plugin_enqueue_scripts() {
     );
 
     // Localize the script with AJAX URL
-    wp_localize_script( 'custom-js', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+    wp_localize_script('custom-js', 'ajax_object', array(
+        'ajaxurl'  => admin_url('admin-ajax.php'),
+        'site_url' => get_site_url() // Ensure this is passed
+    ));
 }
 add_action('wp_enqueue_scripts', 'my_plugin_enqueue_scripts');
 

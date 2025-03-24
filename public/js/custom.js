@@ -820,6 +820,32 @@ jQuery(document).ready(function($){
             alert('AJAX error.');
         }
     });
+
+    $("#proceedBtn").on("click", function(event) {
+        event.preventDefault(); // Prevent immediate redirection
+
+        let user_id = $(this).data('user-id');
+        console.log("User ID:", user_id); // Debugging
+
+        $.ajax({
+            type: "POST",
+            url: ajax_object.ajaxurl,  // Ensure this is defined in functions.php
+            data: {
+                action: "check_return_booking_slot",
+                user_id: user_id
+            },
+            success: function(response) {
+                console.log("AJAX Response:", response); // Debugging
+
+                if (response.trim() === "empty") {
+                    alert("Please select a date and time for the return of your cleaned clothes.");
+                } else {
+                    window.location.href = ajax_object.site_url + "/premium-dry-cleaning-for-you-and-your-family/";
+                }
+            }
+        });
+    });
+
 });
 
 
