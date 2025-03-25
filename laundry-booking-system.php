@@ -294,3 +294,17 @@ function run_laundry_booking_system() {
 
 }
 run_laundry_booking_system();
+
+// Restrict cart and checkout pages to logged in users
+function restrict_cart_checkout_pages() {
+    if (is_user_logged_in()) {
+        return; // Allow access if user is logged in
+    }
+
+    // Check if the user is trying to access the Cart or Checkout page
+    if (is_cart() || is_checkout()) {
+        wp_redirect(get_permalink(get_option('woocommerce_myaccount_page_id'))); 
+        exit;
+    }
+}
+add_action('template_redirect', 'restrict_cart_checkout_pages');
