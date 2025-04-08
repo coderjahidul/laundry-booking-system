@@ -222,23 +222,45 @@ function disable_postcode_validation($address_fields) {
 // Restrict page to logged in users
 function restrict_page_to_logged_in_users() {
     if (!is_user_logged_in() && (is_page('lave-collects') || is_page('you-drop-off') || is_page('lave-return') || is_page('you-collect'))) {
-        wp_redirect(site_url('/my-account/'));
+        $redirect_url = site_url('/lave-collects/');
+        wp_redirect(add_query_arg('redirect_to', urlencode($redirect_url), site_url('/my-account/')));
         exit;
     }
 }
 add_action('template_redirect', 'restrict_page_to_logged_in_users');
 
-// add to cart redirect not logged in user 
-add_filter( 'woocommerce_add_to_cart_redirect', 'custom_add_to_cart_redirect' );
-function custom_add_to_cart_redirect( $url ) {
-    // if user is not logged in, redirect to login page
-    if (!is_user_logged_in()){
-        $redirect_url = site_url() . '/my-account';
-        return $redirect_url;
-    }else{
-        return $url;
+function custom_login_redirect( $redirect, $user ) {
+    // Check if the user is logging in through WooCommerce
+    if (isset($_REQUEST['woocommerce-login-nonce'])) {
+        // Redirect to custom page
+        return site_url('/lave-collects');
     }
+
+    return $redirect;
 }
+add_filter('woocommerce_login_redirect', 'custom_login_redirect', 10, 2);
+
+
+// Redirect after login
+function redirect_after_login($redirect_to, $request, $user) {
+    if (isset($_REQUEST['redirect_to'])) {
+        return $_REQUEST['redirect_to'];
+    }
+    return $redirect_to;
+}
+add_filter('login_redirect', 'redirect_after_login', 10, 3);
+
+// add to cart redirect not logged in user 
+// add_filter( 'woocommerce_add_to_cart_redirect', 'custom_add_to_cart_redirect' );
+// function custom_add_to_cart_redirect( $url ) {
+//     // if user is not logged in, redirect to login page
+//     if (!is_user_logged_in()){
+//         $redirect_url = site_url() . '/my-account';
+//         return $redirect_url;
+//     }else{
+//         return $url;
+//     }
+// }
 
 
 
@@ -296,6 +318,20 @@ function run_laundry_booking_system() {
 run_laundry_booking_system();
 
 // Restrict cart and checkout pages to logged in users
+// function restrict_cart_checkout_pages() {
+//     if (is_user_logged_in()) {
+//         return; // Allow access if user is logged in
+//     }
+
+//     // Check if the user is trying to access the Cart or Checkout page
+//     if (is_cart() || is_checkout()) {
+//         wp_redirect(get_permalink(get_option('woocommerce_myaccount_page_id'))); 
+//         exit;
+//     }
+// }
+// add_action('template_redirect', 'restrict_cart_checkout_pages');
+
+// Restrict cart and checkout pages to logged in users
 function restrict_cart_checkout_pages() {
     if (is_user_logged_in()) {
         return; // Allow access if user is logged in
@@ -303,8 +339,10 @@ function restrict_cart_checkout_pages() {
 
     // Check if the user is trying to access the Cart or Checkout page
     if (is_cart() || is_checkout()) {
-        wp_redirect(get_permalink(get_option('woocommerce_myaccount_page_id'))); 
+        // Redirect to a custom page (e.g., 'lave-collects')
+        wp_redirect(home_url('/lave-collects/')); 
         exit;
     }
 }
 add_action('template_redirect', 'restrict_cart_checkout_pages');
+
