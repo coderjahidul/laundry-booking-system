@@ -284,6 +284,14 @@ jQuery(document).ready(function($){
 
     // booking slot collection
     $('.booking-slot-collection').on('click', function () {
+        let collectionAddress = $(this).attr('data-collection-address');
+        if (!collectionAddress || collectionAddress.trim() === '') {
+            alert('Please select a drop off address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
+
         // remove class from the previously selected booking slot
         $('.booking-slot-collection').removeClass('selected');
         $('.booking-slot-collection').attr('data-bs-toggle', '').attr('data-bs-target', '');
@@ -303,7 +311,6 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let collectionAddress = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Collection Address: " + collectionAddress);
 
@@ -573,6 +580,14 @@ jQuery(document).ready(function($){
 
     // return booking slot collection
     $('.booking-return-slot-collection').on('click', function () {
+        let collectionAddress = $(this).attr('data-collection-address');
+        if (!collectionAddress || collectionAddress.trim() === '') {
+            alert('Please select a drop off address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
+
         // remove class from the previously selected booking slot
         $('.booking-return-slot-collection').removeClass('selected');
         $('.booking-return-slot-collection').attr('data-bs-toggle', '').attr('data-bs-target', '');
@@ -592,7 +607,6 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let collectionAddress = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
 
@@ -780,6 +794,7 @@ jQuery(document).ready(function($){
                     $('#show-selected-store-address').html("Waitrose & Partners" + " " + storeName);
                     $('#collection-div-title').html("ADDRESS WHERE YOU DROP-OFF");
                     $('#show-selected-delivery').html("Waitrose & Partners, " + storeName + ", " + storeAddress + ", " + storePostcode);
+                    $('.booking-slot').attr('data-collection-address', storeName + storeAddress + storePostcode);
                 }else{
                     console.log('Failed to select the store.');
                 }

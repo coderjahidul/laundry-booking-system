@@ -1631,7 +1631,7 @@ function collection_function(){
                             $bookings_slot_price = get_post_meta(get_the_ID(), '_collection_booking_price', true);
                             $bookings_slot_time = get_post_meta(get_the_ID(), '_collection_booking_time_slot', true);
                             $user_bookings_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
-                            $collection_address = collection_address();
+                            $collection_address = drop_off_address();
                             if($delivery_date == $bookings_slot_date){
                                 if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
                                     ?>
@@ -1874,7 +1874,7 @@ function collection_return_function(){
                                 $user_selected_slot_date_time = unix_timestamp($get_user_selected_bookings_date, $get_user_selected_bookings_time);
                                 $slot_date_time = unix_timestamp($bookings_slot_date, $bookings_slot_time);
 
-                                $collection_address = collection_address();
+                                $collection_address = drop_off_address();
                                 if($delivery_date == $bookings_slot_date){
                                     if($user_selected_slot_post_type == 'collection'){
                                         if($bookings_slot_status == 'fully_booked' && $user_bookings_slot_id == $bookings_slot_id && $bookings_slot_price == 0){
@@ -2349,6 +2349,15 @@ function collection_address(){
     $store_postcode = get_post_meta($selected_store_id, '_store_postcode', true);
 
     return "Waitrose & Partners, " . $store_name . ', ' . $store_address . ', ' . $store_postcode;
+}
+
+function drop_off_address(){
+    $selected_store_id = get_user_meta(get_current_user_id(), 'selected_store_id', true);
+    $store_name = get_post_meta($selected_store_id, '_store_name', true);
+    $store_address = get_post_meta($selected_store_id, '_store_address', true);
+    $store_postcode = get_post_meta($selected_store_id, '_store_postcode', true);
+
+    return  $store_name . $store_address . $store_postcode;
 }
 
 function collection_return_address(){
