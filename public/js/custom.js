@@ -37,6 +37,8 @@ jQuery(document).ready(function($){
                     let selected_address = response.data.selected_address;
                     $('#show-selected-address').html('<span>' + selected_address + '</span>');
                     $('#show-selected-delivery').html(selected_address);
+                    // add selected address to the booking slot
+                    $('.booking-slot').attr('data-collection-address', selected_address);
                 } else {
                     console.log('Failed to select the address.');
                 }
@@ -107,6 +109,13 @@ jQuery(document).ready(function($){
         let collection_address = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Collection Address: " + collection_address);
+
+        if (!collection_address || collection_address.trim() === '') {
+            alert('Please select a collection address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
 
         $.ajax({
             type: 'POST',
