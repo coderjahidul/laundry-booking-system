@@ -89,6 +89,13 @@ jQuery(document).ready(function($){
 
     // booking slot hour
     $('.booking-slot-hour').on('click', function () {
+        let collection_address = $(this).attr('data-collection-address');
+        if (!collection_address || collection_address.trim() === '') {
+            alert('Please select a collection address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
         // remove class from the previously selected booking slot
         $('.booking-slot-hour').removeClass('selected');
         $('.booking-slot-hour').attr('data-bs-toggle', '').attr('data-bs-target', '');
@@ -108,16 +115,8 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let collection_address = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Collection Address: " + collection_address);
-
-        if (!collection_address || collection_address.trim() === '') {
-            alert('Please select a collection address.');
-            loaderWrapper.removeClass('loader');
-            slotPrice.removeClass('d-none');
-            return; // Stop execution here
-        }
 
         $.ajax({
             type: 'POST',
@@ -187,6 +186,14 @@ jQuery(document).ready(function($){
 
     // booking slot saver
     $('.booking-slot-saver').on('click', function () {
+        let collectionAddress = $(this).attr('data-collection-address');
+        if (!collectionAddress || collectionAddress.trim() === '') {
+            alert('Please select a collection address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
+        
         // remove class from the previously selected booking slot
         $('.booking-slot-saver').removeClass('selected');
         $('.booking-slot-saver').attr('data-bs-toggle', '').attr('data-bs-target', '');
@@ -206,16 +213,8 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let collectionAddress = $(this).data('collection-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus + "Collection Address: " + collectionAddress);
-
-        if (!collectionAddress || collectionAddress.trim() === '') {
-            alert('Please select a collection address.');
-            loaderWrapper.removeClass('loader');
-            slotPrice.removeClass('d-none');
-            return; // Stop execution here
-        }
 
         $.ajax({
             type: 'POST',
@@ -378,6 +377,14 @@ jQuery(document).ready(function($){
 
     // return booking slot hour
     $('.booking-return-slot-hour').on('click', function () {
+        let return_address = $(this).attr('data-return-address');
+        if (!return_address || return_address.trim() === '') {
+            alert('Please select a return address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
+
         // remove class from the previously selected booking slot
         $('.booking-return-slot-hour').removeClass('selected');
         $('.booking-return-slot-hour').attr('data-bs-toggle', '').attr('data-bs-target', '');
@@ -397,16 +404,8 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let return_address = $(this).data('return-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Return Address: " + return_address);
-
-        if (!return_address || return_address.trim() === '') {
-            alert('Please select a return address.');
-            loaderWrapper.removeClass('loader');
-            slotPrice.removeClass('d-none');
-            return; // Stop execution here
-        }
 
         $.ajax({
             type: 'POST',
@@ -476,6 +475,14 @@ jQuery(document).ready(function($){
     
     // return booking slot saver
     $('.booking-return-slot-saver').on('click', function () {
+        let returnAddress = $(this).attr('data-return-address');
+        if (!returnAddress || returnAddress.trim() === '') {
+            alert('Please select a return address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
+
         // remove class from the previously selected booking slot
         $('.booking-return-slot-saver').removeClass('selected');
         $('.booking-return-slot-saver').attr('data-bs-toggle', '').attr('data-bs-target', '');
@@ -495,16 +502,8 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let returnAddress = $(this).data('return-address');
 
         console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Return Address: " + returnAddress);
-
-        if (!returnAddress || returnAddress.trim() === '') {
-            alert('Please select a return address.');
-            loaderWrapper.removeClass('loader');
-            slotPrice.removeClass('d-none');
-            return; // Stop execution here
-        }
 
         $.ajax({
             type: 'POST',
