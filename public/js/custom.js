@@ -75,6 +75,8 @@ jQuery(document).ready(function($){
                     let selected_return_address = response.data.selected_return_address;
                     $('#show-selected-return-address').html('<span>' + selected_return_address + '</span>');
                     $('#show-selected-delivery').html(selected_return_address);
+                    // add selected address to the booking slot
+                    $('.booking-slot').attr('data-return-address', selected_return_address);
                 } else {
                     console.log('Failed to select the address.');
                 }
@@ -395,9 +397,16 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let collection_address = $(this).data('collection-address');
+        let return_address = $(this).data('return-address');
 
-        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Collection Address: " + collection_address);
+        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Return Address: " + return_address);
+
+        if (!return_address || return_address.trim() === '') {
+            alert('Please select a return address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
 
         $.ajax({
             type: 'POST',
@@ -409,7 +418,7 @@ jQuery(document).ready(function($){
                 bookings_slot_time: bookingsSlotTime,
                 bookings_slot_price: bookingsSlotPrice,
                 bookings_slot_status: bookingsSlotStatus,
-                collection_address: collection_address
+                return_address: return_address
             },
             success: function(response){
                 if(response.success){
@@ -417,12 +426,12 @@ jQuery(document).ready(function($){
                     let bookings_slot_date = response.data.bookings_slot_date;
                     let bookings_slot_time = response.data.bookings_slot_time;
                     let bookings_slot_current_time = response.data.bookings_slot_current_time;
-                    let collection_address = response.data.collection_address;
+                    let return_address = response.data.return_address;
                     // alert("Slot Price: " + bookings_slot_price + "Slot Date: " + bookings_slot_date + "Slot Time: " + bookings_slot_time);
                     // show delivery title
                     $('#collection-div-title').html("ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY");
                     // show collection address
-                    $('#show-selected-delivery').html(collection_address);
+                    $('#show-selected-delivery').html(return_address);
                     // show collection-time-date-title
                     $('#return-time-date-title').html("DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY");
                     // show booking slot date in reserved slot Delevery section
@@ -486,9 +495,16 @@ jQuery(document).ready(function($){
         let bookingsSlotTime = $(this).data('bookings-slot-time');
         let bookingsSlotPrice = $(this).data('bookings-slot-price');
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
-        let collectionAddress = $(this).data('collection-address');
+        let returnAddress = $(this).data('return-address');
 
-        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
+        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus , "Return Address: " + returnAddress);
+
+        if (!returnAddress || returnAddress.trim() === '') {
+            alert('Please select a return address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
 
         $.ajax({
             type: 'POST',
@@ -500,7 +516,7 @@ jQuery(document).ready(function($){
                 bookings_slot_time: bookingsSlotTime,
                 bookings_slot_price: bookingsSlotPrice,
                 bookings_slot_status: bookingsSlotStatus,
-                collection_address: collectionAddress
+                return_address: returnAddress
             },
             success: function(response){
                 if(response.success){
@@ -508,12 +524,12 @@ jQuery(document).ready(function($){
                     let bookings_slot_date = response.data.bookings_slot_date;
                     let bookings_slot_time = response.data.bookings_slot_time;
                     let bookings_slot_current_time = response.data.bookings_slot_current_time;
-                    let collection_address = response.data.collection_address;
+                    let return_address = response.data.return_address;
                     // alert("Slot Price: " + bookings_slot_price + "Slot Date: " + bookings_slot_date + "Slot Time: " + bookings_slot_time);
                     // show delivery title
                     $('#collection-div-title').html("ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY");
                     // show collection address
-                    $('#show-selected-delivery').html(collection_address);
+                    $('#show-selected-delivery').html(return_address);
                     // show collection-time-date-title
                     $('#return-time-date-title').html("DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY");
                     // show booking slot date in reserved slot Delevery section

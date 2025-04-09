@@ -194,7 +194,7 @@ function update_return_booking_slot(){
         $bookings_slot_date = isset($_POST['bookings_slot_date']) ? date("l, j F", strtotime($_POST['bookings_slot_date'])) : '';
         $bookings_slot_time = isset($_POST['bookings_slot_time']) ? sanitize_text_field($_POST['bookings_slot_time']) : '';
         $bookings_slot_status = isset($_POST['bookings_slot_status']) ? sanitize_text_field($_POST['bookings_slot_status']) : '';
-        $collection_address = isset($_POST['collection_address']) ? sanitize_text_field($_POST['collection_address']) : '';
+        $return_address = isset($_POST['return_address']) ? sanitize_text_field($_POST['return_address']) : '';
 
         // Update booking slot status
         if(in_array($bookings_slot_id, $hour_booking_post_id)) {
@@ -220,7 +220,7 @@ function update_return_booking_slot(){
             "bookings_slot_date" => $bookings_slot_date, 
             "bookings_slot_time" => $bookings_slot_time, 
             "bookings_slot_current_time" => $bookings_slot_current_time, 
-            "collection_address" => $collection_address
+            "return_address" => $return_address
         ));
     }else {
         wp_send_json_error(array('message' => 'Error updating booking slot.'));
