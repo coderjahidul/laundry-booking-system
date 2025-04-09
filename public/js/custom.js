@@ -206,7 +206,14 @@ jQuery(document).ready(function($){
         let bookingsSlotStatus = $(this).data('bookings-slot-status');
         let collectionAddress = $(this).data('collection-address');
 
-        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus);
+        console.log("Slot ID: " + bookingsSlotId, "Slot Date: " + bookingsSlotDate, "Slot Time: " + bookingsSlotTime, "Slot Price: " + bookingsSlotPrice, "Slot Status: " + bookingsSlotStatus + "Collection Address: " + collectionAddress);
+
+        if (!collectionAddress || collectionAddress.trim() === '') {
+            alert('Please select a collection address.');
+            loaderWrapper.removeClass('loader');
+            slotPrice.removeClass('d-none');
+            return; // Stop execution here
+        }
 
         $.ajax({
             type: 'POST',
