@@ -29,7 +29,7 @@ function lbs_bookslot_delivery_function() {
     </div>
     <!-- add address from -->
     <?php add_address_from();?>
-    <div class="slot-section" x-data="{ open: false }">
+    <div class="slot-section">
         <div class="choose-your-slot-section">
             <?php 
                 // If user logged in
@@ -54,7 +54,7 @@ function lbs_bookslot_delivery_function() {
                     <?php
                 }else{
                     ?>
-                    <div class="delivery-details" x-show="open">
+                    <div class="delivery-details d-none">
                         <?php lbs_reserved_slot($user_id); ?>
                     </div>
                     <?php
@@ -94,7 +94,7 @@ function lbs_bookslot_click_collect_function() {
             <?php lbs_collection(); ?>
         </div>
     </div>
-    <div class="slot-section" x-data="{ open: false }">
+    <div class="slot-section">
         <div class="choose-your-slot-section">
             <?php 
                 // If user logged in
@@ -119,7 +119,7 @@ function lbs_bookslot_click_collect_function() {
                     <?php
                 }else{
                     ?>
-                    <div class="delivery-details" x-show="open">
+                    <div class="delivery-details d-none">
                         <?php lbs_reserved_slot($user_id); ?>
                     </div>
                     <?php
@@ -159,7 +159,7 @@ function lbs_lave_return_function() {
     </div>
     <!-- add address from -->
     <?php add_address_from();?>
-    <div class="slot-section" x-data="{ open: false }">
+    <div class="slot-section">
         <div class="choose-your-slot-section">
             <?php 
                 // If user logged in
@@ -184,7 +184,7 @@ function lbs_lave_return_function() {
                     <?php
                 }else{
                     ?>
-                    <div class="delivery-details" x-show="open">
+                    <div class="delivery-details d-none">
                         <?php lbs_reserved_slot($user_id); ?>
                     </div>
                     <?php
@@ -223,7 +223,7 @@ function lbs_you_collect_function() {
             <?php lbs_collection(); ?>
         </div>
     </div>
-    <div class="slot-section" x-data="{ open: false }">
+    <div class="slot-section">
         <div class="choose-your-slot-section">
             <?php 
                 // If user logged in
@@ -248,7 +248,7 @@ function lbs_you_collect_function() {
                     <?php
                 }else{
                     ?>
-                    <div class="delivery-details" x-show="open">
+                    <div class="delivery-details d-none">
                         <?php lbs_reserved_slot($user_id); ?>
                     </div>
                     <?php
