@@ -99,7 +99,7 @@ jQuery(document).ready(function($){
         // remove class from the previously selected booking slot
         $('.booking-slot-hour').removeClass('selected');
         $('.booking-slot-hour').attr('data-bs-toggle', '').attr('data-bs-target', '');
-        // Store the clicked element for later use
+        $('.modal-content').addClass('d-none');       
         let clickedElement = $(this);
 
         let loaderWrapper = $( this ).find( '.loader-wrapper');
@@ -164,6 +164,8 @@ jQuery(document).ready(function($){
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModal');
                     // add d-none to the delivery details
                     $('.delivery-details').removeClass('d-none');
+                    // remove d-none to the modal
+                    $('.modal-content').removeClass('d-none');
                     
 
                 }else{
@@ -198,6 +200,7 @@ jQuery(document).ready(function($){
         // remove class from the previously selected booking slot
         $('.booking-slot-saver').removeClass('selected');
         $('.booking-slot-saver').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.modal-content').addClass('d-none'); 
         // Store the clicked element for later use
         let clickedElement = $(this);
 
@@ -263,6 +266,8 @@ jQuery(document).ready(function($){
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModalSaver');
                     // add d-none to the delivery details
                     $('.delivery-details').removeClass('d-none');
+                    // remove d-none to the modal
+                    $('.modal-content').removeClass('d-none');
                     
 
                 }else{
@@ -297,6 +302,7 @@ jQuery(document).ready(function($){
         // remove class from the previously selected booking slot
         $('.booking-slot-collection').removeClass('selected');
         $('.booking-slot-collection').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.modal-content').addClass('d-none'); 
         // Store the clicked element for later use
         let clickedElement = $(this);
 
@@ -364,6 +370,8 @@ jQuery(document).ready(function($){
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModalCollection');
                     // add d-none to the delivery details
                     $('.delivery-details').removeClass('d-none');
+                    // remove d-none to the modal
+                    $('.modal-content').removeClass('d-none');
                     
 
                 }else{
@@ -398,6 +406,7 @@ jQuery(document).ready(function($){
         // remove class from the previously selected booking slot
         $('.booking-return-slot-hour').removeClass('selected');
         $('.booking-return-slot-hour').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.modal-content').addClass('d-none'); 
         // Store the clicked element for later use
         let clickedElement = $(this);
 
@@ -463,6 +472,8 @@ jQuery(document).ready(function($){
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModal');
                     // add d-none to the delivery details
                     $('.delivery-details').removeClass('d-none');
+                    // remove d-none to the modal
+                    $('.modal-content').removeClass('d-none');
                     
 
                 }else{
@@ -497,6 +508,7 @@ jQuery(document).ready(function($){
         // remove class from the previously selected booking slot
         $('.booking-return-slot-saver').removeClass('selected');
         $('.booking-return-slot-saver').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.modal-content').addClass('d-none'); 
         // Store the clicked element for later use
         let clickedElement = $(this);
 
@@ -562,6 +574,8 @@ jQuery(document).ready(function($){
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModalSaver');
                     // add d-none to the delivery details
                     $('.delivery-details').removeClass('d-none');
+                    // remove d-none to the modal
+                    $('.modal-content').removeClass('d-none');
                     
 
                 }else{
@@ -596,6 +610,7 @@ jQuery(document).ready(function($){
         // remove class from the previously selected booking slot
         $('.booking-return-slot-collection').removeClass('selected');
         $('.booking-return-slot-collection').attr('data-bs-toggle', '').attr('data-bs-target', '');
+        $('.modal-content').addClass('d-none'); 
         // Store the clicked element for later use
         let clickedElement = $(this);
 
@@ -663,6 +678,8 @@ jQuery(document).ready(function($){
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModalCollection');
                     // add d-none to the delivery details
                     $('.delivery-details').removeClass('d-none');
+                    // remove d-none to the modal
+                    $('.modal-content').removeClass('d-none');
                     
 
                 }else{
