@@ -445,10 +445,36 @@ function add_delivery_return_cost( $cart ) {
             // get selected return address
             $get_selected_return_address = collection_address();
             $cart->add_fee( __( "DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY (" . $get_selected_return_address . ")", "woocommerce" ), $delivery_cost );
+
+            add_action('woocommerce_cart_totals_after_fees', 'show_delivery_edit_button');
+            add_action('woocommerce_review_order_after_order_total', 'show_delivery_edit_button'); // for checkout
+
+            function show_delivery_edit_button() {
+                echo '<tr class="edit-delivery-info">
+                    <td colspan="2" style="text-align: right;">
+                        <a href="' . esc_url(site_url('/you-drop-off')) . '" class="button wc-forward">
+                            Edit location
+                        </a>
+                    </td>
+                </tr>';
+            }
         }else{
             // get selected return address
             $get_selected_return_address = selected_return_address();
             $cart->add_fee( __( "DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY (" . $get_selected_return_address . ")", "woocommerce" ), $delivery_cost );
+
+            add_action('woocommerce_cart_totals_after_fees', 'show_delivery_edit_button');
+            add_action('woocommerce_review_order_after_order_total', 'show_delivery_edit_button'); // for checkout
+
+            function show_delivery_edit_button() {
+                echo '<tr class="edit-delivery-info">
+                    <td colspan="2" style="text-align: right;">
+                        <a href="' . esc_url(site_url('/lave-collects')) . '" class="button wc-forward">
+                            Edit Address
+                        </a>
+                    </td>
+                </tr>';
+            }
         }
         
     }else{
