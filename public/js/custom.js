@@ -160,6 +160,10 @@ jQuery(document).ready(function($){
                     slotPrice.removeClass('d-none');
                     // add class to the success booking slot
                     clickedElement.addClass('selected');
+                    // Remove selected class in saver booking slot
+                    $('.booking-slot-saver').removeClass('selected');
+                    // Remove data-bs-toggle and data-bs-target in saver booking slot
+                    $('.booking-slot-saver').attr('data-bs-toggle', '').attr('data-bs-target', '');
                     // add data-bs-toggle and data-bs-target in slot button
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModal');
                     // add d-none to the delivery details
@@ -262,6 +266,10 @@ jQuery(document).ready(function($){
                     slotPrice.removeClass('d-none');
                     // add class to the success booking slot
                     clickedElement.addClass('selected');
+                    // Remove selected class in hour booking slot
+                    $('.booking-slot-hour').removeClass('selected');
+                    // Remove data-bs-toggle and data-bs-target in hour booking slot
+                    $('.booking-slot-hour').attr('data-bs-toggle', '').attr('data-bs-target', '');
                     // add data-bs-toggle and data-bs-target in slot button
                     clickedElement.attr('data-bs-toggle', 'modal').attr('data-bs-target', '#cancelModalSaver');
                     // add d-none to the delivery details
