@@ -377,4 +377,20 @@ function custom_minimum_order_amount_check() {
     }
 }
 
+add_action('woocommerce_checkout_order_processed', 'clear_booking_slots_after_checkout', 10, 1);
+function clear_booking_slots_after_checkout($order_id) {
+    // Get the order
+    $order = wc_get_order($order_id);
+
+    // Get user ID
+    $user_id = $order->get_user_id();
+
+    // If user is logged in
+    if ($user_id) {
+        update_user_meta($user_id, 'selected_booking_slot', '');
+        update_user_meta($user_id, 'selected_return_booking_slot', '');
+    }
+}
+
+
 
