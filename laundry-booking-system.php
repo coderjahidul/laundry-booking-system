@@ -346,3 +346,35 @@ function restrict_cart_checkout_pages() {
 }
 add_action('template_redirect', 'restrict_cart_checkout_pages');
 
+add_action('woocommerce_checkout_process', 'custom_minimum_order_amount_check');
+function custom_minimum_order_amount_check() {
+    // get the current user
+    $user_id = get_current_user_id();
+    // set the minimum order amount
+    $minimum = 40;
+    // get selected address id
+    $selected_booking_slot_id = get_user_meta($user_id, 'selected_booking_slot', true);
+    // get selected return address id
+    $selected_return_booking_slot_id = get_user_meta($user_id, 'selected_return_booking_slot', true);
+
+
+    if (WC()->cart->total < $minimum) {
+        wc_add_notice(
+            sprintf('Your order total is %s. The minimum order amount is %s. Please add some more products.', 
+            wc_price(WC()->cart->total), wc_price($minimum)), 
+            'error'
+        );
+    }elseif(empty($selected_booking_slot_id)){
+        wc_add_notice(
+            'Please <a href="' . site_url('/lave-collects') . '">select a booking slot</a> before proceeding.',
+            'error'
+        );        
+    }elseif(empty($selected_return_booking_slot_id)){
+        wc_add_notice(
+            'Please <a href="' . site_url('/lave-return') . '">select a return booking slot</a> before proceeding.', 
+            'error'
+        );
+    }
+}
+
+
