@@ -392,5 +392,33 @@ function clear_booking_slots_after_checkout($order_id) {
     }
 }
 
+// Clear booking slots after 2 hours
+function clear_after_booking_slot($user_id) {
+    if (!wp_next_scheduled('clear_user_booking_slots', array($user_id))) {
+        wp_schedule_single_event(time() + 2 * HOUR_IN_SECONDS, 'clear_user_booking_slots', array($user_id));
+    }
+}
+// Call this function when the booking is done — you must know the correct hook or booking completion point.
+
+
+// Step 2: Scheduled callback
+add_action('clear_user_booking_slots', 'clear_user_booking_slots_callback');
+
+function clear_user_booking_slots_callback($user_id) {
+    // Get user selected booking slot id
+    $selected_booking_slot_id = get_user_meta( $user_id, 'selected_booking_slot', true );
+    // Get user selected return booking slot id
+    $selected_return_booking_slot_id = get_user_meta( $user_id, 'selected_return_booking_slot', true );
+    // update booking slot status
+    update_post_meta($selected_booking_slot_id, '_booking_status', 'available');
+    // update return booking slot status
+    update_post_meta($selected_return_booking_slot_id, '_booking_return_status', 'available');
+    // Clear user selected booking slot
+    update_user_meta($user_id, 'selected_booking_slot', '');
+    // Get user selected return booking slot id
+    update_user_meta($user_id, 'selected_return_booking_slot', '');
+}
+
+
 
 

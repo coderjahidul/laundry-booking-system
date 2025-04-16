@@ -140,6 +140,9 @@ function update_booking_slot() {
         // Update booking slot current time
         update_user_meta($user_id, 'booking_slot_current_time', $bookings_slot_current_time);
 
+        // clear booking slots after 2 hours
+        clear_after_booking_slot($user_id);
+
         // Return success response
         wp_send_json_success(array(
             "bookings_slot_price" => $bookings_slot_price, 
