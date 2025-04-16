@@ -427,6 +427,97 @@ function clear_user_booking_slots_callback($user_id) {
     delete_user_meta($user_id, 'selected_return_booking_slot');
 }
 
+// Add "Collection Location" tab to My Account menu
+add_filter('woocommerce_account_menu_items', 'add_collection_location_link', 40);
+function add_collection_location_link($menu_links){
+    $menu_links = array_slice($menu_links, 0, 5, true)
+        + array('collection-location' => 'Collection Location')
+        + array_slice($menu_links, 5, NULL, true);
+
+    return $menu_links;
+}
+
+// Register the endpoint
+add_action('init', 'register_collection_location_endpoint');
+function register_collection_location_endpoint(){
+    add_rewrite_endpoint('collection-location', EP_ROOT | EP_PAGES);
+}
+
+// Flush rewrite rules after activation
+register_activation_hook(__FILE__, 'flush_rewrite_rules');
+register_deactivation_hook(__FILE__, 'flush_rewrite_rules');
+
+add_action('woocommerce_account_collection-location_endpoint', 'collection_location_content');
+
+function collection_location_content() {
+    echo '<h3>Collection Location</h3>';
+    $user_id = get_current_user_id();
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'lbs_customar_address';
+
+    // Handle deletion
+    if (isset($_GET['action'], $_GET['address_id'], $_GET['_wpnonce']) && $_GET['action'] === 'delete') {
+        $address_id = intval($_GET['address_id']);
+        if (wp_verify_nonce($_GET['_wpnonce'], 'delete_address_' . $address_id)) {
+            $wpdb->delete($table_name, ['id' => $address_id, 'user_id' => $user_id]);
+            echo '<div style="color: green;">✅ Address deleted successfully.</div>';
+        } else {
+            echo '<div style="color: red;">❌ Security check failed. Try again.</div>';
+        }
+    }
+
+    $addresses = $wpdb->get_results(
+        $wpdb->prepare("SELECT * FROM $table_name WHERE user_id = %d ORDER BY id DESC", $user_id)
+    );
+
+    if (!empty($addresses)) {
+        foreach ($addresses as $address) {
+            echo '<div class="my-acc-address-card">';
+
+            if (!empty($address->title) && !empty($address->first_name)) {
+                echo '<strong>' . esc_html($address->title . ': ' . $address->first_name . ' ' . $address->last_name) . '</strong><br>';
+            }
+            if (!empty($address->phone)) {
+                echo '📞 ' . esc_html($address->phone) . '<br>';
+            }
+            if (!empty($address->country)) {
+                echo '🏳️ ' . esc_html($address->country) . '<br>';
+            }
+            if (!empty($address->address_or_postcode)) {
+                echo '📍 ' . esc_html($address->address_or_postcode) . '<br>';
+            }
+            if (!empty($address->address_1)) {
+                echo '🏠 ' . esc_html($address->address_1) . '<br>';
+            }
+            if (!empty($address->address_2)) {
+                echo '🏠 ' . esc_html($address->address_2) . '<br>';
+            }
+            if (!empty($address->address_3)) {
+                echo '🏠 ' . esc_html($address->address_3) . '<br>';
+            }
+            if (!empty($address->city)) {
+                echo '🏙️ ' . esc_html($address->city) . '<br>';
+            }
+            if (!empty($address->postcode)) {
+                echo '🔢 ' . esc_html($address->postcode) . '<br>';
+            }
+            if (!empty($address->created_at)) {
+                echo '<small>📅 Created at: ' . esc_html($address->created_at) . '</small><br>';
+            }
+
+            $delete_url = wp_nonce_url(
+                add_query_arg(['action' => 'delete', 'address_id' => $address->id]),
+                'delete_address_' . $address->id
+            );
+
+            echo '<a href="' . esc_url($delete_url) . '" onclick="return confirm(\'Are you sure you want to delete this address?\');">Delete</a>';
+
+            echo '</div>';
+        }
+    } else {
+        echo '<p>No delivery addresses found.</p>';
+    }
+}
 
 
 
