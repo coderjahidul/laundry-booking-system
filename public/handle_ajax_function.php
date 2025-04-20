@@ -386,10 +386,14 @@ function add_delivery_cost( $cart ) {
         if(in_array($user_bookings_slot_id, $get_collection_slot_ids)){
             // get selected address
             $selected_address = collection_address();
-            $cart->add_fee( __( "DATE AND TIME WHEN YOU DROP-OFF (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE YOU DROP-OFF (" . $selected_address . ")", "woocommerce" ), $delivery_cost );
+            $received_address = "DATE AND TIME WHEN YOU DROP-OFF (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE YOU DROP-OFF (" . $selected_address . ")";
+            update_user_meta( $user_id, 'product_received_address', $received_address );
+            $cart->add_fee( __( $received_address, "woocommerce" ), $delivery_cost );
         }else{
             $selected_address = selected_address();
-            $cart->add_fee( __( "DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE LAVE COLLECTS FROM (" . $selected_address . ")", "woocommerce" ), $delivery_cost );
+            $received_address = "DATE AND TIME WHEN LAVE COLLECTS DIRTY LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE LAVE COLLECTS FROM (" . $selected_address . ")";
+            update_user_meta( $user_id, 'product_received_address', $received_address );
+            $cart->add_fee( __( $received_address, "woocommerce" ), $delivery_cost );
         }
         
     }else{
@@ -447,7 +451,9 @@ function add_delivery_return_cost( $cart ) {
         if(in_array($user_bookings_slot_id, $get_collection_return_slot_ids)){
             // get selected return address
             $get_selected_return_address = collection_address();
-            $cart->add_fee( __( "DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY (" . $get_selected_return_address . ")", "woocommerce" ), $delivery_cost );
+            $return_address = "DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE YOU COLLECT CLEANED LAUNDRY (" . $get_selected_return_address . ")";
+            update_user_meta( $user_id, 'product_return_address', $return_address );
+            $cart->add_fee( __( $return_address, "woocommerce" ), $delivery_cost );
 
             add_action('woocommerce_cart_totals_after_fees', 'show_delivery_edit_button');
             add_action('woocommerce_review_order_after_order_total', 'show_delivery_edit_button'); // for checkout
@@ -464,7 +470,9 @@ function add_delivery_return_cost( $cart ) {
         }else{
             // get selected return address
             $get_selected_return_address = selected_return_address();
-            $cart->add_fee( __( "DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY (" . $get_selected_return_address . ")", "woocommerce" ), $delivery_cost );
+            $return_address = "DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY (" . $delivery_date . " " . $delivery_booking_slot_time . ") \n ADDRESS WHERE LAVE WILL RETURN CLEANED LAUNDRY (" . $get_selected_return_address . ")";
+            update_user_meta( $user_id, 'product_return_address', $return_address );
+            $cart->add_fee( __( $return_address, "woocommerce" ), $delivery_cost );
 
             add_action('woocommerce_cart_totals_after_fees', 'show_delivery_edit_button');
             add_action('woocommerce_review_order_after_order_total', 'show_delivery_edit_button'); // for checkout
@@ -579,6 +587,44 @@ function check_return_booking_slot() {
 add_action('wp_ajax_check_return_booking_slot', 'check_return_booking_slot');
 add_action('wp_ajax_nopriv_check_return_booking_slot', 'check_return_booking_slot'); // Allow non-logged-in users if needed
 
+
+// For email
+add_action( 'woocommerce_email_after_order_table', 'add_custom_message_before_billing_address', 15, 4 );
+function add_custom_message_before_billing_address( $order, $sent_to_admin, $plain_text, $email ) {
+    if ( $email->id === 'customer_processing_order' ) {
+        $user_id = get_current_user_id();
+
+        $product_received_address = get_user_meta( $user_id, 'product_received_address', true );
+        $product_return_address = get_user_meta( $user_id, 'product_return_address', true );
+
+        echo '<div class="custom-order-note">';
+        echo '<hr>';
+        echo '<br>';
+        echo '<strong>Received Address:</strong><br>' . esc_html( $product_received_address ) . '<br><br>';
+        echo '<strong>Return Address:</strong><br>' . esc_html( $product_return_address ) . '<br>';
+        echo '<br><hr>';
+        echo '</div>';
+    }
+}
+
+// For order received page
+add_action( 'woocommerce_order_details_after_order_table', 'custom_note_before_billing_address', 5 );
+function custom_note_before_billing_address( $order ) {
+    if ( is_wc_endpoint_url( 'order-received' ) ) {
+        $user_id = get_current_user_id();
+
+        $product_received_address = get_user_meta( $user_id, 'product_received_address', true );
+        $product_return_address = get_user_meta( $user_id, 'product_return_address', true );
+
+        echo '<div class="custom-order-note">';
+        echo '<hr>';
+        echo '<br>';
+        echo '<strong>Received Address:</strong><br>' . esc_html( $product_received_address ) . '<br><br>';
+        echo '<strong>Return Address:</strong><br>' . esc_html( $product_return_address ) . '<br>';
+        echo '<br><hr>';
+        echo '</div>';
+    }
+}
 
 
 
