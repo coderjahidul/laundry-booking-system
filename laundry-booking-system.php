@@ -401,8 +401,8 @@ function clear_after_booking_slot($user_id) {
         wp_unschedule_event($timestamp, 'clear_user_booking_slots', array($user_id));
     }
 
-    // Always schedule a new one (2 hours from now)
-    wp_schedule_single_event(time() + 2 * HOUR_IN_SECONDS, 'clear_user_booking_slots', array($user_id));
+    // Always schedule a new one (in 1 hours from now)
+    wp_schedule_single_event(time() + HOUR_IN_SECONDS, 'clear_user_booking_slots', array($user_id));
 }
 
 

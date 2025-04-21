@@ -133,9 +133,14 @@ function update_booking_slot() {
             update_post_meta($bookings_slot_id, '_collection_booking_status', 'fully_booked');
         }
 
-        // Get current time
+        // Get the WordPress time format
         $time_format = get_option('time_format');
-        $bookings_slot_current_time = date_i18n($time_format);
+
+        // Get current WordPress-local time and add 1 hour
+        $local_time = current_time('timestamp') + HOUR_IN_SECONDS;
+
+        // Format it according to the time format and localization
+        $bookings_slot_current_time = date_i18n($time_format, $local_time);
 
         // Update booking slot current time
         update_user_meta($user_id, 'booking_slot_current_time', $bookings_slot_current_time);
@@ -208,9 +213,14 @@ function update_return_booking_slot(){
             update_post_meta($bookings_slot_id, '_collection_booking_return_status', 'fully_booked');
         }
 
-        // Slot Booking Current Time
+        // Get the WordPress time format
         $time_format = get_option('time_format');
-        $bookings_slot_current_time = date_i18n($time_format);
+
+        // Get current WordPress-local time and add 1 hour
+        $local_time = current_time('timestamp') + HOUR_IN_SECONDS;
+
+        // Format it according to the time format and localization
+        $bookings_slot_current_time = date_i18n($time_format, $local_time);
 
         // Update customar shipping address
         // update_billing_address($user_id);

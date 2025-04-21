@@ -1961,8 +1961,6 @@ function lbs_reserved_slot($user_id){
     $booking_slot_date = get_post_meta($user_bookings_slot_id, '_booking_date', true);
     $booking_slot_time = get_post_meta($user_bookings_slot_id, '_booking_time_slot', true);
 
-    // booking slot current time add 2 hours
-    $booking_slot_current_time = date('H:i', strtotime('+2 hours', strtotime($booking_slot_current_time)));
     ?>
         <div class="container mt-5">
             <div class="reserved-slot">
