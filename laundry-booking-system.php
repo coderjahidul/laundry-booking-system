@@ -288,6 +288,12 @@ require plugin_dir_path(__FILE__) . 'admin/endpoints.php';
 
 require plugin_dir_path(__FILE__) . 'admin/booking-management-page.php';
 
+/**
+ * Delivery vans Management Page in Admin Dashboard
+ */
+
+require plugin_dir_path(__FILE__) . 'admin/delivery-vans-management.php';
+
 // Register shortcode function file
 require plugin_dir_path(__FILE__) . 'public/loundry-booking-slot-shortcode.php';
 
