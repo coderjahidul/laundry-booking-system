@@ -46,7 +46,11 @@ function lbs_bookslot_delivery_function() {
         <div class="reserved-delivery-slot-section">
             <?php 
                 $user_id = get_current_user_id();
-                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                $selected_booking_slot = get_user_meta($user_id, 'selected_booking_slot', true);
+                $bookings_slot = get_post_meta($selected_booking_slot, '_saver_booking_status', true);
+                $saver_bookings_slot = get_post_meta($selected_booking_slot, '_booking_status', true);
+                
+                if(!empty($selected_booking_slot) && (!empty($bookings_slot) || !empty($saver_bookings_slot))){
                     ?>
                     <div class="delivery-details">
                         <?php lbs_reserved_slot($user_id); ?>
@@ -111,7 +115,9 @@ function lbs_bookslot_click_collect_function() {
         <div class="reserved-delivery-slot-section">
             <?php 
                 $user_id = get_current_user_id();
-                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                $selected_booking_slot = get_user_meta($user_id, 'selected_booking_slot', true);
+                $bookings_slot = get_post_meta($selected_booking_slot, '_collection_booking_status', true);
+                if(!empty($selected_booking_slot) && !empty($bookings_slot)){
                     ?>
                     <div class="delivery-details">
                         <?php lbs_reserved_slot($user_id); ?>
@@ -176,7 +182,11 @@ function lbs_lave_return_function() {
         <div class="reserved-delivery-slot-section">
             <?php 
                 $user_id = get_current_user_id();
-                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                $selected_booking_slot = get_user_meta($user_id, 'selected_booking_slot', true);
+                $bookings_slot = get_post_meta($selected_booking_slot, '_saver_booking_status', true);
+                $saver_bookings_slot = get_post_meta($selected_booking_slot, '_booking_status', true);
+                
+                if(!empty($selected_booking_slot) && (!empty($bookings_slot) || !empty($saver_bookings_slot))){
                     ?>
                     <div class="delivery-details">
                         <?php lbs_reserved_slot($user_id); ?>
@@ -240,7 +250,9 @@ function lbs_you_collect_function() {
         <div class="reserved-delivery-slot-section">
             <?php 
                 $user_id = get_current_user_id();
-                if(get_user_meta($user_id, 'selected_booking_slot', true)){
+                $selected_booking_slot = get_user_meta($user_id, 'selected_booking_slot', true);
+                $bookings_slot = get_post_meta($selected_booking_slot, '_collection_booking_status', true);
+                if(!empty($selected_booking_slot) && $bookings_slot){
                     ?>
                     <div class="delivery-details">
                         <?php lbs_reserved_slot($user_id); ?>
