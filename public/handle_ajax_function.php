@@ -637,6 +637,49 @@ function custom_note_before_billing_address( $order ) {
 }
 
 
+function get_booking_datepicker() {
+    if (isset($_POST['booking_datepicker'])) {
+        // Sanitize the date input
+        $booking_datepicker = sanitize_text_field($_POST['booking_datepicker']);
+        
+        $date = new DateTime($booking_datepicker);
+        $date->modify('-1 day'); // Subtract 1 day
+        $booking_datepicker = $date->format('Y-m-d');
+
+        // set cookie for 1 minute 
+        setcookie('booking_datepicker', $booking_datepicker, time() + 10, '/', '', is_ssl(), true);
+
+        // Send a response back to the client
+        wp_send_json_success(array('booking_datepicker' => $booking_datepicker));
+    }
+
+    wp_die(); // Required to terminate Ajax
+}
+
+add_action('wp_ajax_get_booking_datepicker', 'get_booking_datepicker');
+add_action('wp_ajax_nopriv_get_booking_datepicker', 'get_booking_datepicker');
+
+function get_return_datepicker() {
+    if (isset($_POST['return_datepicker'])) {
+        // Sanitize the date input
+        $return_datepicker = sanitize_text_field($_POST['return_datepicker']);
+        
+        $date = new DateTime($return_datepicker);
+        $date->modify('-1 day'); // Subtract 1 day
+        $return_datepicker = $date->format('Y-m-d');
+
+        // set cookie for 1 minute 
+        setcookie('return_datepicker', $return_datepicker, time() + 10, '/', '', is_ssl(), true);
+
+        // Send a response back to the client
+        wp_send_json_success(array('return_datepicker' => $return_datepicker));
+    }
+
+    wp_die(); // Required to terminate Ajax
+}
+
+add_action('wp_ajax_get_return_datepicker', 'get_return_datepicker');
+add_action('wp_ajax_nopriv_get_return_datepicker', 'get_return_datepicker');
 
 
 

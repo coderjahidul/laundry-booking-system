@@ -13,35 +13,7 @@ jQuery(document).ready(function($) {
         return today;
     }
 
-    $("#saver_datepicker").datepicker({
-        beforeShowDay: function(date) {
-            var today = getToday();
-            var fiveDaysLater = new Date(today);
-            fiveDaysLater.setDate(today.getDate() + 7);
-
-            if (date < today) {
-                return [false, "", "Disabled - Past Date"];
-            } else if (date.getDate() === today.getDate()) {
-                return [false, "", "Disabled - Past Date"];
-            } else if (date >= today && date <= fiveDaysLater) {
-                return [true, "", "Enabled - Selectable"];
-            } else {
-                return [false, "", "Disabled - Out of Range"];
-            }
-        },
-        onSelect: function(dateText, inst) {
-            var date = $(this).datepicker("getDate");
-            var formattedDate = formatDate(date);
-            $("#selected_date_display").text(formattedDate);
-            console.log(formattedDate);
-        }
-    });
-
-    $("#open-saver_datepicker").click(function() {
-        $("#saver_datepicker").datepicker("show");
-    });
-
-    $("#hour_datepicker").datepicker({
+    $("#return_datepicker").datepicker({
         beforeShowDay: function(date) {
             var today = getToday();
             var fiveDaysLater = new Date(today);
@@ -60,12 +32,150 @@ jQuery(document).ready(function($) {
         onSelect: function(dateText, inst) {
             var date = $(this).datepicker("getDate");
             var formattedDate = formatDate(date);
-            $("#selected_hour_date_display").text(formattedDate);
             console.log(formattedDate);
+            // Call Ajax Function
+            $.ajax({
+                type: 'POST',
+                url: ajax_object.ajaxurl,
+                data: {
+                    action: 'get_return_datepicker',
+                    return_datepicker: formattedDate
+                },
+                success: function(response) {
+                    // You can log or update something based on the response here
+                    console.log(response);
+                    location.reload(); // Reload page to apply the selected date to the PHP variable
+                }
+            });
         }
     });
 
-    $("#open-hour_datepicker").click(function() {
-        $("#hour_datepicker").datepicker("show");
+    $("#open-return_datepicker").click(function() {
+        $("#return_datepicker").datepicker("show");
+    });
+
+
+    $("#booking_datepicker").datepicker({
+        beforeShowDay: function(date) {
+            var today = getToday();
+            var fiveDaysLater = new Date(today);
+            fiveDaysLater.setDate(today.getDate() + 7);
+
+            if (date < today) {
+                return [false, "", "Disabled - Past Date"];
+            } else if (date.getDate() === today.getDate()) {
+                return [false, "disabled-today", "Disabled - Past Date"];
+            } else if (date >= today && date <= fiveDaysLater) {
+                return [true, "", "Enabled - Selectable"];
+            } else {
+                return [false, "", "Disabled - Out of Range"];
+            }
+        },
+        onSelect: function(dateText, inst) {
+            var date = $(this).datepicker("getDate");
+            var formattedDate = formatDate(date);
+            console.log(formattedDate);
+            // Call Ajax Function
+            $.ajax({
+                type: 'POST',
+                url: ajax_object.ajaxurl,
+                data: {
+                    action: 'get_booking_datepicker',
+                    booking_datepicker: formattedDate
+                },
+                success: function(response) {
+                    // You can log or update something based on the response here
+                    console.log(response);
+                    location.reload(); // Reload page to apply the selected date to the PHP variable
+                }
+            });
+        }
+    });
+
+    $("#open-booking_datepicker").click(function() {
+        $("#booking_datepicker").datepicker("show");
+    });
+
+    $("#return_datepicker_sever").datepicker({
+        beforeShowDay: function(date) {
+            var today = getToday();
+            var fiveDaysLater = new Date(today);
+            fiveDaysLater.setDate(today.getDate() + 7);
+
+            if (date < today) {
+                return [false, "", "Disabled - Past Date"];
+            } else if (date.getDate() === today.getDate()) {
+                return [false, "disabled-today", "Disabled - Past Date"];
+            } else if (date >= today && date <= fiveDaysLater) {
+                return [true, "", "Enabled - Selectable"];
+            } else {
+                return [false, "", "Disabled - Out of Range"];
+            }
+        },
+        onSelect: function(dateText, inst) {
+            var date = $(this).datepicker("getDate");
+            var formattedDate = formatDate(date);
+            console.log(formattedDate);
+            // Call Ajax Function
+            $.ajax({
+                type: 'POST',
+                url: ajax_object.ajaxurl,
+                data: {
+                    action: 'get_return_datepicker',
+                    return_datepicker: formattedDate
+                },
+                success: function(response) {
+                    // You can log or update something based on the response here
+                    console.log(response);
+                    location.reload(); // Reload page to apply the selected date to the PHP variable
+                }
+            });
+        }
+    });
+
+    $("#open-return_datepicker_sever").click(function() {
+        $("#return_datepicker_sever").datepicker("show");
+    });
+
+
+    $("#booking_datepicker_sever").datepicker({
+        beforeShowDay: function(date) {
+            var today = getToday();
+            var fiveDaysLater = new Date(today);
+            fiveDaysLater.setDate(today.getDate() + 7);
+
+            if (date < today) {
+                return [false, "", "Disabled - Past Date"];
+            } else if (date.getDate() === today.getDate()) {
+                return [false, "disabled-today", "Disabled - Past Date"];
+            } else if (date >= today && date <= fiveDaysLater) {
+                return [true, "", "Enabled - Selectable"];
+            } else {
+                return [false, "", "Disabled - Out of Range"];
+            }
+        },
+        onSelect: function(dateText, inst) {
+            var date = $(this).datepicker("getDate");
+            var formattedDate = formatDate(date);
+            console.log(formattedDate);
+            // Call Ajax Function
+            $.ajax({
+                type: 'POST',
+                url: ajax_object.ajaxurl,
+                data: {
+                    action: 'get_booking_datepicker',
+                    booking_datepicker: formattedDate
+                },
+                success: function(response) {
+                    // You can log or update something based on the response here
+                    console.log(response);
+                    location.reload(); // Reload page to apply the selected date to the PHP variable
+                }
+            });
+        }
+    });
+
+    $("#open-booking_datepicker_sever").click(function() {
+        $("#booking_datepicker_sever").datepicker("show");
     });
 });

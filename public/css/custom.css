@@ -358,7 +358,7 @@
 }
 /* view calendar date picker */
 .ui-datepicker {
-    top: 637.859px !important;
+    /* top: 637.859px !important; */
     left: 853.859px !important;
 }
 

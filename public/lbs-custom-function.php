@@ -551,6 +551,22 @@ function hour_function(){
                 // Reset post data
                 wp_reset_postdata();
 
+                // Get current date
+                $get_current_date = date('Y-m-d');
+
+                // Default to a hardcoded offset date if no cookie value is available
+                $offset_date = isset($_COOKIE['booking_datepicker']) ? $_COOKIE['booking_datepicker'] : $get_current_date;
+
+                $filtered_dates = array();
+
+                foreach ($delivery_dates as $date) {
+                    if ($date > $offset_date) {
+                        $filtered_dates[] = $date;
+                    }
+                }
+
+                $delivery_dates = $filtered_dates;
+
                 // Pagination logic for the $delivery_dates array
                 $total_dates = count($delivery_dates); // Total number of unique dates
                 $total_pages = ceil($total_dates / $per_page); // Calculate total number of pages
@@ -574,8 +590,8 @@ function hour_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="hour_datepicker" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-hour_datepicker">View calendar</button>
+                    <input type="text" id="booking_datepicker" style="display:none;">
+                    <button class="btn btn-outline-secondary" id="open-booking_datepicker">View calendar</button>
                     <?php
                     // Next Button
                     if ($paged < $total_pages) {
@@ -778,6 +794,22 @@ function hour_return_function(){
                     // Reset post data
                     wp_reset_postdata();
 
+                    // Get current date
+                    $get_current_date = date('Y-m-d');
+
+                    // Default to a hardcoded offset date if no cookie value is available
+                    $offset_date = isset($_COOKIE['return_datepicker']) ? $_COOKIE['return_datepicker'] : $get_current_date;
+
+                    $filtered_dates = array();
+
+                    foreach ($delivery_dates as $date) {
+                        if ($date > $offset_date) {
+                            $filtered_dates[] = $date;
+                        }
+                    }
+
+                    $delivery_dates = $filtered_dates;
+
                     // Pagination logic for the $delivery_dates array
                     $total_dates = count($delivery_dates); // Total number of unique dates
                     $total_pages = ceil($total_dates / $per_page); // Calculate total number of pages
@@ -801,8 +833,8 @@ function hour_return_function(){
                             echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                         }
                         ?>
-                        <input type="text" id="hour_datepicker" style="display:none;">
-                        <button class="btn btn-outline-secondary" id="open-hour_datepicker">View calendar</button>
+                        <input type="text" id="return_datepicker" style="display:none;">
+                        <button class="btn btn-outline-secondary" id="open-return_datepicker">View calendar</button>
                         <?php
                         // Next Button
                         if ($paged < $total_pages) {
@@ -1034,6 +1066,22 @@ function saver_function(){
                 // Reset post data
                 wp_reset_postdata();
 
+                // Get current date
+                $get_current_date = date('Y-m-d');
+
+                // Default to a hardcoded offset date if no cookie value is available
+                $offset_date = isset($_COOKIE['booking_datepicker']) ? $_COOKIE['booking_datepicker'] : $get_current_date;
+
+                $filtered_dates = array();
+
+                foreach ($saver_delivery_dates as $date) {
+                    if ($date > $offset_date) {
+                        $filtered_dates[] = $date;
+                    }
+                }
+
+                $saver_delivery_dates = $filtered_dates;
+
                 // Pagination logic for the $delivery_dates array
                 $saver_total_dates = count($saver_delivery_dates); // Total number of unique dates
                 $saver_total_pages = ceil($saver_total_dates / $saver_per_page); // Calculate total number of pages
@@ -1057,8 +1105,8 @@ function saver_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="saver_datepicker" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-saver_datepicker">View calendar</button>
+                    <input type="text" id="booking_datepicker_sever" style="display:none;">
+                    <button class="btn btn-outline-secondary" id="open-booking_datepicker_sever">View calendar</button>
                     <?php
                     // Next Button
                     if ($saver_paged < $saver_total_pages) {
@@ -1259,6 +1307,22 @@ function saver_return_function(){
                 // Reset post data
                 wp_reset_postdata();
 
+                // Get current date
+                $get_current_date = date('Y-m-d');
+
+                // Default to a hardcoded offset date if no cookie value is available
+                $offset_date = isset($_COOKIE['return_datepicker']) ? $_COOKIE['return_datepicker'] : $get_current_date;
+
+                $filtered_dates = array();
+
+                foreach ($saver_delivery_dates as $date) {
+                    if ($date > $offset_date) {
+                        $filtered_dates[] = $date;
+                    }
+                }
+
+                $saver_delivery_dates = $filtered_dates;
+
                 // Pagination logic for the $delivery_dates array
                 $saver_total_dates = count($saver_delivery_dates); // Total number of unique dates
                 $saver_total_pages = ceil($saver_total_dates / $saver_per_page); // Calculate total number of pages
@@ -1282,8 +1346,8 @@ function saver_return_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="saver_datepicker" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-saver_datepicker">View calendar</button>
+                    <input type="text" id="return_datepicker_sever" style="display:none;">
+                    <button class="btn btn-outline-secondary" id="open-return_datepicker_sever">View calendar</button>
                     <?php
                     // Next Button
                     if ($saver_paged < $saver_total_pages) {
@@ -1509,6 +1573,22 @@ function collection_function(){
                 // Reset post data
                 wp_reset_postdata();
 
+                // Get current date
+                $get_current_date = date('Y-m-d');
+
+                // Default to a hardcoded offset date if no cookie value is available
+                $offset_date = isset($_COOKIE['booking_datepicker']) ? $_COOKIE['booking_datepicker'] : $get_current_date;
+
+                $filtered_dates = array();
+
+                foreach ($delivery_dates as $date) {
+                    if ($date > $offset_date) {
+                        $filtered_dates[] = $date;
+                    }
+                }
+
+                $delivery_dates = $filtered_dates;
+
                 // Pagination logic for the $delivery_dates array
                 $total_dates = count($delivery_dates); // Total number of unique dates
                 $total_pages = ceil($total_dates / $per_page); // Calculate total number of pages
@@ -1532,8 +1612,8 @@ function collection_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="hour_datepicker" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-hour_datepicker">View calendar</button>
+                    <input type="text" id="booking_datepicker" style="display:none;">
+                    <button class="btn btn-outline-secondary" id="open-booking_datepicker">View calendar</button>
                     <?php
                     // Next Button
                     if ($paged < $total_pages) {
@@ -1732,6 +1812,22 @@ function collection_return_function(){
     
                     // Reset post data
                     wp_reset_postdata();
+
+                    // Get current date
+                    $get_current_date = date('Y-m-d');
+
+                    // Default to a hardcoded offset date if no cookie value is available
+                    $offset_date = isset($_COOKIE['return_datepicker']) ? $_COOKIE['return_datepicker'] : $get_current_date;
+
+                    $filtered_dates = array();
+
+                    foreach ($delivery_dates as $date) {
+                        if ($date > $offset_date) {
+                            $filtered_dates[] = $date;
+                        }
+                    }
+
+                    $delivery_dates = $filtered_dates;
     
                     // Pagination logic for the $delivery_dates array
                     $total_dates = count($delivery_dates); // Total number of unique dates
@@ -1756,8 +1852,8 @@ function collection_return_function(){
                             echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                         }
                         ?>
-                        <input type="text" id="hour_datepicker" style="display:none;">
-                        <button class="btn btn-outline-secondary" id="open-hour_datepicker">View calendar</button>
+                        <input type="text" id="return_datepicker" style="display:none;">
+                        <button class="btn btn-outline-secondary" id="open-return_datepicker">View calendar</button>
                         <?php
                         // Next Button
                         if ($paged < $total_pages) {
