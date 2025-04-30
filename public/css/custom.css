@@ -358,9 +358,10 @@
 }
 /* view calendar date picker */
 .ui-datepicker {
-    /* top: 637.859px !important; */
-    left: 853.859px !important;
-}
+    left: 0px !important;
+    right: 0px;
+    margin: 0 auto;
+  }
 
 .saver-section .booking-slot {
     display: flex;

@@ -590,8 +590,10 @@ function hour_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="booking_datepicker" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-booking_datepicker">View calendar</button>
+                    <div style="max-width: 400px; margin: auto;">
+                        <input type="text" id="booking_datepicker" style="display:none;">
+                        <button class="btn btn-outline-secondary" id="open-booking_datepicker">View calendar</button>
+                    </div>
                     <?php
                     // Next Button
                     if ($paged < $total_pages) {
@@ -833,8 +835,10 @@ function hour_return_function(){
                             echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                         }
                         ?>
-                        <input type="text" id="return_datepicker" style="display:none;">
-                        <button class="btn btn-outline-secondary" id="open-return_datepicker">View calendar</button>
+                        <div style="max-width: 400px; margin: auto;">
+                            <input type="text" id="return_datepicker" style="display:none;">
+                            <button class="btn btn-outline-secondary" id="open-return_datepicker">View calendar</button>
+                        </div>
                         <?php
                         // Next Button
                         if ($paged < $total_pages) {
@@ -1105,8 +1109,11 @@ function saver_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="booking_datepicker_sever" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-booking_datepicker_sever">View calendar</button>
+                    <div style="max-width: 400px; margin: auto;">
+                        <input type="text" id="booking_datepicker_sever" style="display: none;">
+                        <button class="btn btn-outline-secondary" id="open-booking_datepicker_sever">View calendar</button>
+                    </div>
+
                     <?php
                     // Next Button
                     if ($saver_paged < $saver_total_pages) {
@@ -1346,8 +1353,10 @@ function saver_return_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="return_datepicker_sever" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-return_datepicker_sever">View calendar</button>
+                    <div style="max-width: 400px; margin: auto;">
+                        <input type="text" id="return_datepicker_sever" style="display:none;">
+                        <button class="btn btn-outline-secondary" id="open-return_datepicker_sever">View calendar</button>
+                    </div>
                     <?php
                     // Next Button
                     if ($saver_paged < $saver_total_pages) {
@@ -1612,8 +1621,10 @@ function collection_function(){
                         echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                     }
                     ?>
-                    <input type="text" id="booking_datepicker" style="display:none;">
-                    <button class="btn btn-outline-secondary" id="open-booking_datepicker">View calendar</button>
+                    <div style="max-width: 400px; margin: auto;">
+                        <input type="text" id="booking_datepicker" style="display:none;">
+                        <button class="btn btn-outline-secondary" id="open-booking_datepicker">View calendar</button>
+                    </div>
                     <?php
                     // Next Button
                     if ($paged < $total_pages) {
@@ -1852,8 +1863,10 @@ function collection_return_function(){
                             echo '<span class="btn btn-link disabled">&lt; Previous</span>';
                         }
                         ?>
-                        <input type="text" id="return_datepicker" style="display:none;">
-                        <button class="btn btn-outline-secondary" id="open-return_datepicker">View calendar</button>
+                        <div style="max-width: 400px; margin: auto;">
+                            <input type="text" id="return_datepicker" style="display:none;">
+                            <button class="btn btn-outline-secondary" id="open-return_datepicker">View calendar</button>
+                        </div>
                         <?php
                         // Next Button
                         if ($paged < $total_pages) {
