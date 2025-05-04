@@ -660,3 +660,7 @@
 .accordion-button:not(.collapsed) {
     background-color: #ccc !important;
 }
+.disabled-today.ui-datepicker-today .ui-state-default {
+    background-color: rgb(0, 0, 0) !important;
+    color: #fff !important;
+}
