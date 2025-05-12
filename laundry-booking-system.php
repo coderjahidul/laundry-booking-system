@@ -373,6 +373,9 @@ function clear_user_booking_slots_callback($user_id) {
     // Clear user meta
     delete_user_meta($user_id, 'selected_booking_slot');
     delete_user_meta($user_id, 'selected_return_booking_slot');
+
+    // Store expiration data in user meta
+    update_user_meta($user_id, 'booking_slot_expired', time());
 }
 
 // Add "Collection Location" tab to My Account menu
@@ -467,6 +470,50 @@ function collection_location_content() {
     }
 }
 
+// Enqueue scripts
+function enqueue_booking_slot_scripts() {
+    wp_enqueue_script('booking-slot-handler', plugin_dir_url(__FILE__) . 'public/js/booking-slot-handler.js', array('jquery', 'heartbeat'), '1.0.0', true);
+}
+add_action('wp_enqueue_scripts', 'enqueue_booking_slot_scripts');
 
+function heartbeat_received($response, $data) {
+    $user_id = get_current_user_id();
+    if ($user_id && isset($data['booking_slot_check'])) {
+        $expired_time = get_user_meta($user_id, 'booking_slot_expired', true);
+        if ($expired_time) {
+            $response['booking_slot_expired'] = true;
+            // Clear the flag after sending
+            delete_user_meta($user_id, 'booking_slot_expired');
+        }
+    }
+    return $response;
+}
+add_filter('heartbeat_received', 'heartbeat_received', 10, 2);
 
-
+add_action('wp_footer', 'add_booking_expired_modal');
+function add_booking_expired_modal() {
+    if (is_user_logged_in()) { // Only load if user is logged in
+        ?>
+        <!-- Booking Expired Modal -->
+        <div class="modal fade" id="booking-expired-modal" tabindex="-1" aria-labelledby="expiredModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p class="lead">Sorry, your slot has now expired.</p>
+                        <p>You'll need to re-book your slot before you can check out. Your items remain in your cart.</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <a href="<?php echo esc_url(home_url('/book-a-slot-for-your-dry-cleaning')); ?>" class="btn btn-primary">
+                            <i class="bi bi-calendar-plus me-2"></i>
+                            Book New Slot
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+}

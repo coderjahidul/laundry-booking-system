@@ -683,12 +683,21 @@ add_action('wp_ajax_nopriv_get_return_datepicker', 'get_return_datepicker');
 
 
 
-
-
-
-
-
-
+// Add this to your theme's functions.php or plugin file
+add_action('wp_ajax_check_booking_expired_popup', 'check_booking_expired_popup');
+add_action('wp_ajax_nopriv_check_booking_expired_popup', 'check_booking_expired_popup');
+function check_booking_expired_popup() {
+    $user_id = get_current_user_id();
+    $show_popup = get_transient('show_booking_expired_popup_' . $user_id);
+    
+    if ($show_popup) {
+        // Delete the transient so it only shows once
+        delete_transient('show_booking_expired_popup_' . $user_id);
+        wp_send_json(array('show_popup' => true));
+    } else {
+        wp_send_json(array('show_popup' => false));
+    }
+}
 
 
 
