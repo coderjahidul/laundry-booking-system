@@ -2076,7 +2076,8 @@ function lbs_reserved_slot($user_id){
                 <div class="icon mb-3">
                     <i class="fa fa-check-circle" aria-hidden="true"></i>
                 </div>
-                <h5>Slot reserved until <span id="show-selected-delivery-current-time"><?php echo $booking_slot_current_time; ?></span></h5>
+                <h5>Slot reserved until <span id="show-selected-delivery-current-time"><?php echo strtoupper($booking_slot_current_time);
+ ?></span></h5>
                 <p>Check out before <span id="show-selected-delivery-current-time-one"><?php echo $booking_slot_current_time; ?></span> to confirm your slot booking. Minimum order spend £40. Delivery <span id="show-selected-delivery-price">
                     <?php
                         // user booking slot price

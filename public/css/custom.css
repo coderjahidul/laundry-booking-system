@@ -358,7 +358,7 @@
 }
 /* view calendar date picker */
 .ui-datepicker {
-    left: 0px !important;
+/*     left: 0px !important; */
     right: 0px;
     margin: 0 auto;
   }
@@ -663,6 +663,9 @@
 .disabled-today.ui-datepicker-today .ui-state-default {
     background-color: rgb(0, 0, 0) !important;
     color: #fff !important;
+}
+#ui-datepicker-div {
+	background: #fff !important;
 }
 
 /* booking expired modal */

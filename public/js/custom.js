@@ -150,7 +150,7 @@ jQuery(document).ready(function($){
                     // show booking slot price in reserved slot discription
                     $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header
-                    $("#show-selected-delivery-current-time").html(bookings_slot_current_time);
+                    $("#show-selected-delivery-current-time").html(bookings_slot_current_time.toUpperCase());
                     // show current time in reserved slot discription
                     $("#show-selected-delivery-current-time-one").html(bookings_slot_current_time);
                     // alert("Booking Slot Current Time: " + bookings_slot_current_time);
@@ -256,7 +256,7 @@ jQuery(document).ready(function($){
                     // show booking slot price in reserved slot discription
                     $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header
-                    $("#show-selected-delivery-current-time").html(bookings_slot_current_time);
+                    $("#show-selected-delivery-current-time").html(bookings_slot_current_time.toUpperCase());
                     // show current time in reserved slot discription
                     $("#show-selected-delivery-current-time-one").html(bookings_slot_current_time);
                     // alert("Booking Slot Current Time: " + bookings_slot_current_time);
@@ -364,7 +364,7 @@ jQuery(document).ready(function($){
                     // show booking slot price in reserved slot discription
                     $("#show-selected-delivery-price").html("£" + bookings_slot_price);
                     // show current time in reserved slot header
-                    $("#show-selected-delivery-current-time").html(bookings_slot_current_time);
+                    $("#show-selected-delivery-current-time").html(bookings_slot_current_time.toUpperCase());
                     // show current time in reserved slot discription
                     $("#show-selected-delivery-current-time-one").html(bookings_slot_current_time);
                     // alert("Booking Slot Current Time: " + bookings_slot_current_time);
