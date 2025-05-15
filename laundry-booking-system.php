@@ -429,31 +429,31 @@ function collection_location_content() {
                 echo '<strong>' . esc_html($address->title . ': ' . $address->first_name . ' ' . $address->last_name) . '</strong><br>';
             }
             if (!empty($address->phone)) {
-                echo '📞 ' . esc_html($address->phone) . '<br>';
+                echo esc_html($address->phone) . '<br>';
             }
             if (!empty($address->country)) {
-                echo '🏳️ ' . esc_html($address->country) . '<br>';
+                echo esc_html($address->country) . '<br>';
             }
             if (!empty($address->address_or_postcode)) {
-                echo '📍 ' . esc_html($address->address_or_postcode) . '<br>';
+                echo esc_html($address->address_or_postcode) . '<br>';
             }
             if (!empty($address->address_1)) {
-                echo '🏠 ' . esc_html($address->address_1) . '<br>';
+                echo esc_html($address->address_1) . '<br>';
             }
             if (!empty($address->address_2)) {
-                echo '🏠 ' . esc_html($address->address_2) . '<br>';
+                echo esc_html($address->address_2) . '<br>';
             }
             if (!empty($address->address_3)) {
-                echo '🏠 ' . esc_html($address->address_3) . '<br>';
+                echo esc_html($address->address_3) . '<br>';
             }
             if (!empty($address->city)) {
-                echo '🏙️ ' . esc_html($address->city) . '<br>';
+                echo esc_html($address->city) . '<br>';
             }
             if (!empty($address->postcode)) {
-                echo '🔢 ' . esc_html($address->postcode) . '<br>';
+                echo  esc_html($address->postcode) . '<br>';
             }
             if (!empty($address->created_at)) {
-                echo '<small>📅 Created at: ' . esc_html($address->created_at) . '</small><br>';
+                echo '<small> Created at: ' . esc_html($address->created_at) . '</small><br>';
             }
 
             $delete_url = wp_nonce_url(
