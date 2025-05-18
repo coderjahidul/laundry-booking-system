@@ -2245,7 +2245,7 @@ function add_address_from(){
     <h2 class="text-center mb-4">ADD A UK ADDRESS</h2>
     <form method="post" action="">
         <!-- Title -->
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <select class="form-select" name="customar_shipping_title" id="title" aria-label="Title select">
                 <option selected>Please select...</option>
@@ -2255,7 +2255,7 @@ function add_address_from(){
                 <option value="Miss">Miss</option>
                 <option value="Dr">Dr</option>
             </select>
-        </div>
+        </div> -->
 
         <!-- First Name -->
         <div class="mb-3">
@@ -2322,12 +2322,12 @@ function add_address_from(){
             </div>
 
             <!-- Address line 3 -->
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label for="select_area" class="form-label">Select Area</label>
                 <select class="form-select" name="customar_shipping_address_3" id="select_area" aria-label="Area select">
                     <option value="" selected disabled>Select Shipping Area</option>
                 </select>
-            </div>
+            </div> -->
 
 
             <!-- Town -->

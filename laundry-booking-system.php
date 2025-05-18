@@ -428,6 +428,9 @@ function collection_location_content() {
             if (!empty($address->title) && !empty($address->first_name)) {
                 echo '<strong>' . esc_html($address->title . ': ' . $address->first_name . ' ' . $address->last_name) . '</strong><br>';
             }
+            if (empty($address->title) && !empty($address->first_name)) {
+                echo '<strong>' . esc_html($address->first_name . ' ' . $address->last_name) . '</strong><br>';
+            }
             if (!empty($address->phone)) {
                 echo esc_html($address->phone) . '<br>';
             }
