@@ -1,7 +1,7 @@
 /* loundry booking shortcode */
 .booking-slot .header {
     text-align: center;
-    padding: 50px 200px;
+    padding: 10px 200px 10px 200px;
     background-color: white;
 }
 
@@ -18,7 +18,7 @@
 
 .booking-slot .booking {
     text-align: center;
-    padding: 40px 20px;
+    padding: 30px 20px;
 }
 
 .booking-slot .booking h3 {

@@ -473,7 +473,7 @@ function lbs_choose_your_collection_slot() {
 function lbs_choose_lave_return_slot() {
     ?>
 <div class="choose-your-slot">
-    <h2 class="text-center">Choose a convenient time for LAVE to return your cleaned laundry</h2>
+    <p class="text-center">Choose a convenient time for LAVE to return your cleaned laundry</p>
 
     <ul class="nav nav-tabs justify-content-center border-0" id="ChooseYourSlot" role="tablist">
         <li class="nav-item" role="presentation">
