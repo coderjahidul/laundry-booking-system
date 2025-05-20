@@ -356,18 +356,6 @@
     text-align: center;
     padding: 10px 0;
 }
-/* view calendar date picker */
-.ui-datepicker {
-    /* left: 0px !important; */
-    width: 22em !important;
-    right: 0px;
-    margin: 0 auto;
-}
-.ui-datepicker td span,
-.ui-datepicker td a {
-    padding: .8em !important;
-}
-
 .saver-section .booking-slot {
     display: flex;
     height: 120px;
@@ -655,13 +643,25 @@
 .accordion-button:not(.collapsed) {
     background-color: #ccc !important;
 }
+/* view calendar date picker */
+.ui-datepicker {
+    /* left: 0px !important; */
+    width: 22em !important;
+    right: 0px;
+    margin: 0 auto;
+}
+.ui-datepicker td span,
+.ui-datepicker td a {
+    padding: .8em !important;
+}
 .disabled-today.ui-datepicker-today .ui-state-default {
     background-color: rgb(0, 0, 0) !important;
     color: #fff !important;
 }
 #ui-datepicker-div {
 	background: #fff !important;
-    left: 850.844px !important;
+    left: 0 !important;
+    margin: 0 auto !important;
 }
 
 /* booking expired modal */
