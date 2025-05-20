@@ -461,7 +461,7 @@ function lbs_choose_your_slot() {
 function lbs_choose_your_collection_slot() {
     ?>
 <div class="choose-your-slot">
-    <h2 class="text-center">Choose a conveneint time to drop-off your dirty laundry</h2>
+    <p class="text-center">Choose a conveneint time to drop-off your dirty laundry</p>
         <!-- Collection Section -->
         <?php collection_function(); ?>
 
@@ -501,7 +501,7 @@ function lbs_choose_lave_return_slot() {
 function lbs_choose_your_collect_return_slot() {
     ?>
 <div class="choose-your-slot">
-    <h2 class="text-center">Choose a conveneint time to pick-up your cleaned laundry</h2>
+    <p class="text-center">Choose a conveneint time to pick-up your cleaned laundry</p>
         <!-- Collection Section -->
         <?php collection_return_function(); ?>
 
