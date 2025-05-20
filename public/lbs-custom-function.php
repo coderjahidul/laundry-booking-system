@@ -2098,6 +2098,10 @@ function lbs_reserved_slot($user_id){
                     $get_collection_slot_ids = $wpdb->get_col($sql); // Fetch post IDs as an array
                     $get_selected_booking_slot = get_user_meta($user_id, 'selected_booking_slot', true);
                     $get_selected_return_booking_slot = get_user_meta($user_id, 'selected_return_booking_slot', true);
+
+                    $booking_return_slot = get_post_meta($get_selected_return_booking_slot, '_booking_return_status', true);
+                    $saver_return_slot = get_post_meta($get_selected_return_booking_slot, '_saver_booking_return_status', true);
+                    $collection_return_slot = get_post_meta($get_selected_return_booking_slot, '_collection_booking_return_status', true);
                     ?>
                     <div class="col-md-4">
                         <?php 
@@ -2183,29 +2187,47 @@ function lbs_reserved_slot($user_id){
                     // Debug check to see if the selected slot is in the array
                     if(!empty($get_selected_return_booking_slot)){
                         if (in_array($get_selected_return_booking_slot, $get_collection_return_slot_ids)) {
-                            ?>
-                            <div class="info-box collection">
-                                <strong id="return-time-date-title">DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY</strong>
-                                <p id="show-selected-return-delivery-time-date">
-                                    <?php
-                                        // Booking slot date and time
-                                        return_booking_slot_date_time($get_selected_return_booking_slot);
-                                    ?>
-                                </p>
-                            </div>
-                            <?php
+                            if(!empty($collection_return_slot)){
+                                ?>
+                                <div class="info-box collection">
+                                    <strong id="return-time-date-title">DATE AND TIME YOU CAN COLLECT CLEANED LAUNDRY</strong>
+                                    <p id="show-selected-return-delivery-time-date">
+                                        <?php
+                                            // Booking slot date and time
+                                            return_booking_slot_date_time($get_selected_return_booking_slot);
+                                        ?>
+                                    </p>
+                                </div>
+                                <?php
+                            }else{
+                                ?>
+                                <div class="info-box collection">
+                                    <strong id="return-time-date-title"></strong>
+                                    <p id="show-selected-return-delivery-time-date"></p>
+                                </div>
+                                <?php
+                            }
                         } else {
-                            ?>
-                            <div class="info-box delivery">
-                                <strong id="return-time-date-title">DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY</strong>
-                                <p id="show-selected-return-delivery-time-date">
-                                    <?php
-                                        // Booking slot date and time
-                                        return_booking_slot_date_time($get_selected_return_booking_slot);
-                                    ?>
-                                </p>
-                            </div>
-                            <?php
+                            if(!empty($booking_return_slot) || !empty($saver_return_slot)){
+                                ?>
+                                <div class="info-box delivery">
+                                    <strong id="return-time-date-title">DATE AND TIME WHEN LAVE RETURNS CLEANED LAUNDRY</strong>
+                                    <p id="show-selected-return-delivery-time-date">
+                                        <?php
+                                            // Booking slot date and time
+                                            return_booking_slot_date_time($get_selected_return_booking_slot);
+                                        ?>
+                                    </p>
+                                </div>
+                                <?php
+                            }else{
+                                ?>
+                                <div class="info-box delivery">
+                                    <strong id="return-time-date-title"></strong>
+                                    <p id="show-selected-return-delivery-time-date"></p>
+                                </div>
+                                <?php
+                            }
                         }
                     }else{
                         ?>
