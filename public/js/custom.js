@@ -893,9 +893,9 @@ jQuery(document).ready(function($){
                 alert('Failed to load shipping areas.');
             }
         },
-        error: function() {
-            alert('AJAX error.');
-        }
+        // error: function() {
+        //     alert('AJAX error.');
+        // }
     });
 
     $("#proceedBtn").on("click", function(event) {
